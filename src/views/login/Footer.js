@@ -43,7 +43,7 @@ Footer.propTypes = {
 
 const mapStateToProps = (state) => {
   return {
-    strings: state.translate.strings.loginFooter
+    strings: state.translate.strings.loginPage.loginFooter
   }
 }
 

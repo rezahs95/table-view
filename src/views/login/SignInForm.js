@@ -120,7 +120,7 @@ SignInForm.propTypes = {
 
 const mapStateToProps = (state) => {
   return {
-    strings: state.translate.strings.signInForm
+    strings: state.translate.strings.loginPage.signInForm
   }
 }
 

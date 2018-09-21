@@ -159,7 +159,7 @@ SignUpForm.propTypes = {
 
 const mapStateToProps = (state) => {
   return {
-    strings: state.translate.strings.signUpForm
+    strings: state.translate.strings.loginPage.signUpForm
   }
 }
 

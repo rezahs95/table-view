@@ -149,7 +149,7 @@ Header.propTypes = {
 
 const mapStateToProps = (state) => {
   return {
-    strings: state.translate.strings.loginHeader
+    strings: state.translate.strings.loginPage.loginHeader
   }
 }
 

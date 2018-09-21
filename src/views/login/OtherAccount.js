@@ -105,7 +105,7 @@ OtherAccount.propTypes = {
 
 const mapStateToProps = (state) => {
   return {
-    strings: state.translate.strings.otherAccount
+    strings: state.translate.strings.loginPage.otherAccount
   }
 }
 

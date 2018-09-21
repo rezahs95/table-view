@@ -12,7 +12,7 @@ const global = {
     borderRadiusSize: '4px',
   },
   duration: {
-    transition: '0.5s',
+    transition: '0.2s',
   }
 }
 

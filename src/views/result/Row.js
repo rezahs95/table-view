@@ -1,9 +1,15 @@
 // @flow
 import * as React from 'react'
-import styles from 'src/consts/styles'
+import PropTypes from 'prop-types'
 
-const Row = (props: {}) => {
+import styles from 'src/consts/styles'
+import {resultTableFields} from 'src/consts/flowTypes'
+
+type rowProps = resultTableFields
+
+const Row = (props: rowProps) => {
   const {result, global} = styles
+  const {index, id, date, name, familyName, email} = props
   return (
       <tr className='row-wrapper'>
         { /*language=SCSS*/ }
@@ -11,34 +17,52 @@ const Row = (props: {}) => {
           .row-wrapper {
             background-color: ${result.color.tableRowBackgroundColor};
             color: ${result.color.tableRowFontColor};
-            border: 1px solid red;
             transition: all ${global.duration.transition};
 
-            .first-data {
-              border-right: 4px solid ${result.color.tableRowBorderRightColor};
-            }
-            .table-row {
-              padding: 10px;
+            .table-data {
+              // table width => number of column / 100
+              width: 16%;
+              padding-top: ${result.size.tableCellPaddingSize};
+              padding-bottom: ${result.size.tableCellPaddingSize};
+              text-align: center;
               border-bottom: 1px solid ${result.color.tableRowBorderColor};
               transition: all ${global.duration.transition};
+            }
+            .table-data:first-child {
+              border-right: solid ${result.size.tableRowBorderRightSize};
+              border-right-color: ${result.color.tableRowBorderRightColor};
             }
 
             &:hover {
               background-color: ${result.color.tableRowBackgroundHoverColor};
 
-              .first-data {
+              .table-data {
+                //padding-bottom: ${result.size.cellPaddingHoverSize};
+              }
+              .table-data:first-child {
                 border-right-color: ${result.color.tableRowBorderRightHoverColor};
               }
             }
           }
         `}</style>
 
-        <td className='first-data table-row'>داده1</td>
-        <td className='table-row'>داده2</td>
-        <td className='table-row'>داده3</td>
-
+        <td className='table-data'>{index}</td>
+        <td className='table-data'>{id}</td>
+        <td className='table-data'>{date}</td>
+        <td className='table-data'>{name}</td>
+        <td className='table-data'>{familyName}</td>
+        <td className='table-data'>{email}</td>
       </tr>
   )
+}
+
+Row.propTypes = {
+  index: PropTypes.string.isRequired,
+  id: PropTypes.string.isRequired,
+  date: PropTypes.string.isRequired,
+  name: PropTypes.string.isRequired,
+  familyName: PropTypes.string.isRequired,
+  email: PropTypes.string.isRequired,
 }
 
 export default Row
