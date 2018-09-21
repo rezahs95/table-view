@@ -1,12 +1,14 @@
 // @flow
 import * as React from 'react'
 import PropTypes from 'prop-types'
+import styles from 'src/consts/styles'
 
 type searchTextInputProps = {
   placeholder: string,
 }
 const SearchTextInput = (props: searchTextInputProps) => {
   const {placeholder} = props
+  const {home} = styles
   return (
       <div className='input-wrapper'>
         {/*language=SCSS*/}
@@ -35,7 +37,7 @@ const SearchTextInput = (props: searchTextInputProps) => {
             font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
             width: 100%;
             background: transparent;
-            color: #9196A1;
+            color: ${home.color.searchInputBorder};
             opacity: 0;
             text-align: center;
             transition: opacity 0.3s;
@@ -53,7 +55,7 @@ const SearchTextInput = (props: searchTextInputProps) => {
             position: absolute;
             left: 0;
             width: 100%;
-            color: #df6589;
+            color: ${home.color.searchInputLabel};
             pointer-events: none;
           }
 
@@ -73,7 +75,7 @@ const SearchTextInput = (props: searchTextInputProps) => {
             left: 0;
             width: 50%;
             height: 100%;
-            border: 4px solid #747981;
+            border: 4px solid ${home.color.searchInputLabelBorder};
             transition: transform 0.3s;
           }
 
