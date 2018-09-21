@@ -16,10 +16,11 @@ type propTypes = {|
 
 const OtherAccount = (props: propTypes) => {
   const {strings, signIn} = props
-  const {globalStyles, loginPageStyles} = styles
+  const {global, login} = styles
 
   return (
     <div className='other-account-container'>
+      { /*language=CSS*/ }
       <style jsx>{`
         .text{
           line-height: 28px;
@@ -33,10 +34,10 @@ const OtherAccount = (props: propTypes) => {
         .other-account-container{
           padding: 10px 20px;
           font-size: 12px;
-          background: ${loginPageStyles.color.otherAccountBackgroundColor};
-          border-top: 1px solid ${loginPageStyles.color.otherAccountBorderColor};
-          border-bottom-left-radius: ${globalStyles.size.borderRadiusSize};
-          border-bottom-right-radius: ${globalStyles.size.borderRadiusSize};
+          background: ${login.color.otherAccountBackgroundColor};
+          border-top: 1px solid ${login.color.otherAccountBorderColor};
+          border-bottom-left-radius: ${global.size.borderRadiusSize};
+          border-bottom-right-radius: ${global.size.borderRadiusSize};
           display: flex;
         }
         .icon-container{
@@ -51,11 +52,11 @@ const OtherAccount = (props: propTypes) => {
           display: flex;
           justify-content: center;
           align-items: center;
-          color: ${loginPageStyles.color.otherAccountBorderColor};
-          border: 2px solid ${loginPageStyles.color.otherAccountBorderColor};
+          color: ${login.color.otherAccountBorderColor};
+          border: 2px solid ${login.color.otherAccountBorderColor};
           border-radius: 50%;
           margin: 0 4px;
-          transition: all ${globalStyles.duration.transition};
+          transition: all ${global.duration.transition};
         }
         .social-icon-wrapper:hover {
           cursor: pointer;

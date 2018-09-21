@@ -1,7 +1,9 @@
-import loginPageStyles from './loginPageStyles'
-import globalStyles from './globalStyles'
+import login from './login'
+import global from './global'
+import result from './result'
 
 export default{
-  globalStyles,
-  loginPageStyles,
+  global,
+  login,
+  result,
 }

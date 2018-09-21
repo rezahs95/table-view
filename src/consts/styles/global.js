@@ -1,4 +1,4 @@
-const globalStyles = {
+const global = {
   color: {
     iconColor: '#6f6f6f',
     iconBgColor: '#ffffff',
@@ -16,4 +16,4 @@ const globalStyles = {
   }
 }
 
-export default globalStyles
+export default global

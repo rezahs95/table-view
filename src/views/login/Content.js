@@ -62,10 +62,11 @@ class Content extends Component<propTypes, stateTypes> {
 
   render() {
     const {strings} = this.props
-    const {globalStyles, loginPageStyles} = styles
+    const {global, login} = styles
 
     return(
       <div className='login-body-container'>
+        { /*language=CSS*/ }
         <style jsx>{`
           @keyframes open1 {
             from {
@@ -99,7 +100,7 @@ class Content extends Component<propTypes, stateTypes> {
             min-width: 320px;
             margin: auto;
             background: #fff;
-            border-radius: ${globalStyles.size.borderRadiusSize};
+            border-radius: ${global.size.borderRadiusSize};
           }
           .form-container-sign-in{
             animation: open1 1000ms ease-in-out forwards;
@@ -117,34 +118,34 @@ class Content extends Component<propTypes, stateTypes> {
             padding: 10px 0;
             font-size: 14px;
             border: 1px solid #fff;
-            border-radius: ${globalStyles.size.borderRadiusSize};
-            transition: background ${globalStyles.duration.transition};
+            border-radius: ${global.size.borderRadiusSize};
+            transition: background ${global.duration.transition};
           }
           .sign-up{
-            background: ${loginPageStyles.color.cardButtonsColor};
-            border-radius: ${globalStyles.size.borderRadiusSize} 0;
-            color: ${loginPageStyles.color.cardButtonsTextColor};
-            border-bottom-color: ${loginPageStyles.color.cardButtonsBorderColor};
-            border-right-color: ${loginPageStyles.color.cardButtonsBorderColor};
-            border-top-color: ${loginPageStyles.color.cardButtonsColor};
-            border-left-color: ${loginPageStyles.color.cardButtonsColor};
+            background: ${login.color.cardButtonsColor};
+            border-radius: ${global.size.borderRadiusSize} 0;
+            color: ${login.color.cardButtonsTextColor};
+            border-bottom-color: ${login.color.cardButtonsBorderColor};
+            border-right-color: ${login.color.cardButtonsBorderColor};
+            border-top-color: ${login.color.cardButtonsColor};
+            border-left-color: ${login.color.cardButtonsColor};
           }
           .sign-up:hover{
             cursor: pointer;
-            background: ${loginPageStyles.color.cardButtonsHoverColor};
+            background: ${login.color.cardButtonsHoverColor};
           }
           .sign-in{
-            background: ${loginPageStyles.color.cardButtonsColor};
-            border-radius: 0 ${globalStyles.size.borderRadiusSize};
-            color: ${loginPageStyles.color.cardButtonsTextColor};
-            border-bottom-color: ${loginPageStyles.color.cardButtonsBorderColor};
-            border-left-color: ${loginPageStyles.color.cardButtonsBorderColor};
-            border-top-color: ${loginPageStyles.color.cardButtonsColor};
-            border-right-color: ${loginPageStyles.color.cardButtonsColor};
+            background: ${login.color.cardButtonsColor};
+            border-radius: 0 ${global.size.borderRadiusSize};
+            color: ${login.color.cardButtonsTextColor};
+            border-bottom-color: ${login.color.cardButtonsBorderColor};
+            border-left-color: ${login.color.cardButtonsBorderColor};
+            border-top-color: ${login.color.cardButtonsColor};
+            border-right-color: ${login.color.cardButtonsColor};
           }
           .sign-in:hover{
             cursor: pointer;
-            background: ${loginPageStyles.color.cardButtonsHoverColor};
+            background: ${login.color.cardButtonsHoverColor};
           }
         `}</style>
         <div className='carousel-container'>

@@ -26,6 +26,9 @@ const App = () => {
         img {
           vertical-align: middle;
         }
+        table {
+          border-spacing: 0;
+        }
       `}</style>
       
       <Switch>

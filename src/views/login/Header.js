@@ -20,10 +20,11 @@ type propTypes = {|
 
 const Header = (props: propTypes) => {
   const {address, androidLink, iosLink, logoCaption, phoneNumber, strings} = props
-  const {globalStyles, loginPageStyles} = styles
+  const {global, login} = styles
 
   return(
     <div className='header-login'>
+      { /*language=CSS*/ }
       <style jsx>{`
         .header-login {
           display: flex;
@@ -57,22 +58,22 @@ const Header = (props: propTypes) => {
           flex: 0 0 70px;
           min-width: 70px;
           font-size: 12px;
-          color: ${loginPageStyles.color.loginPageTextColor};
+          color: ${login.color.loginPageTextColor};
           margin: 8px;
         }
         .address-wrapper{
           justify-content: flex-end;
         }
         .icon{
-          color: ${globalStyles.color.iconColor};
-          font-size: ${globalStyles.fontSize.iconFontSize};
+          color: ${global.color.iconColor};
+          font-size: ${global.fontSize.iconFontSize};
           border-radius: 50%;
-          width: ${globalStyles.size.iconSize};
-          height: ${globalStyles.size.iconSize};
-          background:  ${globalStyles.color.iconBgColor};
+          width: ${global.size.iconSize};
+          height: ${global.size.iconSize};
+          background:  ${global.color.iconBgColor};
           text-align: center;
-          line-height: ${globalStyles.size.iconLineHeight};
-          min-width: ${globalStyles.size.iconSize};
+          line-height: ${global.size.iconLineHeight};
+          min-width: ${global.size.iconSize};
         }
         .address-part{
           display: flex;

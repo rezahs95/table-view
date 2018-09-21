@@ -18,11 +18,12 @@ type propTypes = {|
 |}
 
 let SignInForm = (props: propTypes) => {
-  const {globalStyles, loginPageStyles} = styles
+  const {global, login} = styles
   const {onSubmit, strings} = props
 
   return (
     <div className='login-form-container'>
+      { /*language=CSS*/ }
       <style jsx>{`
         .login-form-container{
           animation: open 1s ease-in-out 0s 1 forwards;
@@ -35,35 +36,35 @@ let SignInForm = (props: propTypes) => {
           padding: 5px 10px;
           font-size: 15px;
           width: 100%;
-          color: ${loginPageStyles.color.loginTextFieldColor};
-          border: 1px solid ${loginPageStyles.color.loginTextFieldBorderColor};
-          border-radius: ${globalStyles.size.borderRadiusSize};
-          transition: all ${globalStyles.duration.transition};
+          color: ${login.color.loginTextFieldColor};
+          border: 1px solid ${login.color.loginTextFieldBorderColor};
+          border-radius: ${global.size.borderRadiusSize};
+          transition: all ${global.duration.transition};
         }
         .login-form-container :global(.text-input-login-form::placeholder){
-          color: ${loginPageStyles.color.loginTextFieldPlaceholderColor};
+          color: ${login.color.loginTextFieldPlaceholderColor};
         }
         .login-form-container :global(.text-input-login-form:focus){
-          border-color: ${loginPageStyles.color.signInButtonColor};
+          border-color: ${login.color.signInButtonColor};
         }
         .submit-button{
           display: block;
-          background: ${loginPageStyles.color.signInButtonColor};
+          background: ${login.color.signInButtonColor};
           border: 0px;
           width: 100%;
           padding: 8px;
           color: #fff;
           font-size: 15px;
           margin: 5px 0 10px 0;
-          border-radius: ${globalStyles.size.borderRadiusSize}; 
-          transition: all ${globalStyles.duration.transition};
+          border-radius: ${global.size.borderRadiusSize};
+          transition: all ${global.duration.transition};
         }
         .submit-button:hover{
           cursor: pointer;
-          background: ${loginPageStyles.color.signInButtonHoverColor};
+          background: ${login.color.signInButtonHoverColor};
         }
         .remember-recovery-container{
-          color: ${loginPageStyles.color.signInButtonColor};
+          color: ${login.color.signInButtonColor};
           font-size: 12px;
           display: flex;
           align-items: center;
@@ -76,7 +77,7 @@ let SignInForm = (props: propTypes) => {
         }
         .remember-me-label:hover, .password-recovery:hover{
           cursor: pointer;
-          color: ${loginPageStyles.color.signInButtonHoverColor};
+          color: ${login.color.signInButtonHoverColor};
         }
       `}</style>
       <Formik 

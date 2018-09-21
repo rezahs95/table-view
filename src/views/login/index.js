@@ -45,6 +45,7 @@ class Login extends Component<{}, stateTypes> {
 
     return(
       <div className='login-wrapper'>
+        { /*language=CSS*/ }
         <style jsx>{`
           .login-wrapper {
             min-height: 100%;

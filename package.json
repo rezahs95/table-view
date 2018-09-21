@@ -106,10 +106,17 @@
       "react-app"
     ],
     "plugins": [
-      "styled-jsx/babel"
+      [
+        "styled-jsx/babel",
+        { "plugins": ["styled-jsx-plugin-sass"] }
+      ]
     ]
   },
   "eslintConfig": {
     "extends": "react-app"
+  },
+  "devDependencies": {
+    "node-sass": "^4.9.3",
+    "styled-jsx-plugin-sass": "^0.2.4"
   }
 }

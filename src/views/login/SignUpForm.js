@@ -21,10 +21,11 @@ type propTypes = {|
 
 let SignUpForm = (props: propTypes) => {
   const {onSubmit, strings} = props
-  const {globalStyles, loginPageStyles} = styles
+  const {global, login} = styles
 
   return (
     <div className='login-form-container'>
+      { /*language=CSS*/ }
       <style jsx>{`
         .login-form-container{
           padding: 20px;
@@ -32,20 +33,20 @@ let SignUpForm = (props: propTypes) => {
         }
         .login-form-container :global(.text-input-login-form){
           outline: none;
-          color: ${loginPageStyles.color.loginTextFieldColor};
+          color: ${login.color.loginTextFieldColor};
           margin-bottom: 10px;
           padding: 5px 10px;
           font-size: 15px;
           width: 100%;
-          border: 1px solid ${loginPageStyles.color.loginTextFieldBorderColor};
-          border-radius: ${globalStyles.size.borderRadiusSize};
-          transition: all ${globalStyles.duration.transition};
+          border: 1px solid ${login.color.loginTextFieldBorderColor};
+          border-radius: ${global.size.borderRadiusSize};
+          transition: all ${global.duration.transition};
         }
         .login-form-container :global(.text-input-login-form::placeholder){
-          color: ${loginPageStyles.color.loginTextFieldPlaceholderColor};
+          color: ${login.color.loginTextFieldPlaceholderColor};
         }
         .login-form-container :global(.text-input-login-form:focus){
-          border-color: ${loginPageStyles.color.signInButtonColor};
+          border-color: ${login.color.signInButtonColor};
         }
         .radio-button-container{
           display: flex;
@@ -54,19 +55,19 @@ let SignUpForm = (props: propTypes) => {
         }
         .submit-button{
           display: block;
-          background: ${loginPageStyles.color.signInButtonColor};
+          background: ${login.color.signInButtonColor};
           border: 0px;
           width: 100%;
           padding: 8px;
           color: #fff;
           font-size: 15px;
           margin: 5px 0 0 0;
-          border-radius: ${globalStyles.size.borderRadiusSize};
-          transition: all ${globalStyles.duration.transition};
+          border-radius: ${global.size.borderRadiusSize};
+          transition: all ${global.duration.transition};
         }
         .submit-button:hover{
           cursor: pointer;
-          background: ${loginPageStyles.color.signInButtonHoverColor};
+          background: ${login.color.signInButtonHoverColor};
         }
         .radio-label {
           display: block;
@@ -86,7 +87,7 @@ let SignUpForm = (props: propTypes) => {
           height: 20px;
           width: 20px;
           background: #fff;
-          border: 3px solid ${loginPageStyles.color.radioButtonColor};
+          border: 3px solid ${login.color.radioButtonColor};
           border-radius: 50%;
         }
         .checkmark:after {
@@ -98,8 +99,8 @@ let SignUpForm = (props: propTypes) => {
           width: 8px;
           height: 8px;
           border-radius: 50%;
-          background: ${loginPageStyles.color.radioButtonColor};
-          transition: all ${globalStyles.duration.transition};
+          background: ${login.color.radioButtonColor};
+          transition: all ${global.duration.transition};
         }
         .radio-label :global(input:checked ~ .checkmark:after) {
           opacity: 1;

@@ -14,10 +14,11 @@ type propTypes = {|
 
 const Footer = (props: propTypes) => {
   const {strings, year} = props
-  const {globalStyles, loginPageStyles} = styles
+  const {login} = styles
 
   return(
     <div className='footer'>
+      { /*language=CSS*/ }
       <style jsx>{`
         .footer{
           position: absolute;
@@ -25,7 +26,7 @@ const Footer = (props: propTypes) => {
           bottom: 0;
           right: 0;
           width: 100%;
-          color: ${loginPageStyles.color.loginPageTextColor};
+          color: ${login.color.loginPageTextColor};
           font-size: 13px;
           text-align: center;
         }

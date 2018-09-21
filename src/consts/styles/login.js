@@ -1,4 +1,4 @@
-const loginPageStyles = {
+const login = {
   color: {
     cardButtonsColor: '#dddddd',
     cardButtonsHoverColor: '#f6f6f6',
@@ -20,4 +20,4 @@ const loginPageStyles = {
   }
 }
 
-export default loginPageStyles
+export default login
