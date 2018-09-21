@@ -2,6 +2,7 @@
 import * as React from 'react'
 import DatePicker from 'react-datepicker'
 import moment from 'moment'
+import PropTypes from 'prop-types'
 
 import PopUpButton from '../home/PopUpButton'
 import SearchTextInput from './SearchTextInput'
@@ -9,15 +10,23 @@ import SearchButton from './SearchButton'
 import styles from 'src/consts/styles'
 
 import 'react-datepicker/dist/react-datepicker.css';
+import connect from "react-redux/es/connect/connect";
+
+type homeProps = {
+  strings: {
+    startDate: string,
+    endDate: string,
+  }
+}
 
 type homeState = {
   page: number,
   startDate: {} | null,
   endDate: {} | null,
 }
-class Home extends React.Component <{}, homeState> {
+class Home extends React.Component <homeProps, homeState> {
   numberOfPages: number
-  constructor(props: {}){
+  constructor(props: homeProps){
     console.log(moment(), 'sssss')
     super(props)
     this.state = {
@@ -55,6 +64,7 @@ class Home extends React.Component <{}, homeState> {
   }
 
   render() {
+    const {strings} = this.props
     const {home} = styles
     return (
         <div className='home-wrapper'>
@@ -112,7 +122,7 @@ class Home extends React.Component <{}, homeState> {
                   startDate={this.state.startDate}
                   endDate={this.state.endDate}
                   onChange={this.handleChangeStart}
-                  placeholderText={'تاریخ شروع'}
+                  placeholderText={strings.datePicker.startDate}
                   className='date-picker'
               />
 
@@ -122,7 +132,7 @@ class Home extends React.Component <{}, homeState> {
                   startDate={this.state.startDate}
                   endDate={this.state.endDate}
                   onChange={this.handleChangeEnd}
-                  placeholderText={'تاریخ پایان'}
+                  placeholderText={strings.datePicker.endDate}
                   className='date-picker'
               />
             </div>
@@ -134,4 +144,13 @@ class Home extends React.Component <{}, homeState> {
   }
 }
 
-export default Home
+Home.propTypes = {
+  strings: PropTypes.string.isRequired,
+}
+const mapStateToProps = state => {
+  return {
+    strings: state.translate.strings.homePage,
+  }
+}
+
+export default connect(mapStateToProps)(Home)

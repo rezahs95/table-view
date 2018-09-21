@@ -31,7 +31,14 @@ const fa = {
       signUpWithOther: 'ثبت نام با اکانت های دیگر'
     },
   },
-
+  // home page
+  homePage: {
+    datePicker: {
+      startDate: 'تاریخ شروع',
+      endDate: 'تاریخ پایان',
+    }
+  },
+  // result page
   resultPage: {
     tableHeader: {
       index: 'ردیف',
