@@ -3,9 +3,15 @@ import * as React from 'react'
 import PropTypes from 'prop-types'
 
 import styles from 'src/consts/styles'
-import {resultTableFields} from 'src/consts/flowTypes'
 
-type rowProps = resultTableFields
+type rowProps = {
+  id: string,
+  index: number,
+  date: string,
+  name: string,
+  familyName: string,
+  email: string,
+}
 
 const Row = (props: rowProps) => {
   const {result, global} = styles
@@ -22,8 +28,10 @@ const Row = (props: rowProps) => {
             .table-data {
               // table width => number of column / 100
               width: 16%;
-              padding-top: ${result.size.tableCellPaddingSize};
-              padding-bottom: ${result.size.tableCellPaddingSize};
+              padding-left: ${result.size.tableCellPaddingRightSize};
+              padding-right: ${result.size.tableCellPaddingRightSize};
+              padding-top: ${result.size.tableCellPaddingTopSize};
+              padding-bottom: ${result.size.tableCellPaddingTopSize};
               text-align: center;
               border-bottom: 1px solid ${result.color.tableRowBorderColor};
               transition: all ${global.duration.transition};
@@ -57,7 +65,7 @@ const Row = (props: rowProps) => {
 }
 
 Row.propTypes = {
-  index: PropTypes.string.isRequired,
+  index: PropTypes.number.isRequired,
   id: PropTypes.string.isRequired,
   date: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
