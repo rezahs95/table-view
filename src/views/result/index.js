@@ -5,7 +5,6 @@ import PropTypes from "prop-types"
 
 import styles from 'src/consts/styles'
 import Table from './Table'
-import PopUpButton from './PopUpButton'
 import {resultTableData} from 'src/consts/flowTypes'
 
 type resultProps = {
@@ -45,7 +44,6 @@ const Result = (props: resultProps) => {
         `}</style>
 
         <Table strings={strings.tableHeader} dataSet={dataSet}/>
-        <PopUpButton/>
       </div>
   )
 }

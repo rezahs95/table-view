@@ -1,44 +1,61 @@
 // @flow
 import * as React from 'react'
+import DatePicker from 'react-datepicker'
+import moment from 'moment'
+
+import PopUpButton from '../home/PopUpButton'
 import SearchTextInput from './SearchTextInput'
 import SearchButton from './SearchButton'
-import {DateRange} from 'react-date-range';
-import 'react-date-range/dist/styles.css'; // main style file
-import 'react-date-range/dist/theme/default.css'; // theme css file
-import {format} from 'date-fns';
+import styles from 'src/consts/styles'
 
-class Home extends React.Component <{}, {}> {
+import 'react-datepicker/dist/react-datepicker.css';
 
-  constructor(props, context) {
-    super(props, context);
-
+type homeState = {
+  page: number,
+  startDate: {} | null,
+  endDate: {} | null,
+}
+class Home extends React.Component <{}, homeState> {
+  numberOfPages: number
+  constructor(props: {}){
+    console.log(moment(), 'sssss')
+    super(props)
     this.state = {
-      dateRange: {
-        selection: {
-          startDate: new Date(),
-          endDate: null,
-          key: 'selection',
-        },
-      },
-    };
+      page: 0,
+      startDate: null,
+      endDate: null,
+    }
+    this.numberOfPages = 5
+  }
+  componentDidMount() {
+    document.addEventListener('keydown', this.keyDownFunction, false)
+  }
+  componentWillUnmount() {
+    document.removeEventListener('keydown', this.keyDownFunction, false)
   }
 
-  handleRangeChange(which, payload) {
-    console.log(which, payload);
-    this.setState({
-      [which]: {
-        ...this.state[which],
-        ...payload,
-      },
-    });
+  keyDownFunction = (event: SyntheticKeyboardEvent<>) => {
+    // 37 - left
+    // 39 - right
+    const {page} = this.state
+    if(event.keyCode === 37 && page > 0){
+      this.setState({...this.state, page: page - 1})
+    }
+    else if(event.keyCode === 39 && page < this.numberOfPages){
+      this.setState({...this.state, page: page + 1})
+    }
   }
 
-  formatDateDisplay = (date, defaultText) => {
-    if (!date) return defaultText;
-    return format(date, 'MM/DD/YYYY');
+  handleChangeStart = (date: {}) => {
+    this.setState({...this.state, startDate: date});
+  }
+
+  handleChangeEnd = (date: {}) => {
+    this.setState({...this.state, endDate: date});
   }
 
   render() {
+    const {home} = styles
     return (
         <div className='home-wrapper'>
           {/*language=SCSS*/}
@@ -69,29 +86,49 @@ class Home extends React.Component <{}, {}> {
               display: flex;
             }
 
-            .daterange-picker {
-              direction: ltr !important;
-              text-align: left;
+            :global(.date-picker) {
+              color: ${home.color.datePickerFontColor};
+              background: inherit;
+              border: solid ${home.color.datePickerBorderColor};
+              border-width: ${home.size.datePickerBorderSize};
+              padding: ${home.size.datePickerPaddingSize};
+              margin: ${home.size.datePickerMarginSize};
+              font-size: ${home.fontSize.datePickerFontSize};
+
+              &::placeholder{
+                color: ${home.color.datePickerPlaceHolderFontColor};
+              }
             }
+
           `}</style>
 
           <div className='home-wrapper-index'>
             <div className='search-index'>
               <SearchTextInput placeholder='Name'/>
               <SearchTextInput placeholder='Email'/>
-              <div className='daterange-picker'>
-                <DateRange
-                    onChange={this.handleRangeChange.bind(this, 'dateRange')}
-                    moveRangeOnFirstSelection={false}
-                    ranges={[this.state.dateRange.selection]}
-                    className={'PreviewArea'}
-                />
-              </div>
+              <DatePicker
+                  selected={this.state.startDate}
+                  selectsStart
+                  startDate={this.state.startDate}
+                  endDate={this.state.endDate}
+                  onChange={this.handleChangeStart}
+                  placeholderText={'تاریخ شروع'}
+                  className='date-picker'
+              />
+
+              <DatePicker
+                  selected={this.state.endDate}
+                  selectsEnd
+                  startDate={this.state.startDate}
+                  endDate={this.state.endDate}
+                  onChange={this.handleChangeEnd}
+                  placeholderText={'تاریخ پایان'}
+                  className='date-picker'
+              />
             </div>
+            <PopUpButton/>
             <SearchButton/>
           </div>
-
-
         </div>
     )
   }
