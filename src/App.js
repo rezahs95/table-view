@@ -8,34 +8,43 @@ import routes from 'src/consts/routes'
 
 const App = () => {
   return (
-    <div className='App'>
-      <style jsx global>{`
-        *{
-          font-family: 'IRANSansWebFaNum';
-          direction: rtl;
-          box-sizing: border-box;
-        }
-        body {
-          margin: 0;
-          padding: 0;
-          font-weight: normal;
-        }
-        a, a:hover, a:focus{
-          text-decoration: none !important;
-        }
-        img {
-          vertical-align: middle;
-        }
-        table {
-          border-spacing: 0;
-        }
-      `}</style>
-      
-      <Switch>
-        <PublicRoute path={routes.LOGIN} component={Login}/>
-        <Routes/>
-      </Switch>
-    </div>
+      <div className='App'>
+        {/*language=SCSS*/}
+        <style jsx global>{`
+          * {
+            font-family: 'IRANSansWebFaNum';
+            direction: rtl;
+            box-sizing: border-box;
+          }
+
+          body {
+            margin: 0;
+            padding: 0;
+            font-weight: normal;
+          }
+
+          a, a:hover, a:focus {
+            text-decoration: none !important;
+          }
+
+          img {
+            vertical-align: middle;
+          }
+
+          table {
+            border-spacing: 0;
+          }
+
+          input, input:focus {
+            outline: none;
+          }
+        `}</style>
+
+        <Switch>
+          <PublicRoute path={routes.LOGIN} component={Login}/>
+          <Routes/>
+        </Switch>
+      </div>
   )
 }
 
