@@ -24,9 +24,11 @@ type homeState = {
   startDate: {} | null,
   endDate: {} | null,
 }
+
 class Home extends React.Component <homeProps, homeState> {
   numberOfPages: number
-  constructor(props: homeProps){
+
+  constructor(props: homeProps) {
     console.log(moment(), 'sssss')
     super(props)
     this.state = {
@@ -36,9 +38,11 @@ class Home extends React.Component <homeProps, homeState> {
     }
     this.numberOfPages = 5
   }
+
   componentDidMount() {
     document.addEventListener('keydown', this.keyDownFunction, false)
   }
+
   componentWillUnmount() {
     document.removeEventListener('keydown', this.keyDownFunction, false)
   }
@@ -47,10 +51,10 @@ class Home extends React.Component <homeProps, homeState> {
     // 37 - left
     // 39 - right
     const {page} = this.state
-    if(event.keyCode === 37 && page > 0){
+    if (event.keyCode === 37 && page > 0) {
       this.setState({...this.state, page: page - 1})
     }
-    else if(event.keyCode === 39 && page < this.numberOfPages){
+    else if (event.keyCode === 39 && page < this.numberOfPages) {
       this.setState({...this.state, page: page + 1})
     }
   }
@@ -92,18 +96,71 @@ class Home extends React.Component <homeProps, homeState> {
               background-image: -webkit-repeating-linear-gradient(135deg, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7) 2px, transparent 2px, rgba(0, 0, 0, 0.3) 3px);
             }
 
+            .upper-home {
+              display: flex;
+              height: 100%;
+            }
             .search-index {
               display: flex;
+              flex-direction: column;
+              justify-content: center;
+              align-items: center;
+              width: 100%;
             }
 
-            :global(.date-picker) {
+            .popup-container {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            width: 60%;
+
+            }
+            .search-button-container {
+              z-index: 2;
+              display: flex;
+              flex-direction: column;
+              justify-content: flex-end;
+              align-items: center;
+              width: 100%;
+              position: fixed;
+              bottom: 6px;
+            }
+            .datepickers-holder {
+              display: flex;
+              flex-direction: row;
+              justify-content: flex-end;
+              align-items: center;
+              margin-top: 15px;
+            }
+
+            :global(.date-picker-start) {
               color: ${home.color.datePickerFontColor};
               background: inherit;
               border: solid ${home.color.datePickerBorderColor};
               border-width: ${home.size.datePickerBorderSize};
               padding: ${home.size.datePickerPaddingSize};
-              margin: ${home.size.datePickerMarginSize};
+              //margin: ${home.size.datePickerMarginSize};
               font-size: ${home.fontSize.datePickerFontSize};
+              height: 25px;
+              width: 160px;
+
+              &::placeholder{
+                color: ${home.color.datePickerPlaceHolderFontColor};
+              }
+            }
+
+            :global(.date-picker-end) {
+              color: ${home.color.datePickerFontColor};
+              background: inherit;
+              border: solid ${home.color.datePickerBorderColor};
+              border-right: none;
+              border-width: ${home.size.datePickerBorderSize};
+              padding: ${home.size.datePickerPaddingSize};
+              //margin: ${home.size.datePickerMarginSize};
+              font-size: ${home.fontSize.datePickerFontSize};
+              height: 25px;
+              width: 160px;
 
               &::placeholder{
                 color: ${home.color.datePickerPlaceHolderFontColor};
@@ -113,31 +170,39 @@ class Home extends React.Component <homeProps, homeState> {
           `}</style>
 
           <div className='home-wrapper-index'>
-            <div className='search-index'>
-              <SearchTextInput placeholder='Name'/>
-              <SearchTextInput placeholder='Email'/>
-              <DatePicker
-                  selected={this.state.startDate}
-                  selectsStart
-                  startDate={this.state.startDate}
-                  endDate={this.state.endDate}
-                  onChange={this.handleChangeStart}
-                  placeholderText={strings.datePicker.startDate}
-                  className='date-picker'
-              />
+            <div className='upper-home'>
+              <div className='search-index'>
+                <SearchTextInput placeholder='نام'/>
+                <SearchTextInput placeholder='رایانامه'/>
+                <div className='datepickers-holder'>
+                  <DatePicker
+                      selected={this.state.startDate}
+                      selectsStart
+                      startDate={this.state.startDate}
+                      endDate={this.state.endDate}
+                      onChange={this.handleChangeStart}
+                      placeholderText={strings.datePicker.startDate}
+                      className='date-picker-start'
+                  />
 
-              <DatePicker
-                  selected={this.state.endDate}
-                  selectsEnd
-                  startDate={this.state.startDate}
-                  endDate={this.state.endDate}
-                  onChange={this.handleChangeEnd}
-                  placeholderText={strings.datePicker.endDate}
-                  className='date-picker'
-              />
+                  <DatePicker
+                      selected={this.state.endDate}
+                      selectsEnd
+                      startDate={this.state.startDate}
+                      endDate={this.state.endDate}
+                      onChange={this.handleChangeEnd}
+                      placeholderText={strings.datePicker.endDate}
+                      className='date-picker-end'
+                  />
+                </div>
+              </div>
+              <div className='popup-container'>
+                <PopUpButton/>
+              </div>
             </div>
-            <PopUpButton/>
-            <SearchButton/>
+            <div className='search-button-container'>
+              <SearchButton/>
+            </div>
           </div>
         </div>
     )

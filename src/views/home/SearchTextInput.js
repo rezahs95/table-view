@@ -129,6 +129,7 @@ const SearchTextInput = (props: searchTextInputProps) => {
 				</span>
       </div>
   )
+
 }
 
 SearchTextInput.propTypes = {

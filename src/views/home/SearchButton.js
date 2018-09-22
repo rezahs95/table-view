@@ -11,15 +11,18 @@ const SearchButton = (props: searchButtonProps) => {
         {/*language=SCSS*/}
         <style jsx>{`
           .search-button-wrapper {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+              width: 100%;
+              height: 100%;
           }
 
           .download-button-container {
-            position: fixed;
             width: 300px;
             height: 70px;
-            left: 50%;
-            top: 50%;
-            transform: translate(-50%, -50%);
+            transform: translate(0%, 0%);
             text-align: center;
           }
 
@@ -93,33 +96,24 @@ const SearchButton = (props: searchButtonProps) => {
             animation: ball-throw-up 0.5s ease-out forwards, ball-throw-down 0.5s 0.5s ease-in forwards, ball-rubber 1s forwards;
           }
 
-
           @keyframes ball-throw-up {
             from {
-              -webkit-transform: translate(-50%, 17.5px);
               transform: translate(-50%, 17.5px);
             }
             to {
-              -webkit-transform: translate(-50%, -60px);
               transform: translate(-50%, -60px);
               background-color: #00FF8D;
             }
           }
 
-
-
           @keyframes ball-throw-down {
             from {
-              -webkit-transform: translate(-50%, -60px);
               transform: translate(-50%, -60px);
             }
             to {
-              -webkit-transform: translate(-50%, 80px);
               transform: translate(-50%, 80px);
             }
           }
-
-
 
           @keyframes ball-rubber {
             from {
@@ -185,9 +179,7 @@ const SearchButton = (props: searchButtonProps) => {
             width: 100%;
             height: 100%;
             transform: rotate(-225deg);
-            transition: 1s -webkit-transform;
             transition: 1s transform;
-            transition: 1s transform, 1s -webkit-transform;
           }
 
           .button-icon-path {
@@ -344,7 +336,7 @@ const SearchButton = (props: searchButtonProps) => {
             <path className="border-path hidden"
                   d="M 40 3.5 a 36.5 36.5 0 0 0 -36.5 36.5 a 36.5 36.5 0 0 0 36.5 36.5 C 70 76.5 90 76.5 120 76.5 S 170 76.5 200 76.5 a 36.5 36.5 0 0 0 36.5 -36.5 a 36.5 36.5 0 0 0 -36.5 -36.5 Z"></path>
           </svg>
-          <span className="button-text button-text-download">download</span>
+          <span className="button-text button-text-download">Search</span>
           <span className="button-text button-text-done">done!</span>
           <div className="button-wave"></div>
           <div className="button-progress-container">
