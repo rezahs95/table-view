@@ -21,42 +21,16 @@ type homeProps = {
 }
 
 type homeState = {
-  page: number,
   startDate: {} | null,
   endDate: {} | null,
 }
 
 class Page extends React.Component <homeProps, homeState> {
-  numberOfPages: number
-
   constructor(props: homeProps) {
     super(props)
     this.state = {
-      page: 0,
       startDate: null,
       endDate: null,
-    }
-    this.numberOfPages = 5
-  }
-
-  componentDidMount() {
-    document.addEventListener('keydown', this.keyDownFunction, false)
-  }
-
-  componentWillUnmount() {
-    document.removeEventListener('keydown', this.keyDownFunction, false)
-  }
-
-  keyDownFunction = (event: SyntheticKeyboardEvent<>) => {
-    // 37 - left
-    // 39 - right
-    const {page} = this.state
-    console.log('bb', this.state.page)
-    if (event.keyCode === 37 && page > 0) {
-      this.setState({...this.state, page: page - 1})
-    }
-    else if (event.keyCode === 39 && page < this.numberOfPages) {
-      this.setState({...this.state, page: page + 1})
     }
   }
 

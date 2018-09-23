@@ -7,13 +7,18 @@ type searchTextInputProps = {
   placeholder: string,
 }
 
-class SearchTextInput extends React.Component <searchTextInputProps> {
-  constructor(props) {
+type searchTextInputStates = {
+  filled: boolean,
+  emptied: boolean,
+}
+
+class SearchTextInput extends React.Component <searchTextInputProps, searchTextInputStates> {
+  constructor(props: searchTextInputProps) {
     super(props)
     this.state = {filled: false, emptied: false}
   }
 
-  textChange = (event) => {
+  textChange = (event: SyntheticEvent<HTMLButtonElement>) => {
 
     if (event.target.value === '') {
       if(this.state.filled){
@@ -28,7 +33,7 @@ class SearchTextInput extends React.Component <searchTextInputProps> {
   }
 
   focusOut = (event) => {
-    this.setState({...this.state, emptied: fals e})
+    this.setState({...this.state, emptied: false})
   }
   render() {
     const {placeholder} = this.props
@@ -199,7 +204,7 @@ class SearchTextInput extends React.Component <searchTextInputProps> {
             }
             100% {
               opacity: 1;
-              transform: ${!this.state.emptied && 'translate3d(0, 4.5em, 0)'} ;
+              transform: ${!this.state.emptied ? 'translate3d(0, 4.5em, 0)' : 'none'};
             }
           }
         `}</style>
