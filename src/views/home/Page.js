@@ -47,29 +47,21 @@ class Page extends React.Component <homeProps, homeState> {
     const {strings, onFocus, outFocus} = this.props
     const {home} = styles
     return (
-        <div className='home-wrapper'>
+        <div className='page-wrapper'>
           {/*language=SCSS*/}
           <style jsx>{`
-            .home-wrapper {
-              min-height: 100%;
+            .page-wrapper {
               background: radial-gradient(ellipse at center, #163039 0%, #000001 98%);
               filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='$lightgrey', endColorstr='$darkgrey', GradientType=1);
-              background-size: cover;
-              position: fixed;
-              left: 0;
-              top: 0;
-              bottom: 0;
-              right: 0;
+              position: relative;
+              z-index: 1;
             }
 
-            .home-wrapper-index {
+            .page-wrapper-index {
               z-index: -99;
-              position: fixed;
-              left: 0;
-              top: 0;
-              bottom: 0;
-              right: 0;
               background-image: -webkit-repeating-linear-gradient(135deg, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7) 2px, transparent 2px, rgba(0, 0, 0, 0.3) 3px);
+              position: relative;
+              height: 100vh;
             }
 
             .upper-home {
@@ -144,7 +136,7 @@ class Page extends React.Component <homeProps, homeState> {
 
           `}</style>
 
-          <div className='home-wrapper-index'>
+          <div className='page-wrapper-index'>
             <div className='upper-home'>
               <div className='search-index'>
                 <SearchTextInput placeholder='نام' onFocus={onFocus} outFocus={outFocus}/>

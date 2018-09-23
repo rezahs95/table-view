@@ -109,9 +109,11 @@ class PopUpButton extends React.Component<popUpProps, popUpStates> {
                   showInformation: true,
                 });
               }}>
-            <button onClick={this.showPopup} className='pop-up-button pulse'>
-              <FontAwesome name='info'/>
-            </button>
+            <div>
+              <button onClick={this.showPopup} className='pop-up-button pulse'>
+                <FontAwesome name='info'/>
+              </button>
+            </div>
           </CSSTransition>
 
           <CSSTransition
