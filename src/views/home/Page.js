@@ -9,7 +9,6 @@ import SearchButton from './SearchButton'
 import styles from 'src/consts/styles'
 
 import 'react-datepicker/dist/react-datepicker.css';
-import connect from "react-redux/es/connect/connect";
 
 type homeProps = {
   strings: {
@@ -17,7 +16,9 @@ type homeProps = {
       startDate: string,
       endDate: string,
     }
-  }
+  },
+  outFocus: Function,
+  onFocus: Function,
 }
 
 type homeState = {
@@ -43,7 +44,7 @@ class Page extends React.Component <homeProps, homeState> {
   }
 
   render() {
-    const {strings} = this.props
+    const {strings, onFocus, outFocus} = this.props
     const {home} = styles
     return (
         <div className='home-wrapper'>
@@ -146,8 +147,8 @@ class Page extends React.Component <homeProps, homeState> {
           <div className='home-wrapper-index'>
             <div className='upper-home'>
               <div className='search-index'>
-                <SearchTextInput placeholder='نام'/>
-                <SearchTextInput placeholder='رایانامه'/>
+                <SearchTextInput placeholder='نام' onFocus={onFocus} outFocus={outFocus}/>
+                <SearchTextInput placeholder='رایانامه' onFocus={onFocus} outFocus={outFocus}/>
                 <div className='datepickers-holder'>
                   <DatePicker
                       selected={this.state.startDate}
@@ -184,12 +185,9 @@ class Page extends React.Component <homeProps, homeState> {
 }
 
 Page.propTypes = {
-  strings: PropTypes.string.isRequired,
-}
-const mapStateToProps = state => {
-  return {
-    strings: state.translate.strings.homePage,
-  }
+  strings: PropTypes.object.isRequired,
+  onFocus: PropTypes.func.isRequired,
+  outFocus: PropTypes.func.isRequired,
 }
 
-export default connect(mapStateToProps)(Page)
+export default Page

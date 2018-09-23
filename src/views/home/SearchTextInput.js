@@ -5,6 +5,8 @@ import styles from 'src/consts/styles'
 
 type searchTextInputProps = {
   placeholder: string,
+  outFocus: Function,
+  onFocus: Function,
 }
 
 type searchTextInputStates = {
@@ -18,8 +20,7 @@ class SearchTextInput extends React.Component <searchTextInputProps, searchTextI
     this.state = {filled: false, emptied: false}
   }
 
-  textChange = (event: SyntheticEvent<HTMLButtonElement>) => {
-
+  textChange = (event: SyntheticEvent<HTMLInputElement>) => {
     if (event.target.value === '') {
       if(this.state.filled){
         this.setState({...this.state, emptied: true, filled: false})
@@ -32,8 +33,14 @@ class SearchTextInput extends React.Component <searchTextInputProps, searchTextI
     }
   }
 
-  focusOut = (event) => {
+  onFocus = () => {
+    const {onFocus} = this.props
+    onFocus()
+  }
+  focusOut = (event: SyntheticEvent<HTMLInputElement>) => {
+    const {outFocus} = this.props
     this.setState({...this.state, emptied: false})
+    outFocus()
   }
   render() {
     const {placeholder} = this.props
@@ -211,7 +218,7 @@ class SearchTextInput extends React.Component <searchTextInputProps, searchTextI
 
           <span className="input">
 					<input className={!this.state.filled ? "input-field" : "input-field2"} type="text" id="input-7"
-                 onChange={this.textChange} onBlur={this.focusOut}/>
+                 onChange={this.textChange} onBlur={this.focusOut} onFocus={this.onFocus}/>
 					<label className={!this.state.filled ? "input-label" : "input-label2"} htmlFor="input-7">
 						<span
                 className="input-label-content">{placeholder}</span>
@@ -224,6 +231,8 @@ class SearchTextInput extends React.Component <searchTextInputProps, searchTextI
 
 SearchTextInput.propTypes = {
   placeholder: PropTypes.string.isRequired,
+  onFocus: PropTypes.func.isRequired,
+  outFocus: PropTypes.func.isRequired,
 }
 
 export default SearchTextInput

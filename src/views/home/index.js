@@ -1,15 +1,27 @@
 // @flow
 import * as React from 'react'
+import {bindActionCreators} from "redux";
+import connect from "react-redux/es/connect/connect";
 
 import Page from './Page'
+import OtherActions from "../../redux/actions/otherActions";
 
 type homeProps = {
   strings: {
-    datePicker: {
-      startDate: string,
-      endDate: string,
+    homePage: {
+      datePicker: {
+        startDate: string,
+        endDate: string,
+      }
     }
-  }
+  },
+  actions: {
+    outFocus: Function,
+    onFocus: Function,
+  },
+  other: {
+    focus: boolean,
+  },
 }
 
 type homeState = {
@@ -39,26 +51,44 @@ class Home extends React.Component <homeProps, homeState> {
     // 37 - left
     // 39 - right
     const {page} = this.state
-    console.log('bb', this.state.page)
-    if (event.keyCode === 37 && page > 0) {
-      this.setState({...this.state, page: page - 1})
-    }
-    else if (event.keyCode === 39 && page < this.numberOfPages) {
-      this.setState({...this.state, page: page + 1})
+    const {other} = this.props
+    const {focus} = other
+    if(!focus){
+      if (event.keyCode === 37 && page > 0) {
+        this.setState({...this.state, page: page - 1})
+      }
+      else if (event.keyCode === 39 && page < this.numberOfPages) {
+        this.setState({...this.state, page: page + 1})
+      }
     }
   }
 
   render() {
+    const {strings, actions} = this.props
+    const {outFocus, onFocus} = actions
     return (
         <div className='home-wrapper'>
           {/*language=SCSS*/}
           <style jsx>{`
           `}</style>
-          <Page/>
+          <Page strings={strings.homePage} onFocus={onFocus} outFocus={outFocus}/>
         </div>
     )
   }
 }
 
+const mapStateToProps = state => {
+  return {
+    strings: state.translate.strings,
+    other: state.other,
+  }
+}
 
-export default Home
+const mapDispatchToProps = dispatch => ({
+  actions: bindActionCreators({
+    onFocus: OtherActions.onFocus,
+    outFocus: OtherActions.outFocus
+  }, dispatch)
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(Home)
