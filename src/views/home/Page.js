@@ -1,7 +1,6 @@
 // @flow
 import * as React from 'react'
 import DatePicker from 'react-datepicker'
-import moment from 'moment'
 import PropTypes from 'prop-types'
 
 import PopUpButton from '../home/PopUpButton'
@@ -27,7 +26,7 @@ type homeState = {
   endDate: {} | null,
 }
 
-class Home extends React.Component <homeProps, homeState> {
+class Page extends React.Component <homeProps, homeState> {
   numberOfPages: number
 
   constructor(props: homeProps) {
@@ -210,7 +209,7 @@ class Home extends React.Component <homeProps, homeState> {
   }
 }
 
-Home.propTypes = {
+Page.propTypes = {
   strings: PropTypes.string.isRequired,
 }
 const mapStateToProps = state => {
@@ -219,4 +218,4 @@ const mapStateToProps = state => {
   }
 }
 
-export default connect(mapStateToProps)(Home)
+export default connect(mapStateToProps)(Page)

@@ -10,9 +10,11 @@ const home = {
 
     popUpButtonBackgroundColor: '#03a9f4',
     popUpButtonFontColor: '#ffffff',
+    popUpCloseButtonBackgroundColor: '#f46178',
   },
   fontSize: {
     popUpButtonFontSize: '30px',
+    popUpCloseButtonFontSize: '18px',
 
     datePickerFontSize: '18px',
   },
@@ -24,6 +26,9 @@ const home = {
     popUpButtonWidth: '42px',
     popUpWindowPadding: '10px',
     popUpWindowBorderSize: '4px',
+
+    popUpCloseButtonWidth: '28px',
+    popUpCloseButtonMarginSize: '5px',
   }
 }
 
