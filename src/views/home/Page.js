@@ -2,13 +2,14 @@
 import * as React from 'react'
 import DatePicker from 'react-datepicker'
 import PropTypes from 'prop-types'
+import ProgressButton from 'react-progress-button'
 
 import PopUpButton from '../home/PopUpButton'
 import SearchTextInput from './SearchTextInput'
-import SearchButton from './SearchButton'
 import styles from 'src/consts/styles'
 
 import 'react-datepicker/dist/react-datepicker.css';
+import 'src/views/home/react-progress-button.css'
 
 type homeProps = {
   strings: {
@@ -24,6 +25,7 @@ type homeProps = {
 type homeState = {
   startDate: {} | null,
   endDate: {} | null,
+  buttonState: String,
 }
 
 class Page extends React.Component <homeProps, homeState> {
@@ -32,6 +34,7 @@ class Page extends React.Component <homeProps, homeState> {
     this.state = {
       startDate: null,
       endDate: null,
+      buttonState: '',
     }
   }
 
@@ -41,6 +44,14 @@ class Page extends React.Component <homeProps, homeState> {
 
   handleChangeEnd = (date: {}) => {
     this.setState({...this.state, endDate: date});
+  }
+
+  handleClick = () => {
+    this.setState({...this.state, buttonState: 'loading'})
+    // make asynchronous call
+    setTimeout(() => {
+      this.setState({...this.state, buttonState: 'success'})
+    }, 3000)
   }
 
   render() {
@@ -87,11 +98,11 @@ class Page extends React.Component <homeProps, homeState> {
               z-index: 2;
               display: flex;
               flex-direction: column;
-              justify-content: flex-end;
+              justify-content: center;
               align-items: center;
               width: 100%;
               position: fixed;
-              bottom: 6px;
+              bottom: 5px;
             }
             .datepickers-holder {
               display: flex;
@@ -134,6 +145,14 @@ class Page extends React.Component <homeProps, homeState> {
               }
             }
 
+            .inner {
+              display: flex;
+              flex-direction: column;
+              justify-content: center;
+              align-items: center;
+              align-content: center;
+            }
+
           `}</style>
 
           <div className='page-wrapper-index'>
@@ -168,12 +187,17 @@ class Page extends React.Component <homeProps, homeState> {
               </div>
             </div>
             <div className='search-button-container'>
-              <SearchButton/>
+              <div className='inner'>
+              <ProgressButton onClick={this.handleClick} state={this.state.buttonState}>
+                جست و جو
+              </ProgressButton>
+              </div>
             </div>
           </div>
         </div>
     )
   }
+
 }
 
 Page.propTypes = {

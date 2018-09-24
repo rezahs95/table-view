@@ -1,0 +1,110 @@
+.pb-container {
+  display: flex;
+  text-align: center;
+  width: 100%;
+  left: 50%;
+}
+.pb-container .pb-button {
+  background: transparent;
+  border: 2px solid gray;
+  border-radius: 27px;
+  color: gray;
+  cursor: pointer;
+  text-decoration: none;
+  text-align: center;
+  height: 50px;
+  width: 200px;
+  -webkit-tap-highlight-color: transparent;
+  outline: none;
+  transition: background-color 0.6s, width 0.6s, border-width 0.6s, border-color 0.6s, border-radius 0.6s;
+}
+.pb-container .pb-button span {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  transition: opacity 0.3s 0.1s;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 2.5em;
+  font-weight: 100;
+}
+.pb-container .pb-button svg {
+  right: 46.5%;
+  height: 54px;
+  width: 54px;
+  position: absolute;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+.pb-container .pb-button svg path {
+  opacity: 0;
+  fill: none;
+}
+.pb-container .pb-button svg.pb-progress-circle {
+  right: 47%;
+  display: flex;
+  align-items: end;
+  animation: spin 0.9s infinite cubic-bezier(0.085, 0.260, 0.935, 0.710);
+}
+.pb-container .pb-button svg.pb-progress-circle path {
+  stroke: deepskyblue;
+  stroke-width: 5;
+}
+.pb-container .pb-button svg.pb-checkmark path,
+.pb-container .pb-button svg.pb-cross path {
+  stroke: whitesmoke;
+  stroke-linecap: round;
+  stroke-width: 4;
+}
+.pb-container.disabled .pb-button {
+  cursor: not-allowed;
+}
+.pb-container.loading .pb-button {
+  width: 54px;
+  border: 6px #dddddd;
+  cursor: wait;
+  background-color: transparent;
+}
+.pb-container.loading .pb-button span {
+  transition: all 0.15s;
+  opacity: 0;
+  display: none;
+}
+.pb-container.loading .pb-button .pb-progress-circle > path {
+  transition: opacity 0.15s 0.3s;
+  opacity: 1;
+}
+.pb-container.success .pb-button {
+  border-color: #A0D468;
+  background-color: #A0D468;
+}
+.pb-container.success .pb-button span {
+  transition: all 0.15s;
+  opacity: 0;
+  display: none;
+}
+.pb-container.success .pb-button .pb-checkmark > path {
+  opacity: 1;
+}
+.pb-container.error .pb-button {
+  border-color: #ED5565;
+  background-color: #ED5565;
+}
+.pb-container.error .pb-button span {
+  transition: all 0.15s;
+  opacity: 0;
+  display: none;
+}
+.pb-container.error .pb-button .pb-cross > path {
+  opacity: 1;
+}
+@keyframes spin {
+  from {
+    transform: translate(-50%, -50%) rotate(0deg);
+    transform-origin: center center;
+  }
+  to {
+    transform: translate(-50%, -50%) rotate(360deg);
+    transform-origin: center center;
+  }
+}
