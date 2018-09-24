@@ -5,7 +5,7 @@ const urls = {
     SIGN_IN: 'api-token-auth',
   },
   HOME: {
-    SUBMIT: 'sss',
+    SUBMIT: 'base/certificates',
   }
 }
 export default urls

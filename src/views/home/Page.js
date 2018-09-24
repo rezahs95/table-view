@@ -30,6 +30,8 @@ type homeState = {
   endDate: {} | null,
   buttonState: string,
   redirect: boolean,
+  name: string,
+  email: string,
 }
 
 class Page extends React.Component <homeProps, homeState> {
@@ -40,6 +42,8 @@ class Page extends React.Component <homeProps, homeState> {
       endDate: null,
       buttonState: '',
       redirect: false,
+      name: '',
+      email: '',
     }
   }
 
@@ -51,15 +55,24 @@ class Page extends React.Component <homeProps, homeState> {
     this.setState({...this.state, endDate: date});
   }
 
+  nameChange = (event) => {
+    this.setState({...this.state, name: event.target.value})
+  }
+
+  emailChange = (event) => {
+    this.setState({...this.state, email: event.target.value})
+  }
+
   backClick = () => {
     this.setState({...this.state, redirect: false, buttonState: ''})
   }
 
   handleClick = () => {
     const {submit} = this.props
+    const {name, email, startDate, endDate} = this.state
     this.setState({...this.state, buttonState: 'loading'})
 
-    submit({formValues: {}})
+    submit({formValues: {name, email, startDate, endDate}})
 
     setTimeout(() => {
       this.setState({...this.state, buttonState: 'success'}, () => {
@@ -227,8 +240,8 @@ class Page extends React.Component <homeProps, homeState> {
             <div className='page-wrapper-index'>
               <div className='upper-home'>
                 <div className='search-index'>
-                  <SearchTextInput placeholder='نام' onFocus={onFocus} outFocus={outFocus}/>
-                  <SearchTextInput placeholder='رایانامه' onFocus={onFocus} outFocus={outFocus}/>
+                  <SearchTextInput placeholder='نام' textFieldChange={this.nameChange} onFocus={onFocus} outFocus={outFocus}/>
+                  <SearchTextInput placeholder='رایانامه' textFieldChange={this.emailChange} onFocus={onFocus} outFocus={outFocus}/>
                   <div className='datepickers-holder'>
                     <DatePicker
                         selected={this.state.startDate}

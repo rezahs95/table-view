@@ -12,6 +12,7 @@ type searchTextInputProps = {
 type searchTextInputStates = {
   filled: boolean,
   emptied: boolean,
+  textFieldChange: Function,
 }
 
 class SearchTextInput extends React.Component <searchTextInputProps, searchTextInputStates> {
@@ -21,6 +22,7 @@ class SearchTextInput extends React.Component <searchTextInputProps, searchTextI
   }
 
   textChange = (event: SyntheticEvent<HTMLInputElement>) => {
+    const {textFieldChange} = this.props
     if (event.target.value === '') {
       if(this.state.filled){
         this.setState({...this.state, emptied: true, filled: false})
@@ -31,6 +33,7 @@ class SearchTextInput extends React.Component <searchTextInputProps, searchTextI
     } else {
       this.setState({...this.state, filled: true, emptied: false})
     }
+    textFieldChange(event)
   }
 
   onFocus = () => {
@@ -233,6 +236,7 @@ SearchTextInput.propTypes = {
   placeholder: PropTypes.string.isRequired,
   onFocus: PropTypes.func.isRequired,
   outFocus: PropTypes.func.isRequired,
+  textFieldChange: PropTypes.func.isRequired,
 }
 
 export default SearchTextInput

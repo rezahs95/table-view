@@ -7,9 +7,12 @@ function* del(url, data, param = '') {
   yield apply({}, delRest, [url, data, param, token])
 }
 
-function* get(url, param = '') {
-  const token = yield select(state => state.auth.token)
-  yield apply({}, getRest, [url, param, token])
+async function get(url, param = '') {
+  // const token = yield select(state => state.auth.token)
+  // yield apply({}, getRest, [url, param, token])
+  // const token = select(state => state.auth.token)
+  const token = 'JWT eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjo5NDQsInVzZXJuYW1lIjoibWhvb3NoZGFyIiwiZXhwIjoxNTM5MTYyNjQzLCJlbWFpbCI6ImFzZGFzZGFzZEBhc2FkYWQuY29tIn0.852crIy_U1QoojXZVHaGy1kCayDEs2ZnGA2IE9i5geU'
+  return await getRest(url, param, token)
 }
 
 function* patch(url, data, param = '') {
@@ -31,6 +34,14 @@ const delRest = (url, data, param = '', token) => {
 }
 
 const getRest = (url, param = '', token) => {
+  const request = new Request(REST_URL + '/' + url + '/')
+  const headers = new Headers()
+  headers.append('Authorization', token)
+  const init = {
+    method: 'GET',
+    headers: headers,
+  };
+  return fetch(request, init).then(response => response).catch(error => error)
 }
 
 const patchRest = (url, data, param = '', token) => {
