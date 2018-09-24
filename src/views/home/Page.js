@@ -10,6 +10,8 @@ import styles from 'src/consts/styles'
 
 import 'react-datepicker/dist/react-datepicker.css';
 import 'src/views/home/react-progress-button.css'
+import Result from "./Result";
+import {CSSTransition} from "react-transition-group";
 
 type homeProps = {
   strings: {
@@ -18,6 +20,7 @@ type homeProps = {
       endDate: string,
     }
   },
+  submit: Function,
   outFocus: Function,
   onFocus: Function,
 }
@@ -25,7 +28,8 @@ type homeProps = {
 type homeState = {
   startDate: {} | null,
   endDate: {} | null,
-  buttonState: String,
+  buttonState: string,
+  redirect: boolean,
 }
 
 class Page extends React.Component <homeProps, homeState> {
@@ -35,6 +39,7 @@ class Page extends React.Component <homeProps, homeState> {
       startDate: null,
       endDate: null,
       buttonState: '',
+      redirect: false,
     }
   }
 
@@ -46,11 +51,22 @@ class Page extends React.Component <homeProps, homeState> {
     this.setState({...this.state, endDate: date});
   }
 
+  backClick = () => {
+    this.setState({...this.state, redirect: false, buttonState: ''})
+  }
+
   handleClick = () => {
+    const {submit} = this.props
     this.setState({...this.state, buttonState: 'loading'})
-    // make asynchronous call
+
+    submit({formValues: {}})
+
     setTimeout(() => {
-      this.setState({...this.state, buttonState: 'success'})
+      this.setState({...this.state, buttonState: 'success'}, () => {
+        setTimeout(() => {
+          this.setState({...this.state, redirect: true})
+        }, 1000)
+      })
     }, 3000)
   }
 
@@ -62,6 +78,7 @@ class Page extends React.Component <homeProps, homeState> {
           {/*language=SCSS*/}
           <style jsx>{`
             .page-wrapper {
+              overflow: hidden;
               background: radial-gradient(ellipse at center, #163039 0%, #000001 98%);
               filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='$lightgrey', endColorstr='$darkgrey', GradientType=1);
               position: relative;
@@ -69,6 +86,7 @@ class Page extends React.Component <homeProps, homeState> {
             }
 
             .page-wrapper-index {
+              overflow: hidden;
               z-index: -99;
               background-image: -webkit-repeating-linear-gradient(135deg, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7) 2px, transparent 2px, rgba(0, 0, 0, 0.3) 3px);
               position: relative;
@@ -153,47 +171,99 @@ class Page extends React.Component <homeProps, homeState> {
               align-content: center;
             }
 
+            :global(.page-go-down-enter) {
+              position: relative;
+              bottom: -1000px;
+              transition: all 400ms ease-in;
+            }
+
+            :global(.page-go-down-enter-active) {
+              transform: translateY(-1000px);
+            }
+
+            :global(.page-go-down-exit) {
+              transition: all 400ms ease-in;
+              bottom: 0;
+            }
+
+            :global(.page-go-down-exit-active){
+              transform: translateY(1000px);
+            }
+
+            :global(.page-go-top-enter) {
+              position: relative;
+              top: 0;
+              transition: all 400ms ease-in;
+            }
+
+            :global(.page-go-top-enter-active) {
+              transform: translateY(1000px);
+            }
+
+            :global(.page-go-top-exit) {
+              transition: all 400ms ease-in;
+              bottom: 0;
+            }
+
+            :global(.page-go-top-exit-active){
+              transform: translateY(-1000px);
+            }
+
           `}</style>
+          <CSSTransition
+              in={this.state.redirect}
+              timeout={400}
+              classNames={'page-go-down'}
+              unmountOnExit>
+            <Result backClick={this.backClick}/>
+          </CSSTransition>
 
-          <div className='page-wrapper-index'>
-            <div className='upper-home'>
-              <div className='search-index'>
-                <SearchTextInput placeholder='نام' onFocus={onFocus} outFocus={outFocus}/>
-                <SearchTextInput placeholder='رایانامه' onFocus={onFocus} outFocus={outFocus}/>
-                <div className='datepickers-holder'>
-                  <DatePicker
-                      selected={this.state.startDate}
-                      selectsStart
-                      startDate={this.state.startDate}
-                      endDate={this.state.endDate}
-                      onChange={this.handleChangeStart}
-                      placeholderText={strings.datePicker.startDate}
-                      className='date-picker-start'
-                  />
+          <CSSTransition
+              in={!this.state.redirect}
+              timeout={400}
+              classNames={'page-go-top'}
+              unmountOnExit>
 
-                  <DatePicker
-                      selected={this.state.endDate}
-                      selectsEnd
-                      startDate={this.state.startDate}
-                      endDate={this.state.endDate}
-                      onChange={this.handleChangeEnd}
-                      placeholderText={strings.datePicker.endDate}
-                      className='date-picker-end'
-                  />
+            <div className='page-wrapper-index'>
+              <div className='upper-home'>
+                <div className='search-index'>
+                  <SearchTextInput placeholder='نام' onFocus={onFocus} outFocus={outFocus}/>
+                  <SearchTextInput placeholder='رایانامه' onFocus={onFocus} outFocus={outFocus}/>
+                  <div className='datepickers-holder'>
+                    <DatePicker
+                        selected={this.state.startDate}
+                        selectsStart
+                        startDate={this.state.startDate}
+                        endDate={this.state.endDate}
+                        onChange={this.handleChangeStart}
+                        placeholderText={strings.datePicker.startDate}
+                        className='date-picker-start'
+                    />
+
+                    <DatePicker
+                        selected={this.state.endDate}
+                        selectsEnd
+                        startDate={this.state.startDate}
+                        endDate={this.state.endDate}
+                        onChange={this.handleChangeEnd}
+                        placeholderText={strings.datePicker.endDate}
+                        className='date-picker-end'
+                    />
+                  </div>
+                </div>
+                <div className='popup-container'>
+                  <PopUpButton/>
                 </div>
               </div>
-              <div className='popup-container'>
-                <PopUpButton/>
+              <div className='search-button-container'>
+                <div className='inner'>
+                  <ProgressButton onClick={this.handleClick} state={this.state.buttonState}>
+                    جست و جو
+                  </ProgressButton>
+                </div>
               </div>
             </div>
-            <div className='search-button-container'>
-              <div className='inner'>
-              <ProgressButton onClick={this.handleClick} state={this.state.buttonState}>
-                جست و جو
-              </ProgressButton>
-              </div>
-            </div>
-          </div>
+          </CSSTransition>
         </div>
     )
   }
@@ -204,6 +274,7 @@ Page.propTypes = {
   strings: PropTypes.object.isRequired,
   onFocus: PropTypes.func.isRequired,
   outFocus: PropTypes.func.isRequired,
+  submit: PropTypes.func.isRequired,
 }
 
 export default Page

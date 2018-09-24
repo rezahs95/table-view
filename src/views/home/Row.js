@@ -2,7 +2,7 @@
 import * as React from 'react'
 import PropTypes from 'prop-types'
 
-import styles from 'src/consts/styles'
+import styles from 'src/consts/styles/index'
 
 type rowProps = {
   id: string,

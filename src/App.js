@@ -47,6 +47,10 @@ const App = () => {
           .pulse:active{
             transform: scale3d(0.9, 0.9, 1);
           }
+          html, body {
+            overflow-y:hidden;
+            height:100%;
+          }
         `}</style>
 
         <Switch>

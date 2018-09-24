@@ -2,8 +2,8 @@
 import * as React from 'react'
 
 import Row from './Row'
-import styles from 'src/consts/styles'
-import {resultTableData} from 'src/consts/flowTypes'
+import styles from 'src/consts/styles/index'
+import {resultTableData} from 'src/consts/flowTypes/index'
 
 type tableProps = {
   strings: {
