@@ -1,7 +1,6 @@
 import api from '../../../helpers/api'
 import urls from '../../../consts/urls'
 import types from '../../actions/types'
-import client from '../../../helpers/client'
 
 import {put, take, fork, call} from "redux-saga/effects"
 

@@ -2,9 +2,6 @@ import React from 'react';
 import {Switch} from 'react-router-dom'
 
 import Routes from './views/Routes'
-import Login from './views/login'
-import PublicRoute from './views/PublicRoute'
-import routes from 'src/consts/routes'
 import styles from 'src/consts/styles'
 
 const App = () => {
@@ -54,7 +51,6 @@ const App = () => {
         `}</style>
 
         <Switch>
-          <PublicRoute path={routes.LOGIN} component={Login}/>
           <Routes/>
         </Switch>
       </div>
