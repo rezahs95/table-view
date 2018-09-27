@@ -213,7 +213,7 @@ class Page extends React.Component <homeProps, homeState> {
                 align-items: center;
                 width: 100%;
                 position: fixed;
-                bottom: 5px;
+                bottom: 50px;
 
                 .inner {
                   display: flex;

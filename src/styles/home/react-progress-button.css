@@ -29,8 +29,8 @@
 }
 .pb-container .pb-button svg {
   right: 46.5%;
-  height: 54px;
-  width: 54px;
+  height: 50px;
+  width: 50px;
   position: absolute;
   transform: translate(-50%, -50%);
   pointer-events: none;
@@ -40,7 +40,7 @@
   fill: none;
 }
 .pb-container .pb-button svg.pb-progress-circle {
-  right: 47%;
+  right: 46.72%;
   display: flex;
   align-items: end;
   animation: spin 0.9s infinite cubic-bezier(0.085, 0.260, 0.935, 0.710);
@@ -59,10 +59,11 @@
   cursor: not-allowed;
 }
 .pb-container.loading .pb-button {
-  width: 54px;
+  width: 50px;
   border: 6px #dddddd;
   cursor: wait;
   background-color: transparent;
+  box-shadow: 0 0 0 3000px rgba(100,100,100,0.8);
 }
 .pb-container.loading .pb-button span {
   transition: all 0.15s;
