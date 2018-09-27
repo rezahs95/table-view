@@ -12,6 +12,7 @@ import {CSSTransition} from "react-transition-group";
 
 import 'react-datepicker/dist/react-datepicker.css';
 import 'src/styles/home/react-progress-button.css'
+import PreviewImg from "../../images/home/PreviewImg";
 
 type homeProps = {
   strings: {
@@ -68,7 +69,11 @@ class Page extends React.Component <homeProps, homeState> {
     this.setState({...this.state, redirect: false, buttonState: ''})
   }
 
-  handleClick = () => {
+  previewClick = () => {
+
+  }
+
+  handleSubmitClick = () => {
     const {submit} = this.props
     const {name, email, startDate, endDate} = this.state
     this.setState({...this.state, buttonState: 'loading'})
@@ -194,6 +199,12 @@ class Page extends React.Component <homeProps, homeState> {
                 align-items: center;
                 flex: 1;
               }
+              .preview-button {
+                height: 100px;
+                width: 100px;
+                background: transparent;
+                margin: 20px;
+              }
               .search-button-container {
                 z-index: 2;
                 display: flex;
@@ -261,13 +272,12 @@ class Page extends React.Component <homeProps, homeState> {
                     </div>
                   </div>
                 </div>
-                <div className='popup-container'>
-                  <PopUpButton/>
-                </div>
+                <div className='popup-container'><PopUpButton/></div>
+                <button onClick={this.previewClick} className='preview-button pulse'><PreviewImg width={60} height={60}/></button>
               </div>
               <div className='search-button-container'>
                 <div className='inner'>
-                  <ProgressButton onClick={this.handleClick} state={this.state.buttonState}>{strings.search}</ProgressButton>
+                  <ProgressButton onClick={this.handleSubmitClick} state={this.state.buttonState}>{strings.search}</ProgressButton>
                 </div>
               </div>
             </div>

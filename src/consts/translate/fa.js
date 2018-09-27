@@ -6,6 +6,7 @@ const fa = {
       endDate: 'تاریخ پایان',
     },
     search: 'جست و جو',
+    preview: 'پیش نمایش',
   },
   // result page
   resultPage: {

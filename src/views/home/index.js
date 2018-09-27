@@ -5,7 +5,6 @@ import connect from "react-redux/es/connect/connect";
 
 import Page from './Page'
 import OtherActions from "../../redux/actions/otherActions";
-import {CSSTransition} from "react-transition-group";
 import HomeActions from "../../redux/actions/homeActions";
 import styles from 'src/consts/styles'
 
@@ -15,8 +14,9 @@ type homeProps = {
       datePicker: {
         startDate: string,
         endDate: string,
-      }
-    }
+      },
+      search: string,
+    },
   },
   actions: {
     outFocus: Function,
@@ -85,7 +85,9 @@ class Home extends React.Component <homeProps, homeState> {
             .home-wrapper{
               position: relative;
               left: ${left};
-              transition: all 0.5s ease-in-out;
+              transition: all ease-in-out;
+              transition-duration: ${global.duration.animationDuration}ms;
+              //transform: scale(0.3);
 
               :global(.page-go-right-enter) {
                 position: relative;
