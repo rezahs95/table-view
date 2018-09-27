@@ -84,8 +84,8 @@ class Home extends React.Component <homeProps, homeState> {
           {/*language=SCSS*/}
           <style jsx>{`
             .home-wrapper{
-              position: absolute;
-              overflow: hidden;
+              //position: relative;
+              //overflow: hidden;
               //transform: translateX(-50%);
               transition: all 100s ease-in-out;
 
