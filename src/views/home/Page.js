@@ -18,7 +18,8 @@ type homeProps = {
     datePicker: {
       startDate: string,
       endDate: string,
-    }
+    },
+    search: string,
   },
   submit: Function,
   outFocus: Function,
@@ -266,9 +267,7 @@ class Page extends React.Component <homeProps, homeState> {
               </div>
               <div className='search-button-container'>
                 <div className='inner'>
-                  <ProgressButton onClick={this.handleClick} state={this.state.buttonState}>
-                    جست و جو
-                  </ProgressButton>
+                  <ProgressButton onClick={this.handleClick} state={this.state.buttonState}>{strings.search}</ProgressButton>
                 </div>
               </div>
             </div>

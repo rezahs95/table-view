@@ -1,10 +1,11 @@
 const fa = {
-  // home page
-  homePage: {
+  // page
+  page: {
     datePicker: {
       startDate: 'تاریخ شروع',
       endDate: 'تاریخ پایان',
-    }
+    },
+    search: 'جست و جو',
   },
   // result page
   resultPage: {
@@ -16,6 +17,7 @@ const fa = {
       familyName: 'نام خانوادگی',
       email: 'رایانامه',
     },
+    back: 'بازگشت',
   },
 }
 

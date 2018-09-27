@@ -16,6 +16,7 @@ type resultProps = {
       familyName: string,
       email: string,
     },
+    back: string,
   },
   backClick: Function,
   dataSet: resultTableData[],
@@ -29,7 +30,6 @@ const Result = (props: resultProps) => {
         <style jsx>{`
           .result-wrapper {
             padding: 20px 10%;
-            height: 100vh;
 
             .back-button {
               background: transparent;
@@ -52,7 +52,7 @@ const Result = (props: resultProps) => {
         `}</style>
         <Table strings={strings.tableHeader} dataSet={dataSet}/>
 
-        <button onClick={backClick} className='back-button pulse'>بازگشت</button>
+        <button onClick={backClick} className='back-button pulse'>{strings.back}</button>
 
       </div>
   )
@@ -126,6 +126,27 @@ const mapStateToProps = state => {
         email: 'rezahs@aut.ac.ir',
         date: '1999/12/12',
       },
+      {
+        id: '8',
+        name: 'رضا',
+        familyName: 'رضایی',
+        email: 'rezahs@aut.ac.ir',
+        date: '1999/12/12',
+      },
+      {
+        id: '8',
+        name: 'رضا',
+        familyName: 'رضایی',
+        email: 'rezahs@aut.ac.ir',
+        date: '1999/12/12',
+      },{
+        id: '8',
+        name: 'رضا',
+        familyName: 'رضایی',
+        email: 'rezahs@aut.ac.ir',
+        date: '1999/12/12',
+      },
+
     ]
   }
 }

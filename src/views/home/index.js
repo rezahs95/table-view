@@ -11,7 +11,7 @@ import styles from 'src/consts/styles'
 
 type homeProps = {
   strings: {
-    homePage: {
+    page: {
       datePicker: {
         startDate: string,
         endDate: string,
@@ -76,18 +76,16 @@ class Home extends React.Component <homeProps, homeState> {
 
     const {global} = styles
 
-    const left = this.state.page * 100;
+    const left = this.state.page * -100 + '%';
     console.log(left)
-    const arrayNumber = [...Array(this.numberOfPages).keys()]
     return (
         <div className='home-wrapper'>
           {/*language=SCSS*/}
           <style jsx>{`
             .home-wrapper{
-              //position: relative;
-              //overflow: hidden;
-              //transform: translateX(-50%);
-              transition: all 100s ease-in-out;
+              position: relative;
+              left: ${left};
+              transition: all 0.5s ease-in-out;
 
               :global(.page-go-right-enter) {
                 position: relative;
@@ -142,31 +140,25 @@ class Home extends React.Component <homeProps, homeState> {
               .page-container4 {
                 left: 300%;
               }
+              .page-container5 {
+                left: 400%;
+              }
             }
           `}</style>
-          {/*{arrayNumber.map(number =>*/}
-          {/*<CSSTransition*/}
-          {/*in={this.state.page === number}*/}
-          {/*timeout={global.duration.animationDuration}*/}
-          {/*classNames={goRight ? 'page-go-right' : 'page-go-left'}*/}
-          {/*unmountOnExit*/}
-          {/*key={`transition ${number}`}>*/}
-          {/*<div>*/}
-          {/*<Page strings={strings.homePage} onFocus={onFocus} outFocus={outFocus} submit={submit}/>*/}
-          {/*</div>*/}
-          {/*</CSSTransition>*/}
-          {/*)}*/}
           <div className='page-container page-container1'>
-            <Page strings={strings.homePage} onFocus={onFocus} outFocus={outFocus} submit={submit}/>
+            <Page strings={strings.page} onFocus={onFocus} outFocus={outFocus} submit={submit}/>
           </div>
           <div className='page-container page-container2'>
-            <Page strings={strings.homePage} onFocus={onFocus} outFocus={outFocus} submit={submit}/>
+            <Page strings={strings.page} onFocus={onFocus} outFocus={outFocus} submit={submit}/>
           </div>
           <div className='page-container page-container3'>
-            <Page strings={strings.homePage} onFocus={onFocus} outFocus={outFocus} submit={submit}/>
+            <Page strings={strings.page} onFocus={onFocus} outFocus={outFocus} submit={submit}/>
           </div>
           <div className='page-container page-container4'>
-            <Page strings={strings.homePage} onFocus={onFocus} outFocus={outFocus} submit={submit}/>
+            <Page strings={strings.page} onFocus={onFocus} outFocus={outFocus} submit={submit}/>
+          </div>
+          <div className='page-container page-container5'>
+            <Page strings={strings.page} onFocus={onFocus} outFocus={outFocus} submit={submit}/>
           </div>
         </div>
     )
