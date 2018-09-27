@@ -7,9 +7,21 @@ const other = (state = initialState.other, action) => {
       /** -------------------------- on focus -------------------------> **/
     case types.BASE.OTHER.ON_FOCUS:
       return slices.onFocus.base(state, action)
-      /** -------------------------- onut focus -------------------------> **/
+      /** -------------------------- out focus -------------------------> **/
     case types.BASE.OTHER.OUT_FOCUS:
       return slices.outFocus.base(state, action)
+      /** -------------------------- on preview -------------------------> **/
+    case types.BASE.OTHER.ON_PREVIEW:
+      return slices.onPreview.base(state, action)
+      /** -------------------------- out preview -------------------------> **/
+    case types.BASE.OTHER.OUT_PREVIEW:
+      return slices.outPreview.base(state, action)
+      /** -------------------------- on home page -------------------------> **/
+    case types.BASE.OTHER.ON_HOME_PAGE:
+      return slices.onHomePage.base(state, action)
+      /** -------------------------- out home page -------------------------> **/
+    case types.BASE.OTHER.OUT_HOME_PAGE:
+      return slices.outHomePage.base(state, action)
       /** -------------------------- reset  -------------------------> **/
     case types.RESET:
       return initialState.other

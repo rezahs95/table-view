@@ -5,8 +5,9 @@ const fa = {
       startDate: 'تاریخ شروع',
       endDate: 'تاریخ پایان',
     },
+    name: 'نام',
+    email: 'رایانامه',
     search: 'جست و جو',
-    preview: 'پیش نمایش',
   },
   // result page
   resultPage: {

@@ -16,21 +16,28 @@ type homeProps = {
         endDate: string,
       },
       search: string,
+      name: string,
+      email: string,
     },
   },
   actions: {
     outFocus: Function,
     onFocus: Function,
     submit: Function,
+    onPreview: Function,
+    outPreview: Function,
+    onHomePage: Function,
+    outHomePage: Function,
   },
   other: {
     focus: boolean,
+    preview: boolean,
+    homePage: boolean,
   },
 }
 
 type homeState = {
   page: number,
-  goRight: boolean,
 }
 
 class Home extends React.Component <homeProps, homeState> {
@@ -40,7 +47,6 @@ class Home extends React.Component <homeProps, homeState> {
     super(props)
     this.state = {
       page: 0,
-      goRight: false,
     }
     this.numberOfPages = 5
   }
@@ -58,26 +64,27 @@ class Home extends React.Component <homeProps, homeState> {
     // 39 - right
     const {page} = this.state
     const {other} = this.props
-    const {focus} = other
-    if (!focus) {
+    const {focus, preview, homePage} = other
+    if (homePage && !focus && !preview) {
       if (event.keyCode === 37 && page > 0) {
-        this.setState({...this.state, page: page - 1, goRight: false})
+        this.setState({...this.state, page: page - 1})
       }
       else if (event.keyCode === 39 && page < this.numberOfPages - 1) {
-        this.setState({...this.state, page: page + 1, goRight: true})
+        this.setState({...this.state, page: page + 1})
       }
+    }
+    if (preview) {
+      //TODO: preview next button
     }
   }
 
   render() {
-    const {goRight} = this.state
     const {strings, actions} = this.props
-    const {outFocus, onFocus, submit} = actions
+    const {outFocus, onFocus, submit, onPreview, onHomePage, outHomePage} = actions
 
     const {global} = styles
 
     const left = this.state.page * -100 + '%';
-    console.log(left)
     return (
         <div className='home-wrapper'>
           {/*language=SCSS*/}
@@ -148,19 +155,24 @@ class Home extends React.Component <homeProps, homeState> {
             }
           `}</style>
           <div className='page-container page-container1'>
-            <Page strings={strings.page} onFocus={onFocus} outFocus={outFocus} submit={submit}/>
+            <Page strings={strings.page} outHomePage={outHomePage} onHomePage={onHomePage} onPreview={onPreview}
+                  onFocus={onFocus} outFocus={outFocus} submit={submit}/>
           </div>
           <div className='page-container page-container2'>
-            <Page strings={strings.page} onFocus={onFocus} outFocus={outFocus} submit={submit}/>
+            <Page strings={strings.page} outHomePage={outHomePage} onHomePage={onHomePage} onPreview={onPreview}
+                  onFocus={onFocus} outFocus={outFocus} submit={submit}/>
           </div>
           <div className='page-container page-container3'>
-            <Page strings={strings.page} onFocus={onFocus} outFocus={outFocus} submit={submit}/>
+            <Page strings={strings.page} outHomePage={outHomePage} onHomePage={onHomePage} onPreview={onPreview}
+                  onFocus={onFocus} outFocus={outFocus} submit={submit}/>
           </div>
           <div className='page-container page-container4'>
-            <Page strings={strings.page} onFocus={onFocus} outFocus={outFocus} submit={submit}/>
+            <Page strings={strings.page} outHomePage={outHomePage} onHomePage={onHomePage} onPreview={onPreview}
+                  onFocus={onFocus} outFocus={outFocus} submit={submit}/>
           </div>
           <div className='page-container page-container5'>
-            <Page strings={strings.page} onFocus={onFocus} outFocus={outFocus} submit={submit}/>
+            <Page strings={strings.page} outHomePage={outHomePage} onHomePage={onHomePage} onPreview={onPreview}
+                  onFocus={onFocus} outFocus={outFocus} submit={submit}/>
           </div>
         </div>
     )
@@ -179,6 +191,10 @@ const mapDispatchToProps = dispatch => ({
     onFocus: OtherActions.onFocus,
     outFocus: OtherActions.outFocus,
     submit: HomeActions.submit,
+    onPreview: OtherActions.onPreview,
+    outPreview: OtherActions.onPreview,
+    onHomePage: OtherActions.onHomePage,
+    outHomePage: OtherActions.outHomePage,
   }, dispatch)
 })
 

@@ -10,7 +10,6 @@ function* submit(action) {
   try {
     //TODO: need to change to fetch js
     const data = yield fork(api.get, urls.HOME.SUBMIT, {formValues})
-    console.log(data,' sssssssssssssssssssss')
     yield put({type: types.SUCCESS.HOME.SUBMIT, payload: {data}})
   } catch (error) {
     const {message} = error

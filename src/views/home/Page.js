@@ -21,10 +21,15 @@ type homeProps = {
       endDate: string,
     },
     search: string,
+    name: string,
+    email: string,
   },
   submit: Function,
   outFocus: Function,
   onFocus: Function,
+  onPreview: Function,
+  onHomePage: Function,
+  outHomePage: Function,
 }
 
 type homeState = {
@@ -66,19 +71,18 @@ class Page extends React.Component <homeProps, homeState> {
   }
 
   backClick = () => {
+    const {onHomePage} = this.props
+    onHomePage()
     this.setState({...this.state, redirect: false, buttonState: ''})
   }
 
-  previewClick = () => {
-
-  }
-
   handleSubmitClick = () => {
-    const {submit} = this.props
+    const {submit, outHomePage} = this.props
     const {name, email, startDate, endDate} = this.state
     this.setState({...this.state, buttonState: 'loading'})
 
     submit({formValues: {name, email, startDate, endDate}})
+    outHomePage()
 
     setTimeout(() => {
       this.setState({...this.state, buttonState: 'success'}, () => {
@@ -90,7 +94,7 @@ class Page extends React.Component <homeProps, homeState> {
   }
 
   render() {
-    const {strings, onFocus, outFocus} = this.props
+    const {strings, onFocus, outFocus, onPreview} = this.props
     const {home, global} = styles
     return (
         <div className='page-wrapper'>
@@ -242,9 +246,9 @@ class Page extends React.Component <homeProps, homeState> {
             <div className='page-wrapper-index'>
               <div className='upper-home'>
                 <div className='search-index'>
-                  <SearchTextInput placeholder='نام' textFieldChange={this.nameChange} onFocus={onFocus}
+                  <SearchTextInput placeholder={strings.name} textFieldChange={this.nameChange} onFocus={onFocus}
                                    outFocus={outFocus}/>
-                  <SearchTextInput placeholder='رایانامه' textFieldChange={this.emailChange} onFocus={onFocus}
+                  <SearchTextInput placeholder={strings.email} textFieldChange={this.emailChange} onFocus={onFocus}
                                    outFocus={outFocus}/>
                   <div className='date-pickers-wrapper'>
                     <div className='date-pickers-container'>
@@ -273,7 +277,7 @@ class Page extends React.Component <homeProps, homeState> {
                   </div>
                 </div>
                 <div className='popup-container'><PopUpButton/></div>
-                <button onClick={this.previewClick} className='preview-button pulse'><PreviewImg width={60} height={60}/></button>
+                <button onClick={onPreview} className='preview-button pulse'><PreviewImg width={60} height={60}/></button>
               </div>
               <div className='search-button-container'>
                 <div className='inner'>
@@ -285,13 +289,15 @@ class Page extends React.Component <homeProps, homeState> {
         </div>
     )
   }
-
 }
 
 Page.propTypes = {
   strings: PropTypes.object.isRequired,
   onFocus: PropTypes.func.isRequired,
   outFocus: PropTypes.func.isRequired,
+  onPreview: PropTypes.func.isRequired,
+  onHomePage: PropTypes.func.isRequired,
+  outHomePage: PropTypes.func.isRequired,
   submit: PropTypes.func.isRequired,
 }
 
