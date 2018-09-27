@@ -1,7 +1,6 @@
 // @flow
 import * as React from 'react'
 import FontAwesome from 'react-fontawesome'
-import PropTypes from 'prop-types'
 
 import styles from 'src/consts/styles/index'
 import {CSSTransition} from 'react-transition-group'
@@ -31,75 +30,75 @@ class PopUpButton extends React.Component<popUpProps, popUpStates> {
   }
 
   render() {
-    const {home} = styles
+    const {home, global} = styles
     const {showInformation, showPopUpButton} = this.state
 
     return (
         <div className='pop-up-button-wrapper'>
           {/*language=SCSS*/}
           <style jsx>{`
+            :global(.popup-button-enter) {
+              opacity: 0.1;
+              transition: opacity ease-in;
+              transition-duration: ${global.duration.animationDuration}ms;
+            }
+            :global(.popup-button-enter-active) {
+              opacity: 1;
+            }
+            :global(.popup-button-exit) {
+              opacity: 1;
+              transition: opacity ease-in;
+              transition-duration: ${global.duration.animationDuration}ms;
+            }
+            :global(.popup-button-exit-active) {
+              opacity: 0.01;
+            }
             .pop-up-button{
               background: ${home.color.popUpButtonBackgroundColor};
-              width: ${home.size.popUpButtonWidth};
-              height: ${home.size.popUpButtonWidth};
+              width: 42px;
+              height: 42px;
               color: ${home.color.popUpButtonFontColor};
-              font-size: ${home.fontSize.popUpButtonFontSize};
+              font-size: 30px;
               border-radius: 50%;
             }
 
+            :global(.popup-window-enter) {
+              opacity: 0.1;
+              transition: opacity ease-in;
+              transition-duration: ${global.duration.animationDuration}ms;
+            }
+            :global(.popup-window-enter-active) {
+              opacity: 1;
+            }
+            :global(.popup-window-exit) {
+              opacity: 1;
+              transition: opacity ease-in;
+              transition-duration: ${global.duration.animationDuration}ms;
+            }
+            :global(.popup-window-exit-active) {
+              opacity: 0.01;
+            }
             .pop-up-close-button{
               background: ${home.color.popUpCloseButtonBackgroundColor};
-              width: ${home.size.popUpCloseButtonWidth};
-              height: ${home.size.popUpCloseButtonWidth};
+              width: 28px;
+              height: 28px;
               color: ${home.color.popUpButtonFontColor};
-              font-size: ${home.fontSize.popUpCloseButtonFontSize};
-              margin-bottom: ${home.size.popUpCloseButtonMarginSize};
+              font-size: 18px;
+              margin-bottom: 5px;
               border-radius: 50%;
             }
-
             .pop-up-window{
-              border: solid ${home.color.popUpButtonBackgroundColor};
-              border-width: ${home.size.popUpWindowBorderSize};
-              padding: ${home.size.popUpWindowPadding};
+              border: 4px solid ${home.color.popUpButtonBackgroundColor};
+              padding: 10px;
               color: ${home.color.popUpButtonFontColor};
               text-align: justify;
               width: 90%;
-            }
-
-            .popup-window-enter {
-              opacity: 0.1;
-              transition: opacity 300ms ease-in;
-            }
-            .popup-window-enter-active {
-              opacity: 1;
-            }
-            .popup-window-exit {
-              opacity: 1;
-              transition: opacity 300ms ease-in;
-            }
-            .popup-window-exit-active {
-              opacity: 0.01;
-            }
-
-            .popup-button-enter {
-              opacity: 0.1;
-              transition: opacity 300ms ease-in;
-            }
-            .popup-button-enter-active {
-              opacity: 1;
-            }
-            .popup-button-exit {
-              opacity: 1;
-              transition: opacity 300ms ease-in;
-            }
-            .popup-button-exit-active {
-              opacity: 0.01;
             }
           `}</style>
 
           <CSSTransition
               in={showPopUpButton}
-              timeout={300}
+              timeout={global.duration.animationDuration}
               classNames='popup-button'
               unmountOnExit
               onExited={() => {
@@ -118,7 +117,7 @@ class PopUpButton extends React.Component<popUpProps, popUpStates> {
 
           <CSSTransition
               in={showInformation}
-              timeout={300}
+              timeout={global.duration.animationDuration}
               classNames='popup-window'
               unmountOnExit
               onExited={() => {

@@ -13,6 +13,7 @@ const global = {
   },
   duration: {
     transition: '0.2s',
+    animationDuration: 300,
   }
 }
 

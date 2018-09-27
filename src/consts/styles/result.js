@@ -12,12 +12,8 @@ const result = {
     tableHeaderBorderRightColor: '#a5a5a5',
   },
   fontSize: {
-    smallTableFontSize: '14px',
   },
   size: {
-    resultPagePaddingRightSize: '10%',
-    resultPagePaddingTopSize: '20px',
-    resultPagePaddingRightSmallSize: '2%',
     tableRowBorderRightSize: '6px',
     tableCellPaddingTopSize: '20px',
     tableCellPaddingRightSize: '5px',

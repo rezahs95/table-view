@@ -3,7 +3,6 @@ import {connect} from 'react-redux'
 import * as React from 'react'
 import PropTypes from "prop-types"
 
-import styles from 'src/consts/styles/index'
 import Table from './Table'
 import {resultTableData} from 'src/consts/flowTypes/index'
 
@@ -24,32 +23,30 @@ type resultProps = {
 
 const Result = (props: resultProps) => {
   const {strings, dataSet, backClick} = props
-  const {result} = styles
   return (
       <div className='result-wrapper'>
         {/*language=SCSS*/}
         <style jsx>{`
           .result-wrapper {
-            padding-left: ${result.size.resultPagePaddingRightSize};
-            padding-right: ${result.size.resultPagePaddingRightSize};
-            padding-top: ${result.size.resultPagePaddingTopSize};
-            padding-bottom: ${result.size.resultPagePaddingTopSize};
+            padding: 20px 10%;
             height: 100vh;
+
+            .back-button {
+              background: transparent;
+              width: 150px;
+              height: 50px;
+              margin: 20px auto;
+              color: #dddddd;
+              font-size: 20px;
+              border: 3px solid #dddddd;
+            }
           }
-          .back-button{
-            background: transparent;
-            width: 150px;
-            height: 50px;
-            margin: 20px auto;
-            color: #dddddd;
-            font-size: 20px;
-            border: 3px solid #dddddd;
-          }
+
           @media screen and (max-width: 750px) {
             .result-wrapper {
-              padding-left: ${result.size.resultPagePaddingRightSmallSize};
-              padding-right: ${result.size.resultPagePaddingRightSmallSize};
-              font-size: ${result.fontSize.smallTableFontSize};
+              padding-left: 2%;
+              padding-right: 2%;
+              font-size: 14px;
             }
           }
         `}</style>

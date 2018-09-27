@@ -1,17 +1,17 @@
 // @flow
 import * as React from 'react'
 import DatePicker from 'react-datepicker'
-import PropTypes from 'prop-types'
 import ProgressButton from 'react-progress-button'
+import PropTypes from 'prop-types'
 
 import PopUpButton from '../home/PopUpButton'
+import Result from "./Result";
 import SearchTextInput from './SearchTextInput'
 import styles from 'src/consts/styles'
+import {CSSTransition} from "react-transition-group";
 
 import 'react-datepicker/dist/react-datepicker.css';
-import 'src/views/home/react-progress-button.css'
-import Result from "./Result";
-import {CSSTransition} from "react-transition-group";
+import 'src/styles/home/react-progress-button.css'
 
 type homeProps = {
   strings: {
@@ -55,11 +55,11 @@ class Page extends React.Component <homeProps, homeState> {
     this.setState({...this.state, endDate: date});
   }
 
-  nameChange = (event) => {
+  nameChange = (event: SyntheticInputEvent<EventTarget>) => {
     this.setState({...this.state, name: event.target.value})
   }
 
-  emailChange = (event) => {
+  emailChange = (event: SyntheticInputEvent<EventTarget>) => {
     this.setState({...this.state, email: event.target.value})
   }
 
@@ -85,7 +85,7 @@ class Page extends React.Component <homeProps, homeState> {
 
   render() {
     const {strings, onFocus, outFocus} = this.props
-    const {home} = styles
+    const {home, global} = styles
     return (
         <div className='page-wrapper'>
           {/*language=SCSS*/}
@@ -96,136 +96,126 @@ class Page extends React.Component <homeProps, homeState> {
               filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='$lightgrey', endColorstr='$darkgrey', GradientType=1);
               position: relative;
               z-index: 1;
-            }
 
-            .page-wrapper-index {
-              overflow: hidden;
-              z-index: -99;
-              background-image: -webkit-repeating-linear-gradient(135deg, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7) 2px, transparent 2px, rgba(0, 0, 0, 0.3) 3px);
-              position: relative;
-              height: 100vh;
-            }
+              :global(.page-go-down-enter) {
+                position: relative;
+                bottom: -1000px;
+                transition: all ease-in;
+                transition-duration: ${global.duration.animationDuration}ms;
+              }
+              :global(.page-go-down-enter-active) {
+                transform: translateY(-1000px);
+              }
+              :global(.page-go-down-exit) {
+                transition: all ease-in;
+                transition-duration: ${global.duration.animationDuration}ms;
+                bottom: 0;
+              }
+              :global(.page-go-down-exit-active){
+                transform: translateY(1000px);
+              }
+              :global(.page-go-top-enter) {
+                position: relative;
+                top: 0;
+                transition: all ease-in;
+                transition-duration: ${global.duration.animationDuration}ms;
+              }
+              :global(.page-go-top-enter-active) {
+                transform: translateY(1000px);
+              }
+              :global(.page-go-top-exit) {
+                transition: all ease-in;
+                transition-duration: ${global.duration.animationDuration}ms;
+                bottom: 0;
+              }
+              :global(.page-go-top-exit-active){
+                transform: translateY(-1000px);
+              }
+              .page-wrapper-index {
+                overflow: hidden;
+                z-index: -99;
+                background-image: -webkit-repeating-linear-gradient(135deg, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7) 2px, transparent 2px, rgba(0, 0, 0, 0.3) 3px);
+                position: relative;
+                height: 100vh;
 
-            .upper-home {
-              display: flex;
-              height: 100%;
-            }
-            .search-index {
-              display: flex;
-              flex-direction: column;
-              justify-content: center;
-              align-items: center;
-              width: 100%;
-            }
+                .upper-home {
+                  display: flex;
+                  height: 100%;
 
-            .popup-container {
-              display: flex;
-              flex-direction: column;
-              justify-content: center;
-              align-items: center;
-              width: 60%;
-            }
-            .search-button-container {
-              z-index: 2;
-              display: flex;
-              flex-direction: column;
-              justify-content: center;
-              align-items: center;
-              width: 100%;
-              position: fixed;
-              bottom: 5px;
-            }
-            .datepickers-holder {
-              display: flex;
-              flex-direction: row;
-              justify-content: flex-end;
-              align-items: center;
-              margin-top: 15px;
-            }
+                  .search-index {
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: center;
+                    align-items: center;
+                    flex: 1;
 
-            :global(.date-picker-start) {
-              color: ${home.color.datePickerFontColor};
-              background: inherit;
-              border: solid ${home.color.datePickerBorderColor};
-              border-width: ${home.size.datePickerBorderSize};
-              padding: ${home.size.datePickerPaddingSize};
-              //margin: ${home.size.datePickerMarginSize};
-              font-size: ${home.fontSize.datePickerFontSize};
-              height: 25px;
-              width: 160px;
+                    .date-pickers-wrapper {
+                      display: flex;
+                      flex-direction: row;
+                      justify-content: flex-end;
+                      align-items: center;
+                      margin-top: 15px;
 
-              &::placeholder{
-                color: ${home.color.datePickerPlaceHolderFontColor};
+                      .date-pickers-container {
+                        :first-child {
+                          margin-right: 5%;
+                        }
+                        :last-child {
+                          margin-left: 5%;
+                        }
+                      }
+
+                      :global(.date-picker) {
+                        color: ${home.color.datePickerFontColor};
+                        background: inherit;
+                        border: 5px solid ${home.color.datePickerBorderColor};
+                        padding: 23px 0;
+                        text-align: center;
+                        font-size: 18px;
+                        height: 25px;
+                        width: 100%;
+
+                        &::placeholder{
+                          color: ${home.color.datePickerPlaceHolderFontColor};
+                        }
+                      }
+                      :global(.date-picker-end) {
+                        border-right: none;
+                      }
+                    }
+                  }
+                }
+              }
+              .popup-container {
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                flex: 1;
+              }
+              .search-button-container {
+                z-index: 2;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                width: 100%;
+                position: fixed;
+                bottom: 5px;
+
+                .inner {
+                  display: flex;
+                  flex-direction: column;
+                  justify-content: center;
+                  align-items: center;
+                  align-content: center;
+                }
               }
             }
-
-            :global(.date-picker-end) {
-              color: ${home.color.datePickerFontColor};
-              background: inherit;
-              border: solid ${home.color.datePickerBorderColor};
-              border-right: none;
-              border-width: ${home.size.datePickerBorderSize};
-              padding: ${home.size.datePickerPaddingSize};
-              //margin: ${home.size.datePickerMarginSize};
-              font-size: ${home.fontSize.datePickerFontSize};
-              height: 25px;
-              width: 160px;
-
-              &::placeholder{
-                color: ${home.color.datePickerPlaceHolderFontColor};
-              }
-            }
-
-            .inner {
-              display: flex;
-              flex-direction: column;
-              justify-content: center;
-              align-items: center;
-              align-content: center;
-            }
-
-            :global(.page-go-down-enter) {
-              position: relative;
-              bottom: -1000px;
-              transition: all 400ms ease-in;
-            }
-
-            :global(.page-go-down-enter-active) {
-              transform: translateY(-1000px);
-            }
-
-            :global(.page-go-down-exit) {
-              transition: all 400ms ease-in;
-              bottom: 0;
-            }
-
-            :global(.page-go-down-exit-active){
-              transform: translateY(1000px);
-            }
-
-            :global(.page-go-top-enter) {
-              position: relative;
-              top: 0;
-              transition: all 400ms ease-in;
-            }
-
-            :global(.page-go-top-enter-active) {
-              transform: translateY(1000px);
-            }
-
-            :global(.page-go-top-exit) {
-              transition: all 400ms ease-in;
-              bottom: 0;
-            }
-
-            :global(.page-go-top-exit-active){
-              transform: translateY(-1000px);
-            }
-
           `}</style>
           <CSSTransition
               in={this.state.redirect}
-              timeout={400}
+              timeout={global.duration.animationDuration}
               classNames={'page-go-down'}
               unmountOnExit>
             <Result backClick={this.backClick}/>
@@ -233,35 +223,41 @@ class Page extends React.Component <homeProps, homeState> {
 
           <CSSTransition
               in={!this.state.redirect}
-              timeout={400}
+              timeout={global.duration.animationDuration}
               classNames={'page-go-top'}
               unmountOnExit>
 
             <div className='page-wrapper-index'>
               <div className='upper-home'>
                 <div className='search-index'>
-                  <SearchTextInput placeholder='نام' textFieldChange={this.nameChange} onFocus={onFocus} outFocus={outFocus}/>
-                  <SearchTextInput placeholder='رایانامه' textFieldChange={this.emailChange} onFocus={onFocus} outFocus={outFocus}/>
-                  <div className='datepickers-holder'>
-                    <DatePicker
-                        selected={this.state.startDate}
-                        selectsStart
-                        startDate={this.state.startDate}
-                        endDate={this.state.endDate}
-                        onChange={this.handleChangeStart}
-                        placeholderText={strings.datePicker.startDate}
-                        className='date-picker-start'
-                    />
+                  <SearchTextInput placeholder='نام' textFieldChange={this.nameChange} onFocus={onFocus}
+                                   outFocus={outFocus}/>
+                  <SearchTextInput placeholder='رایانامه' textFieldChange={this.emailChange} onFocus={onFocus}
+                                   outFocus={outFocus}/>
+                  <div className='date-pickers-wrapper'>
+                    <div className='date-pickers-container'>
+                      <DatePicker
+                          selected={this.state.startDate}
+                          selectsStart
+                          startDate={this.state.startDate}
+                          endDate={this.state.endDate}
+                          onChange={this.handleChangeStart}
+                          placeholderText={strings.datePicker.startDate}
+                          className='date-picker'
+                      />
+                    </div>
 
-                    <DatePicker
-                        selected={this.state.endDate}
-                        selectsEnd
-                        startDate={this.state.startDate}
-                        endDate={this.state.endDate}
-                        onChange={this.handleChangeEnd}
-                        placeholderText={strings.datePicker.endDate}
-                        className='date-picker-end'
-                    />
+                    <div className='date-pickers-container'>
+                      <DatePicker
+                          selected={this.state.endDate}
+                          selectsEnd
+                          startDate={this.state.startDate}
+                          endDate={this.state.endDate}
+                          onChange={this.handleChangeEnd}
+                          placeholderText={strings.datePicker.endDate}
+                          className='date-picker date-picker-end'
+                      />
+                    </div>
                   </div>
                 </div>
                 <div className='popup-container'>

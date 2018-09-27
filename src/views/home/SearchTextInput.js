@@ -7,12 +7,12 @@ type searchTextInputProps = {
   placeholder: string,
   outFocus: Function,
   onFocus: Function,
+  textFieldChange: Function,
 }
 
 type searchTextInputStates = {
   filled: boolean,
   emptied: boolean,
-  textFieldChange: Function,
 }
 
 class SearchTextInput extends React.Component <searchTextInputProps, searchTextInputStates> {
@@ -24,10 +24,10 @@ class SearchTextInput extends React.Component <searchTextInputProps, searchTextI
   textChange = (event: SyntheticEvent<HTMLInputElement>) => {
     const {textFieldChange} = this.props
     if (event.target.value === '') {
-      if(this.state.filled){
+      if (this.state.filled) {
         this.setState({...this.state, emptied: true, filled: false})
       }
-      else{
+      else {
         this.setState({...this.state, emptied: false, filled: false})
       }
     } else {
@@ -45,186 +45,100 @@ class SearchTextInput extends React.Component <searchTextInputProps, searchTextI
     this.setState({...this.state, emptied: false})
     outFocus()
   }
+
   render() {
     const {placeholder} = this.props
-    const {home} = styles
+    const {home, global} = styles
 
     return (
         <div className='input-wrapper'>
           {/*language=SCSS*/}
           <style jsx>{`
-          .input-wrapper {
-          }
-
-          .input {
-            position: relative;
-            z-index: 1;
-            display: inline-block;
-            margin: 1em;
-            margin-bottom: 3em;
-            max-width: 320px;
-            width: calc(100% - 2em);
-            vertical-align: top;
-          }
-
-          .input-field {
-            position: relative;
-            display: block;
-            float: right;
-            padding: 0.8em;
-            border: none;
-            border-radius: 0;
-            font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-            width: 100%;
-            background: transparent;
-            color: ${home.color.searchInputBorder};
-            opacity: 0;
-            text-align: center;
-            transition: opacity 0.3s;
-            font-weight: bold;
-            font-size: 180%;
-          }
-
-          .input-field2 {
-            position: relative;
-            display: block;
-            float: right;
-            padding: 0.8em;
-            border: none;
-            border-radius: 0;
-            font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-            width: 100%;
-            background: transparent;
-            color: ${home.color.searchInputBorder};
-            text-align: center;
-            transition: opacity 0.3s;
-            font-weight: bold;
-            font-size: 180%;
-          }
-
-          .input-label {
-            display: inline-block;
-            float: right;
-            padding: 0 1em;
-            font-weight: bold;
-            font-size: 100%;
-            user-select: none;
-            position: absolute;
-            left: 0;
-            width: 100%;
-            color: ${home.color.searchInputLabel};
-            pointer-events: none;
-          }
-
-          .input-label2 {
-            display: inline-block;
-            float: right;
-            padding: 0 1em;
-            font-weight: bold;
-            font-size: 100%;
-            user-select: none;
-            position: absolute;
-            left: 0;
-            width: 100%;
-            color: ${home.color.searchInputLabel};
-            pointer-events: none;
-          }
-
-          .input-label2::before{
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 50%;
-            height: 100%;
-            border: 4px solid ${home.color.searchInputLabelBorder};
-            transition: transform 0.3s;
-            border-right: none;
-            transform: translate3d(-10%, 0, 0);
+            .input {
+              position: relative;
+              z-index: 1;
+              display: inline-block;
+              margin: 25px 0;
+              right: 10%;
+              width: 80%;
+              text-align: center;
             }
+            .input-field {
+              position: relative;
+              display: block;
+              float: right;
+              padding: 18px;
+              width: 100%;
+              background: transparent;
+              color: ${home.color.searchInputBorder};
+              transition: all ${global.duration.transition};
+              font-weight: bold;
+              font-size: 180%;
+              text-align: center;
 
-          .input-label2::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            width: 50%;
-            height: 100%;
-            border: 4px solid ${home.color.searchInputLabelBorder};
-            transition: transform 0.3s;
-            left: 50%;
-            border-left: none;
-            transform: translate3d(10%, 0, 0);
+              :focus + .input-label::before {
+                transform: ${!this.state.emptied || !this.state.filled ? 'translate3d(-10%, 0, 0)' : 'none'};
+              }
+              :focus + .input-label::after {
+                transform: ${!this.state.emptied || !this.state.filled ? 'translate3d(10%, 0, 0)' : 'none'};
+              }
+              :focus + .input-label .input-label-content {
+                animation: go-down-animation forwards;
+                animation-name: ${!this.state.filled ? '' : 'none'};
+                animation-duration: ${!this.state.filled ? global.duration.transition : ''};
+              }
             }
+            .input-label {
+              float: right;
+              padding: 0 10px;
+              font-weight: bold;
+              user-select: none;
+              position: absolute;
+              left: 0;
+              width: 100%;
+              color: ${home.color.searchInputLabel};
+              pointer-events: none;
 
-          .input-label-content {
-            position: relative;
-            display: block;
-            padding: 1.6em 0;
-            width: 100%;
-            text-align: center;
-            top: ${this.state.filled ? '4.5em' : (this.state.emptied ? '4.5em': '0')};
-          }
+              ::before, ::after {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 50%;
+                height: 100%;
+                border: 4px solid ${home.color.searchInputLabelBorder};
+                transition: transform ${global.duration.transition};
+              }
+              ::before {
+                border-right: none;
+                transform: ${this.state.emptied ? 'translate3d(-10%, 0, 0)' : 'none'};
+              }
+              ::after {
+                left: 50%;
+                border-left: none;
+                transform: ${this.state.emptied ? 'translate3d(10%, 0, 0)' : 'none'};
+              }
 
-          .input-label::before,
-          .input-label::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 50%;
-            height: 100%;
-            border: 4px solid ${home.color.searchInputLabelBorder};
-            transition: transform 0.3s;
-          }
-
-          .input-label::before {
-            border-right: none;
-          }
-
-          .input-label::after {
-            left: 50%;
-            border-left: none;
-          }
-
-          .input-field:focus {
-            opacity: 1;
-            transition-delay: 0.3s;
-          }
-
-          .input-field:focus + .input-label::before {
-            transform: translate3d(-10%, 0, 0);
-          }
-
-          .input-field:focus + .input-label::after {
-            transform: translate3d(10%, 0, 0);
-          }
-
-          .input-field:focus + .input-label .input-label-content {
-            animation: anim-2 0.3s forwards;
-          }
-
-          @keyframes anim-2 {
-            50% {
-              //opacity: 0;
-              //transform: scale3d(0.3, 0.3, 1);
+              .input-label-content {
+                position: relative;
+                display: block;
+                padding: 26px 0;
+                top: ${this.state.emptied ? '4.5em' : (this.state.filled ? '4.5em' : '0')};
+              }
             }
-            51% {
-              //opacity: 0;
-              //transform: translate3d(0, 4.5em, 0) scale3d(0.3, 0.3, 1);
+            @keyframes go-down-animation {
+              100% {
+                transform: ${!this.state.emptied ? 'translate3d(0, 4.5em, 0)' : 'none'};
+              }
             }
-            100% {
-              opacity: 1;
-              transform: ${!this.state.emptied ? 'translate3d(0, 4.5em, 0)' : 'none'};
-            }
-          }
-        `}</style>
+          `}
+          </style>
 
           <span className="input">
-					<input className={!this.state.filled ? "input-field" : "input-field2"} type="text" id="input-7"
+					<input className="input-field" type="text"
                  onChange={this.textChange} onBlur={this.focusOut} onFocus={this.onFocus}/>
-					<label className={!this.state.filled ? "input-label" : "input-label2"} htmlFor="input-7">
-						<span
-                className="input-label-content">{placeholder}</span>
+					<label className="input-label">
+						<span className="input-label-content">{placeholder}</span>
 					</label>
 				</span>
         </div>

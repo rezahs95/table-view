@@ -7,6 +7,7 @@ import Page from './Page'
 import OtherActions from "../../redux/actions/otherActions";
 import {CSSTransition} from "react-transition-group";
 import HomeActions from "../../redux/actions/homeActions";
+import styles from 'src/consts/styles'
 
 type homeProps = {
   strings: {
@@ -73,64 +74,100 @@ class Home extends React.Component <homeProps, homeState> {
     const {strings, actions} = this.props
     const {outFocus, onFocus, submit} = actions
 
+    const {global} = styles
+
+    const left = this.state.page * 100;
+    console.log(left)
     const arrayNumber = [...Array(this.numberOfPages).keys()]
     return (
         <div className='home-wrapper'>
           {/*language=SCSS*/}
           <style jsx>{`
             .home-wrapper{
+              position: absolute;
               overflow: hidden;
-            }
-            :global(.page-go-right-enter) {
-              position: relative;
-              right: -100%;
-              transition: all 400ms ease-in;
-            }
+              //transform: translateX(-50%);
+              transition: all 100s ease-in-out;
 
-            :global(.page-go-right-enter-active) {
-              transform: translateX(100%);
-            }
+              :global(.page-go-right-enter) {
+                position: relative;
+                right: -100%;
+                transition: all ease-in;
+                transition-duration: ${global.duration.transition};
+              }
+              :global(.page-go-right-enter-active) {
+                transform: translateX(100%);
+              }
+              :global(.page-go-right-exit) {
+                right: -100%;
+                transition: all ease-in;
+                transition-duration: ${global.duration.transition};
+              }
+              :global(.page-go-right-exit-active) {
+                transform: translateX(100%);
+              }
 
-            :global(.page-go-right-exit) {
-              right: -100%;
-              transition: all 400ms ease-in;
-            }
+              :global(.page-go-left-enter) {
+                position: relative;
+                left: 0;
+                transition: all ease-in;
+                transition-duration: ${global.duration.transition};
+              }
+              :global(.page-go-left-enter-active) {
+                transform: translateX(-100%);
+              }
+              :global(.page-go-left-exit) {
+                right: 100%;
+                transition: all ease-in;
+                transition-duration: ${global.duration.transition};
+              }
+              :global(.page-go-left-exit-active) {
+                transform: translateX(-100%);
+              }
 
-            :global(.page-go-right-exit-active) {
-              transform: translateX(100%);
-            }
-
-            :global(.page-go-left-enter) {
-              position: relative;
-              left: 0;
-              transition: all 400ms ease-in;
-            }
-
-            :global(.page-go-left-enter-active) {
-              transform: translateX(-100%);
-            }
-
-            :global(.page-go-left-exit) {
-              right: 100%;
-              transition: all 400ms ease-in;
-            }
-
-            :global(.page-go-left-exit-active) {
-              transform: translateX(-100%);
+              .page-container {
+                position: absolute;
+                width: 100%;
+                top: 0;
+              }
+              .page-container1 {
+                left: 0;
+              }
+              .page-container2 {
+                left: 100%;
+              }
+              .page-container3 {
+                left: 200%;
+              }
+              .page-container4 {
+                left: 300%;
+              }
             }
           `}</style>
-          {arrayNumber.map(number =>
-              <CSSTransition
-                  in={this.state.page === number}
-                  timeout={400}
-                  classNames={goRight ? 'page-go-right' : 'page-go-left'}
-                  unmountOnExit
-                  key={`transition ${number}`}>
-                <div>
-                  <Page strings={strings.homePage} onFocus={onFocus} outFocus={outFocus} submit={submit}/>
-                </div>
-              </CSSTransition>
-          )}
+          {/*{arrayNumber.map(number =>*/}
+          {/*<CSSTransition*/}
+          {/*in={this.state.page === number}*/}
+          {/*timeout={global.duration.animationDuration}*/}
+          {/*classNames={goRight ? 'page-go-right' : 'page-go-left'}*/}
+          {/*unmountOnExit*/}
+          {/*key={`transition ${number}`}>*/}
+          {/*<div>*/}
+          {/*<Page strings={strings.homePage} onFocus={onFocus} outFocus={outFocus} submit={submit}/>*/}
+          {/*</div>*/}
+          {/*</CSSTransition>*/}
+          {/*)}*/}
+          <div className='page-container page-container1'>
+            <Page strings={strings.homePage} onFocus={onFocus} outFocus={outFocus} submit={submit}/>
+          </div>
+          <div className='page-container page-container2'>
+            <Page strings={strings.homePage} onFocus={onFocus} outFocus={outFocus} submit={submit}/>
+          </div>
+          <div className='page-container page-container3'>
+            <Page strings={strings.homePage} onFocus={onFocus} outFocus={outFocus} submit={submit}/>
+          </div>
+          <div className='page-container page-container4'>
+            <Page strings={strings.homePage} onFocus={onFocus} outFocus={outFocus} submit={submit}/>
+          </div>
         </div>
     )
   }

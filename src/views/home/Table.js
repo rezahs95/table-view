@@ -26,7 +26,6 @@ const Table = (props: tableProps) => {
         <style jsx>{`
           .table-wrapper {
             width: 100%;
-            //margin: 20px auto;
 
             .header-wrapper {
               color: ${result.color.tableHeaderFontColor};
@@ -38,10 +37,11 @@ const Table = (props: tableProps) => {
                 padding-top: ${result.size.tableCellPaddingTopSize};
                 padding-bottom: ${result.size.tableCellPaddingTopSize};
                 border-bottom: 1px solid ${result.color.tableRowBorderColor};
-              }
-              .header-data:first-child {
-                border-right: solid ${result.size.tableRowBorderRightSize};
-                border-right-color: ${result.color.tableHeaderBorderRightColor};
+
+                :first-child {
+                  border-right: solid ${result.size.tableRowBorderRightSize};
+                  border-right-color: ${result.color.tableHeaderBorderRightColor};
+                }
               }
             }
           }

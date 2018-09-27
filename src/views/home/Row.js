@@ -35,18 +35,15 @@ const Row = (props: rowProps) => {
               text-align: center;
               border-bottom: 1px solid ${result.color.tableRowBorderColor};
               transition: all ${global.duration.transition};
-            }
-            .table-data:first-child {
-              border-right: solid ${result.size.tableRowBorderRightSize};
-              border-right-color: ${result.color.tableRowBorderRightColor};
-            }
 
+              :first-child {
+                border-right: solid ${result.size.tableRowBorderRightSize};
+                border-right-color: ${result.color.tableRowBorderRightColor};
+              }
+            }
             &:hover {
               background-color: ${result.color.tableRowBackgroundHoverColor};
 
-              .table-data {
-                //padding-bottom: ${result.size.cellPaddingHoverSize};
-              }
               .table-data:first-child {
                 border-right-color: ${result.color.tableRowBorderRightHoverColor};
               }
