@@ -32,7 +32,7 @@ const encryptor = createEncryptor({
 	}
 })
 
-const persistConfig = {key: 'root', transforms: [encryptor], storage, blacklist:['form']}
+const persistConfig = {key: 'root', transforms: [encryptor], storage, blacklist:['form', 'other']}
 const persistedReducer = persistReducer(persistConfig, rootReducer)
 
 const configureStore = () => {

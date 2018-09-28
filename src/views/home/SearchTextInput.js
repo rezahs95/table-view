@@ -71,7 +71,8 @@ class SearchTextInput extends React.Component <searchTextInputProps, searchTextI
               width: 100%;
               background: transparent;
               color: ${home.color.searchInputBorder};
-              transition: all ${global.duration.transition};
+              transition: all ${global.duration.transitionMode};
+              transition-duration: ${global.duration.transition};
               font-weight: bold;
               font-size: 180%;
               text-align: center;
@@ -107,7 +108,8 @@ class SearchTextInput extends React.Component <searchTextInputProps, searchTextI
                 width: 50%;
                 height: 100%;
                 border: 4px solid ${home.color.searchInputLabelBorder};
-                transition: transform ${global.duration.transition};
+                transition: all ${global.duration.transitionMode};
+                transition-duration: ${global.duration.transition};
               }
               ::before {
                 border-right: none;

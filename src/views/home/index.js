@@ -7,6 +7,7 @@ import Page from './Page'
 import OtherActions from "../../redux/actions/otherActions";
 import HomeActions from "../../redux/actions/homeActions";
 import styles from 'src/consts/styles'
+import PreviewImg from "../../images/home/PreviewImg";
 
 type homeProps = {
   strings: {
@@ -38,6 +39,7 @@ type homeProps = {
 
 type homeState = {
   page: number,
+  previewPage: number,
 }
 
 class Home extends React.Component <homeProps, homeState> {
@@ -47,6 +49,7 @@ class Home extends React.Component <homeProps, homeState> {
     super(props)
     this.state = {
       page: 0,
+      previewPage: 0,
     }
     this.numberOfPages = 5
   }
@@ -62,7 +65,7 @@ class Home extends React.Component <homeProps, homeState> {
   keyDownFunction = (event: SyntheticKeyboardEvent<>) => {
     // 37 - left
     // 39 - right
-    const {page} = this.state
+    const {page, previewPage} = this.state
     const {other} = this.props
     const {focus, preview, homePage} = other
     if (homePage && !focus && !preview) {
@@ -75,16 +78,41 @@ class Home extends React.Component <homeProps, homeState> {
     }
     if (preview) {
       //TODO: preview next button
+      if (event.keyCode === 37 && previewPage > 0) {
+        this.setState({...this.state, previewPage: previewPage - 1})
+      }
+      else if (event.keyCode === 39 && previewPage < this.numberOfPages - 1) {
+        this.setState({...this.state, previewPage: previewPage + 1})
+      }
+    }
+  }
+
+  previewClick = () => {
+    const {page, previewPage} = this.state
+    const {actions, other} = this.props
+    const {onPreview, outPreview} = actions
+    const {preview} = other
+
+    if (preview) {
+      outPreview()
+      this.setState({...this.state, page: previewPage})
+    }
+    else {
+      onPreview()
+      this.setState({...this.state, previewPage: page})
     }
   }
 
   render() {
-    const {strings, actions} = this.props
-    const {outFocus, onFocus, submit, onPreview, onHomePage, outHomePage} = actions
-
+    const {page, previewPage} = this.state
+    const {strings, actions, other} = this.props
+    const {preview, homePage} = other
+    const {submit, outFocus, onFocus, onHomePage, outHomePage} = actions
     const {global} = styles
 
-    const left = this.state.page * -100 + '%';
+    const arrayNumber = [...Array(this.numberOfPages).keys()]
+
+    const left = preview === true ? previewPage * -30 + '%' : page * -100 + '%';
     return (
         <div className='home-wrapper'>
           {/*language=SCSS*/}
@@ -92,87 +120,37 @@ class Home extends React.Component <homeProps, homeState> {
             .home-wrapper{
               position: relative;
               left: ${left};
-              transition: all ease-in-out;
+              transition: all ${global.duration.transitionMode};
               transition-duration: ${global.duration.animationDuration}ms;
-              //transform: scale(0.3);
 
-              :global(.page-go-right-enter) {
-                position: relative;
-                right: -100%;
-                transition: all ease-in;
-                transition-duration: ${global.duration.transition};
-              }
-              :global(.page-go-right-enter-active) {
-                transform: translateX(100%);
-              }
-              :global(.page-go-right-exit) {
-                right: -100%;
-                transition: all ease-in;
-                transition-duration: ${global.duration.transition};
-              }
-              :global(.page-go-right-exit-active) {
-                transform: translateX(100%);
-              }
-
-              :global(.page-go-left-enter) {
-                position: relative;
+              .preview-button {
+                position: fixed;
+                display: ${homePage === true ? 'block' : 'none'};
+                z-index: 100;
                 left: 0;
-                transition: all ease-in;
+                background: transparent;
+                margin: 20px;
+              }
+              .pages-container {
+                position: relative;
+                top: 50%;
+                height: 100vh;
+                transform: ${preview ? 'scale3d(0.3, 0.3, 1)' : 'scale3d(1, 1, 1)'};
+                transition: all ${global.duration.transitionMode};
                 transition-duration: ${global.duration.transition};
-              }
-              :global(.page-go-left-enter-active) {
-                transform: translateX(-100%);
-              }
-              :global(.page-go-left-exit) {
-                right: 100%;
-                transition: all ease-in;
-                transition-duration: ${global.duration.transition};
-              }
-              :global(.page-go-left-exit-active) {
-                transform: translateX(-100%);
               }
 
-              .page-container {
-                position: absolute;
-                width: 100%;
-                top: 0;
-              }
-              .page-container1 {
-                left: 0;
-              }
-              .page-container2 {
-                left: 100%;
-              }
-              .page-container3 {
-                left: 200%;
-              }
-              .page-container4 {
-                left: 300%;
-              }
-              .page-container5 {
-                left: 400%;
-              }
             }
           `}</style>
-          <div className='page-container page-container1'>
-            <Page strings={strings.page} outHomePage={outHomePage} onHomePage={onHomePage} onPreview={onPreview}
-                  onFocus={onFocus} outFocus={outFocus} submit={submit}/>
-          </div>
-          <div className='page-container page-container2'>
-            <Page strings={strings.page} outHomePage={outHomePage} onHomePage={onHomePage} onPreview={onPreview}
-                  onFocus={onFocus} outFocus={outFocus} submit={submit}/>
-          </div>
-          <div className='page-container page-container3'>
-            <Page strings={strings.page} outHomePage={outHomePage} onHomePage={onHomePage} onPreview={onPreview}
-                  onFocus={onFocus} outFocus={outFocus} submit={submit}/>
-          </div>
-          <div className='page-container page-container4'>
-            <Page strings={strings.page} outHomePage={outHomePage} onHomePage={onHomePage} onPreview={onPreview}
-                  onFocus={onFocus} outFocus={outFocus} submit={submit}/>
-          </div>
-          <div className='page-container page-container5'>
-            <Page strings={strings.page} outHomePage={outHomePage} onHomePage={onHomePage} onPreview={onPreview}
-                  onFocus={onFocus} outFocus={outFocus} submit={submit}/>
+          <button onClick={this.previewClick} className='preview-button pulse'><PreviewImg width={60} height={60}/>
+          </button>
+          <div className='pages-container'>
+            {arrayNumber.map(number =>
+                <Page page={number} preview={preview} activePage={page} strings={strings.page} submit={submit}
+                      onHomePage={onHomePage} outHomePage={outHomePage}
+                      onFocus={onFocus} outFocus={outFocus}
+                      key={'page' + number}/>
+            )}
           </div>
         </div>
     )
@@ -192,7 +170,7 @@ const mapDispatchToProps = dispatch => ({
     outFocus: OtherActions.outFocus,
     submit: HomeActions.submit,
     onPreview: OtherActions.onPreview,
-    outPreview: OtherActions.onPreview,
+    outPreview: OtherActions.outPreview,
     onHomePage: OtherActions.onHomePage,
     outHomePage: OtherActions.outHomePage,
   }, dispatch)

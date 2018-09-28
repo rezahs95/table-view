@@ -39,7 +39,7 @@ class PopUpButton extends React.Component<popUpProps, popUpStates> {
           <style jsx>{`
             :global(.popup-button-enter) {
               opacity: 0.1;
-              transition: opacity ease-in;
+              transition: all ${global.duration.transitionMode};
               transition-duration: ${global.duration.animationDuration}ms;
             }
             :global(.popup-button-enter-active) {
@@ -47,7 +47,7 @@ class PopUpButton extends React.Component<popUpProps, popUpStates> {
             }
             :global(.popup-button-exit) {
               opacity: 1;
-              transition: opacity ease-in;
+              transition: all ${global.duration.transitionMode};
               transition-duration: ${global.duration.animationDuration}ms;
             }
             :global(.popup-button-exit-active) {
@@ -64,7 +64,7 @@ class PopUpButton extends React.Component<popUpProps, popUpStates> {
 
             :global(.popup-window-enter) {
               opacity: 0.1;
-              transition: opacity ease-in;
+              transition: all ${global.duration.transitionMode};
               transition-duration: ${global.duration.animationDuration}ms;
             }
             :global(.popup-window-enter-active) {
@@ -72,7 +72,7 @@ class PopUpButton extends React.Component<popUpProps, popUpStates> {
             }
             :global(.popup-window-exit) {
               opacity: 1;
-              transition: opacity ease-in;
+              transition: all ${global.duration.transitionMode};
               transition-duration: ${global.duration.animationDuration}ms;
             }
             :global(.popup-window-exit-active) {

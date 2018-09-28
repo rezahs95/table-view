@@ -23,7 +23,8 @@ const Row = (props: rowProps) => {
           .row-wrapper {
             background-color: ${result.color.tableRowBackgroundColor};
             color: ${result.color.tableRowFontColor};
-            transition: all ${global.duration.transition};
+            transition: all ${global.duration.transitionMode};
+            transition-duration: ${global.duration.transition};
 
             .table-data {
               // table width => number of column / 100
@@ -34,7 +35,8 @@ const Row = (props: rowProps) => {
               padding-bottom: ${result.size.tableCellPaddingTopSize};
               text-align: center;
               border-bottom: 1px solid ${result.color.tableRowBorderColor};
-              transition: all ${global.duration.transition};
+              transition: all ${global.duration.transitionMode};
+              transition-duration: ${global.duration.transition};
 
               :first-child {
                 border-right: solid ${result.size.tableRowBorderRightSize};
