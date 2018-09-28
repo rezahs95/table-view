@@ -33,9 +33,11 @@ const Result = (props: resultProps) => {
 
             .back-button {
               background: transparent;
+              display: block;
               width: 150px;
               height: 50px;
-              margin: 20px auto;
+              margin-top: 20px;
+              margin-right: auto;
               color: #dddddd;
               font-size: 20px;
               border: 3px solid #dddddd;

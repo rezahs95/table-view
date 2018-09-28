@@ -25,6 +25,7 @@ const App = () => {
             padding: 0 !important;
             font-weight: normal;
             background: ${global.color.bodyBackgroundColor};
+            overflow: auto;
           }
           a, a:hover, a:focus {
             text-decoration: none !important;

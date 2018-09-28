@@ -24,20 +24,25 @@ type homeProps = {
     email: string,
   },
   page: number,
-  activePage: number,
-  preview: boolean,
   submit: Function,
   onFocus: Function,
   outFocus: Function,
+  preview: boolean,
   onHomePage: Function,
   outHomePage: Function,
+  onRedirect: Function,
+  outRedirect: Function,
+  tableName: string,
+  activePage: number,
+  homePage: boolean,
+  redirect: boolean,
 }
 
 type homeState = {
   startDate: {} | null,
   endDate: {} | null,
   buttonState: string,
-  redirect: boolean,
+  redirectLocal: boolean,
   name: string,
   email: string,
 }
@@ -49,7 +54,7 @@ class Page extends React.Component <homeProps, homeState> {
       startDate: null,
       endDate: null,
       buttonState: '',
-      redirect: false,
+      redirectLocal: false,
       name: '',
       email: '',
     }
@@ -72,13 +77,14 @@ class Page extends React.Component <homeProps, homeState> {
   }
 
   backClick = () => {
-    const {onHomePage} = this.props
+    const {onHomePage, outRedirect} = this.props
     onHomePage()
-    this.setState({...this.state, redirect: false, buttonState: ''})
+    outRedirect()
+    this.setState({...this.state, redirectLocal: false, buttonState: ''})
   }
 
   handleSubmitClick = () => {
-    const {submit, outHomePage} = this.props
+    const {submit, outHomePage, onRedirect} = this.props
     const {name, email, startDate, endDate} = this.state
     this.setState({...this.state, buttonState: 'loading'})
 
@@ -88,7 +94,8 @@ class Page extends React.Component <homeProps, homeState> {
     setTimeout(() => {
       this.setState({...this.state, buttonState: 'success'}, () => {
         setTimeout(() => {
-          this.setState({...this.state, redirect: true})
+          onRedirect()
+          this.setState({...this.state, redirectLocal: true})
         }, 1000)
       })
     }, 3000)
@@ -96,10 +103,13 @@ class Page extends React.Component <homeProps, homeState> {
 
 
   render() {
-    const {strings, onFocus, outFocus, preview, page, activePage} = this.props
+    const {strings, onFocus, outFocus, page, tableName, preview, homePage, activePage, redirect} = this.props
+    const {redirectLocal} = this.state
     const {home, global} = styles
-    const thumbnailLeft = `${-30 - 65 * page + activePage * 65}%`
     const pageLeft = `${page * 100}%`
+    console.log(homePage, 'home pageeee')
+    console.log(activePage, 'active pageeeee')
+    console.log(page, 'page numberrr')
     return (
         <div className='page-wrapper'>
           {/*language=SCSS*/}
@@ -109,6 +119,7 @@ class Page extends React.Component <homeProps, homeState> {
               width: 100%;
               top: 0;
               left: ${pageLeft};
+              display: ${redirect ? (activePage === page ? 'block' : 'none'): 'block'};
 
               background: radial-gradient(ellipse at center, #163039 0%, #000001 98%);
               filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='$lightgrey', endColorstr='$darkgrey', GradientType=1);
@@ -154,49 +165,72 @@ class Page extends React.Component <homeProps, homeState> {
                 position: relative;
                 height: 100vh;
 
-                .upper-home {
-                  display: flex;
-                  height: 100%;
+                .table-name-out {
+                  color: ${home.color.tableNameFontColor};
+                  z-index: 10;
+                  height: 100px;
+                  width: 100%;
+                  position: absolute;
+                  text-align: center;
+                  font-size: 140px;
+                  bottom: -120px;
+                }
 
-                  .search-index {
+                .show-page {
+                  height: 100vh;
+
+                  .table-name-wrapper {
+                    position: absolute;
+                    color: ${home.color.tableNameFontColor};
+                    font-size: 50px;
+                    text-align: center;
+                    width: 100%;
+                    margin-top: 20px;
+                  }
+                  .upper-home {
                     display: flex;
-                    flex-direction: column;
-                    justify-content: center;
-                    align-items: center;
-                    flex: 1;
+                    height: 100%;
 
-                    .date-pickers-wrapper {
+                    .search-index {
                       display: flex;
-                      flex-direction: row;
-                      justify-content: flex-end;
+                      flex-direction: column;
+                      justify-content: center;
                       align-items: center;
-                      margin-top: 15px;
+                      flex: 1;
 
-                      .date-pickers-container {
-                        :first-child {
-                          margin-right: 5%;
-                        }
-                        :last-child {
-                          margin-left: 5%;
-                        }
-                      }
+                      .date-pickers-wrapper {
+                        display: flex;
+                        flex-direction: row;
+                        justify-content: flex-end;
+                        align-items: center;
+                        margin-top: 15px;
 
-                      :global(.date-picker) {
-                        color: ${home.color.datePickerFontColor};
-                        background: inherit;
-                        border: 5px solid ${home.color.datePickerBorderColor};
-                        padding: 23px 0;
-                        text-align: center;
-                        font-size: 18px;
-                        height: 25px;
-                        width: 100%;
-
-                        &::placeholder{
-                          color: ${home.color.datePickerPlaceHolderFontColor};
+                        .date-pickers-container {
+                          :first-child {
+                            margin-right: 5%;
+                          }
+                          :last-child {
+                            margin-left: 5%;
+                          }
                         }
-                      }
-                      :global(.date-picker-end) {
-                        border-right: none;
+
+                        :global(.date-picker) {
+                          color: ${home.color.datePickerFontColor};
+                          background: inherit;
+                          border: 5px solid ${home.color.datePickerBorderColor};
+                          padding: 23px 0;
+                          text-align: center;
+                          font-size: 18px;
+                          height: 25px;
+                          width: 100%;
+
+                          &::placeholder{
+                            color: ${home.color.datePickerPlaceHolderFontColor};
+                          }
+                        }
+                        :global(.date-picker-end) {
+                          border-right: none;
+                        }
                       }
                     }
                   }
@@ -229,7 +263,7 @@ class Page extends React.Component <homeProps, homeState> {
             }
           `}</style>
           <CSSTransition
-              in={this.state.redirect}
+              in={redirectLocal}
               timeout={global.duration.animationDuration}
               classNames={'page-go-down'}
               unmountOnExit>
@@ -237,51 +271,57 @@ class Page extends React.Component <homeProps, homeState> {
           </CSSTransition>
 
           <CSSTransition
-              in={!this.state.redirect}
+              in={!redirectLocal}
               timeout={global.duration.animationDuration}
               classNames={'page-go-top'}
               unmountOnExit>
             <div className='page-wrapper-index'>
-              {/*<div className='thumbnail'></div>*/}
-              <div className='upper-home'>
-                <div className='search-index'>
-                  <SearchTextInput placeholder={strings.name} textFieldChange={this.nameChange} onFocus={onFocus}
-                                   outFocus={outFocus}/>
-                  <SearchTextInput placeholder={strings.email} textFieldChange={this.emailChange} onFocus={onFocus}
-                                   outFocus={outFocus}/>
-                  <div className='date-pickers-wrapper'>
-                    <div className='date-pickers-container'>
-                      <DatePicker
-                          selected={this.state.startDate}
-                          selectsStart
-                          startDate={this.state.startDate}
-                          endDate={this.state.endDate}
-                          onChange={this.handleChangeStart}
-                          placeholderText={strings.datePicker.startDate}
-                          className='date-picker'
-                      />
-                    </div>
+              {preview && <div className='table-name-out'>{tableName}</div>}
+              {!preview &&
+              <div className='show-page'>
+                <div className='upper-home'>
+                  <div className='table-name-wrapper'>{tableName}</div>
+                  <div className='search-index'>
+                    <SearchTextInput placeholder={strings.name} textFieldChange={this.nameChange} onFocus={onFocus}
+                                     outFocus={outFocus}/>
+                    <SearchTextInput placeholder={strings.email} textFieldChange={this.emailChange} onFocus={onFocus}
+                                     outFocus={outFocus}/>
+                    <div className='date-pickers-wrapper'>
+                      <div className='date-pickers-container'>
+                        <DatePicker
+                            selected={this.state.startDate}
+                            selectsStart
+                            startDate={this.state.startDate}
+                            endDate={this.state.endDate}
+                            onChange={this.handleChangeStart}
+                            placeholderText={strings.datePicker.startDate}
+                            className='date-picker'
+                        />
+                      </div>
 
-                    <div className='date-pickers-container'>
-                      <DatePicker
-                          selected={this.state.endDate}
-                          selectsEnd
-                          startDate={this.state.startDate}
-                          endDate={this.state.endDate}
-                          onChange={this.handleChangeEnd}
-                          placeholderText={strings.datePicker.endDate}
-                          className='date-picker date-picker-end'
-                      />
+                      <div className='date-pickers-container'>
+                        <DatePicker
+                            selected={this.state.endDate}
+                            selectsEnd
+                            startDate={this.state.startDate}
+                            endDate={this.state.endDate}
+                            onChange={this.handleChangeEnd}
+                            placeholderText={strings.datePicker.endDate}
+                            className='date-picker date-picker-end'
+                        />
+                      </div>
                     </div>
                   </div>
+                  <div className='popup-container'><PopUpButton/></div>
                 </div>
-                <div className='popup-container'><PopUpButton/></div>
-              </div>
-              <div className='search-button-container'>
-                <div className='inner'>
-                  <ProgressButton onClick={this.handleSubmitClick} state={this.state.buttonState}>{strings.search}</ProgressButton>
+                <div className='search-button-container'>
+                  <div className='inner'>
+                    <ProgressButton onClick={this.handleSubmitClick}
+                                    state={this.state.buttonState}>{strings.search}</ProgressButton>
+                  </div>
                 </div>
               </div>
+              }
             </div>
           </CSSTransition>
         </div>
@@ -292,13 +332,15 @@ class Page extends React.Component <homeProps, homeState> {
 Page.propTypes = {
   strings: PropTypes.object.isRequired,
   page: PropTypes.number.isRequired,
-  activePage: PropTypes.number.isRequired,
+  tableName: PropTypes.string.isRequired,
   preview: PropTypes.bool.isRequired,
   submit: PropTypes.func.isRequired,
   onFocus: PropTypes.func.isRequired,
   outFocus: PropTypes.func.isRequired,
   onHomePage: PropTypes.func.isRequired,
   outHomePage: PropTypes.func.isRequired,
+  onRedirect: PropTypes.func.isRequired,
+  outRedirect: PropTypes.func.isRequired,
 }
 
 export default Page

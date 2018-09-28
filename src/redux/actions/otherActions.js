@@ -30,6 +30,16 @@ const outHomePage = () => ({
   payload: {},
 })
 
+const onRedirect = () => ({
+  type: types.BASE.OTHER.ON_REDIRECT,
+  payload: {},
+})
+
+const outRedirect = () => ({
+  type: types.BASE.OTHER.OUT_REDIRECT,
+  payload: {},
+})
+
 const OtherActions = {
   onFocus,
   outFocus,
@@ -37,6 +47,8 @@ const OtherActions = {
   outPreview,
   onHomePage,
   outHomePage,
+  onRedirect,
+  outRedirect
 }
 
 export default OtherActions

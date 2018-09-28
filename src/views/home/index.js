@@ -29,17 +29,20 @@ type homeProps = {
     outPreview: Function,
     onHomePage: Function,
     outHomePage: Function,
+    onRedirect: Function,
+    outRedirect: Function,
   },
   other: {
     focus: boolean,
     preview: boolean,
     homePage: boolean,
+    redirect: boolean,
   },
 }
 
 type homeState = {
   page: number,
-  previewPage: number,
+  changed: boolean,
 }
 
 class Home extends React.Component <homeProps, homeState> {
@@ -49,7 +52,7 @@ class Home extends React.Component <homeProps, homeState> {
     super(props)
     this.state = {
       page: 0,
-      previewPage: 0,
+      changed: false,
     }
     this.numberOfPages = 5
   }
@@ -65,54 +68,43 @@ class Home extends React.Component <homeProps, homeState> {
   keyDownFunction = (event: SyntheticKeyboardEvent<>) => {
     // 37 - left
     // 39 - right
-    const {page, previewPage} = this.state
+    const {page} = this.state
     const {other} = this.props
-    const {focus, preview, homePage} = other
-    if (homePage && !focus && !preview) {
+    const {focus, homePage} = other
+    if (homePage && !focus) {
       if (event.keyCode === 37 && page > 0) {
-        this.setState({...this.state, page: page - 1})
+        this.setState({...this.state, page: page - 1, changed: false})
       }
       else if (event.keyCode === 39 && page < this.numberOfPages - 1) {
-        this.setState({...this.state, page: page + 1})
-      }
-    }
-    if (preview) {
-      //TODO: preview next button
-      if (event.keyCode === 37 && previewPage > 0) {
-        this.setState({...this.state, previewPage: previewPage - 1})
-      }
-      else if (event.keyCode === 39 && previewPage < this.numberOfPages - 1) {
-        this.setState({...this.state, previewPage: previewPage + 1})
+        this.setState({...this.state, page: page + 1, changed: false})
       }
     }
   }
 
   previewClick = () => {
-    const {page, previewPage} = this.state
     const {actions, other} = this.props
     const {onPreview, outPreview} = actions
     const {preview} = other
 
     if (preview) {
       outPreview()
-      this.setState({...this.state, page: previewPage})
     }
     else {
       onPreview()
-      this.setState({...this.state, previewPage: page})
     }
+    this.setState({...this.state, changed: true})
   }
 
   render() {
-    const {page, previewPage} = this.state
+    const {page} = this.state
     const {strings, actions, other} = this.props
-    const {preview, homePage} = other
-    const {submit, outFocus, onFocus, onHomePage, outHomePage} = actions
+    const {preview, homePage, redirect} = other
+    const {submit, outFocus, onFocus, onHomePage, outHomePage, onRedirect, outRedirect} = actions
     const {global} = styles
 
     const arrayNumber = [...Array(this.numberOfPages).keys()]
 
-    const left = preview === true ? previewPage * -30 + '%' : page * -100 + '%';
+    const left = preview === true ? page * -30 + '%' : page * -100 + '%';
     return (
         <div className='home-wrapper'>
           {/*language=SCSS*/}
@@ -120,7 +112,7 @@ class Home extends React.Component <homeProps, homeState> {
             .home-wrapper{
               position: relative;
               left: ${left};
-              transition: all ${global.duration.transitionMode};
+              transition: ${this.state.changed ? 'none' : 'all ' + global.duration.transitionMode};
               transition-duration: ${global.duration.animationDuration}ms;
 
               .preview-button {
@@ -139,16 +131,16 @@ class Home extends React.Component <homeProps, homeState> {
                 transition: all ${global.duration.transitionMode};
                 transition-duration: ${global.duration.transition};
               }
-
             }
           `}</style>
           <button onClick={this.previewClick} className='preview-button pulse'><PreviewImg width={60} height={60}/>
           </button>
           <div className='pages-container'>
             {arrayNumber.map(number =>
-                <Page page={number} preview={preview} activePage={page} strings={strings.page} submit={submit}
+                <Page redirect={redirect} activePage={page} homePage={homePage} page={number} preview={preview} tableName={'نام جدول' + number} strings={strings.page} submit={submit}
                       onHomePage={onHomePage} outHomePage={outHomePage}
                       onFocus={onFocus} outFocus={outFocus}
+                       onRedirect={onRedirect} outRedirect={outRedirect}
                       key={'page' + number}/>
             )}
           </div>
@@ -173,6 +165,8 @@ const mapDispatchToProps = dispatch => ({
     outPreview: OtherActions.outPreview,
     onHomePage: OtherActions.onHomePage,
     outHomePage: OtherActions.outHomePage,
+    onRedirect: OtherActions.onRedirect,
+    outRedirect: OtherActions.outRedirect,
   }, dispatch)
 })
 
