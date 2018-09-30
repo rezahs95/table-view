@@ -307,12 +307,12 @@ class Page extends React.Component <homeProps, homeState> {
                 margin: 20px;
               }
               .colors {
+              z-index: 200;
                 position: fixed;
                 visibility: ${this.state.colorsPreview === true ? 'hidden' : 'visible'};
                 transition: visibility 1.5s;
               }
               .color1 {
-              z-index: 200;
                 position: absolute;
                 display: block;
                 background-color: red;
@@ -326,7 +326,6 @@ class Page extends React.Component <homeProps, homeState> {
                 transition: opacity 0.2s;
               }
               .color2 {
-              z-index: 200;
                 position: absolute;
                 display: block;
                 background-color: blue;
@@ -354,7 +353,6 @@ class Page extends React.Component <homeProps, homeState> {
                 transition: opacity 0.8s;
               }
               .color4 {
-              z-index: 200;
                 position: absolute;
                 display: block;
                 background-color: darkorange;
@@ -368,7 +366,6 @@ class Page extends React.Component <homeProps, homeState> {
                 transition: opacity 1.1s;
               }
               .color5 {
-              z-index: 200;
                 position: absolute;
                 display: block;
                 background-color: violet;
