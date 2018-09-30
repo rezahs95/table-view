@@ -5,7 +5,6 @@ import ProgressButton from 'react-progress-button'
 import PropTypes from 'prop-types'
 
 import PopUpButton from '../home/PopUpButton'
-import Result from "./Result";
 import SearchTextInput from './SearchTextInput'
 import styles from 'src/consts/styles'
 import {CSSTransition} from "react-transition-group";
@@ -13,6 +12,8 @@ import {CSSTransition} from "react-transition-group";
 import 'react-datepicker/dist/react-datepicker.css';
 import 'src/styles/home/react-progress-button.css'
 import BackgroundColor from "../../images/home/BackgroundColor";
+import {Redirect} from "react-router-dom";
+import routes from 'src/consts/routes'
 
 type homeProps = {
   strings: {
@@ -25,17 +26,20 @@ type homeProps = {
     email: string,
   },
   page: number,
+  color: string,
   submit: Function,
   onFocus: Function,
   outFocus: Function,
   preview: boolean,
   onHomePage: Function,
   outHomePage: Function,
-  onRedirect: Function,
-  outRedirect: Function,
   tableName: string,
   activePage: number,
-  homePage: boolean,
+  redirect: boolean,
+  history: {
+    push: Function,
+  },
+  setColor: Function,
   redirect: boolean,
 }
 
@@ -47,10 +51,22 @@ type homeState = {
   name: string,
   email: string,
   colorsPreview: boolean,
-  backColor: string,
 }
 
 class Page extends React.Component <homeProps, homeState> {
+  constructor(props: homeProps) {
+    super(props)
+    this.state = {
+      startDate: null,
+      endDate: null,
+      buttonState: '',
+      redirectLocal: false,
+      name: '',
+      email: '',
+      colorsPreview: true,
+    }
+  }
+
   handleChangeStart = (date: {}) => {
     this.setState({...this.state, startDate: date});
   }
@@ -64,13 +80,12 @@ class Page extends React.Component <homeProps, homeState> {
     this.setState({...this.state, email: event.target.value})
   }
   backClick = () => {
-    const {onHomePage, outRedirect} = this.props
+    const {onHomePage} = this.props
     onHomePage()
-    outRedirect()
     this.setState({...this.state, redirectLocal: false, buttonState: ''})
   }
   handleSubmitClick = () => {
-    const {submit, outHomePage, onRedirect} = this.props
+    const {submit, outHomePage} = this.props
     const {name, email, startDate, endDate} = this.state
     this.setState({...this.state, buttonState: 'loading'})
 
@@ -80,8 +95,15 @@ class Page extends React.Component <homeProps, homeState> {
     setTimeout(() => {
       this.setState({...this.state, buttonState: 'success'}, () => {
         setTimeout(() => {
-          onRedirect()
-          this.setState({...this.state, redirectLocal: true})
+          // this.setState({...this.state, redirectLocal: true})
+
+          this.props.history.push({
+            pathname: routes.RESULT,
+            state: {
+              color: this.props.color,
+              page: this.props.page,
+            }
+          });
         }, 1000)
       })
     }, 3000)
@@ -95,57 +117,32 @@ class Page extends React.Component <homeProps, homeState> {
     }
   }
   onRedClick = () => {
-    const {backColor} = this.state
-    if (backColor !== 'red') {
-      this.setState({...this.state, backColor: '#f50057'});
-    }
+    const {setColor, page} = this.props
+    setColor({index: page, color: '#f50057'})
   }
   onBlueClick = () => {
-    const {backColor} = this.state
-    if (backColor !== 'red') {
-      this.setState({...this.state, backColor: '#03a9f4'});
-    }
+    const {setColor, page} = this.props
+    setColor({index: page, color: '#03a9f4'})
   }
   onGreenClick = () => {
-    const {backColor} = this.state
-    if (backColor !== 'red') {
-      this.setState({...this.state, backColor: '#7cb342'});
-    }
+    const {setColor, page} = this.props
+    setColor({index: page, color: '#7cb342'})
   }
   onYellowClick = () => {
-    const {backColor} = this.state
-    if (backColor !== 'red') {
-      this.setState({...this.state, backColor: '#ffd54f'});
-    }
+    const {setColor, page} = this.props
+    setColor({index: page, color: '#ffd54f'})
   }
   onWhiteClick = () => {
-    const {backColor} = this.state
-    if (backColor !== 'red') {
-      this.setState({...this.state, backColor: '#ba68c8'});
-    }
-  }
-
-  constructor(props: homeProps) {
-    super(props)
-    this.state = {
-      startDate: null,
-      endDate: null,
-      buttonState: '',
-      redirectLocal: false,
-      name: '',
-      email: '',
-      redirect: false,
-      colorsPreview: true,
-      backColor: '#f50057',
-    }
+    const {setColor, page} = this.props
+    setColor({index: page, color: '#ba68c8'})
   }
 
   render() {
-    const {strings, onFocus, outFocus, page, tableName, preview, homePage, activePage, redirect} = this.props
+    const {strings, onFocus, outFocus, page, tableName, preview, activePage, redirect, color} = this.props
     const {redirectLocal} = this.state
     const {home, global} = styles
     const pageLeft = `${page * 100}%`
-    const backgColor = `radial-gradient(ellipse at center, ${this.state.backColor} 0%, #000001 98%)`
+    const backgColor = `radial-gradient(ellipse at center, ${color} 0%, #000001 98%)`
 
     return (
         <div className='page-wrapper'>
@@ -307,7 +304,7 @@ class Page extends React.Component <homeProps, homeState> {
                 margin: 20px;
               }
               .colors {
-              z-index: 200;
+                z-index: 200;
                 position: fixed;
                 visibility: ${this.state.colorsPreview === true ? 'hidden' : 'visible'};
                 transition: visibility 1.5s;
@@ -380,13 +377,9 @@ class Page extends React.Component <homeProps, homeState> {
               }
             }
           `}</style>
-          <CSSTransition
-              in={redirectLocal}
-              timeout={global.duration.animationDuration}
-              classNames={'page-go-down'}
-              unmountOnExit>
-            <Result backClick={this.backClick}/>
-          </CSSTransition>
+          {this.state.redirectLocal &&
+          <Redirect to={routes.RESULT}/>
+          }
 
           <CSSTransition
               in={!redirectLocal}
@@ -402,11 +395,11 @@ class Page extends React.Component <homeProps, homeState> {
                                                                                                       height={30}/>
                   </button>
                   <div className="colors">
-                    <button onClick={this.onRedClick} className="color1 pulse"></button>
-                    <button onClick={this.onBlueClick} className="color2 pulse"></button>
-                    <button onClick={this.onGreenClick} className="color3 pulse"></button>
-                    <button onClick={this.onYellowClick} className="color4 pulse"></button>
-                    <button onClick={this.onWhiteClick} className="color5 pulse"></button>
+                    <button onClick={this.onRedClick} className="color1 pulse"/>
+                    <button onClick={this.onBlueClick} className="color2 pulse"/>
+                    <button onClick={this.onGreenClick} className="color3 pulse"/>
+                    <button onClick={this.onYellowClick} className="color4 pulse"/>
+                    <button onClick={this.onWhiteClick} className="color5 pulse"/>
                   </div>
                   <div className='table-name-wrapper'>{tableName}</div>
                   <div className='search-index'>
@@ -460,15 +453,18 @@ class Page extends React.Component <homeProps, homeState> {
 Page.propTypes = {
   strings: PropTypes.object.isRequired,
   page: PropTypes.number.isRequired,
+  color: PropTypes.string.isRequired,
   tableName: PropTypes.string.isRequired,
   preview: PropTypes.bool.isRequired,
+  activePage: PropTypes.bool.isRequired,
+  redirect: PropTypes.bool.isRequired,
   submit: PropTypes.func.isRequired,
   onFocus: PropTypes.func.isRequired,
   outFocus: PropTypes.func.isRequired,
   onHomePage: PropTypes.func.isRequired,
   outHomePage: PropTypes.func.isRequired,
-  onRedirect: PropTypes.func.isRequired,
-  outRedirect: PropTypes.func.isRequired,
+  setColor: PropTypes.func.isRequired,
+  history: PropTypes.object.isRequired,
 }
 
 export default Page

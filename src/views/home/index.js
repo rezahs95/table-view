@@ -8,6 +8,7 @@ import OtherActions from "../../redux/actions/otherActions";
 import HomeActions from "../../redux/actions/homeActions";
 import styles from 'src/consts/styles'
 import PreviewImg from "../../images/home/PreviewImg";
+import ColorActions from "../../redux/actions/colorActions";
 
 type homeProps = {
   strings: {
@@ -29,8 +30,7 @@ type homeProps = {
     outPreview: Function,
     onHomePage: Function,
     outHomePage: Function,
-    onRedirect: Function,
-    outRedirect: Function,
+    setColor: Function,
   },
   other: {
     focus: boolean,
@@ -38,6 +38,16 @@ type homeProps = {
     homePage: boolean,
     redirect: boolean,
   },
+  location: {
+    state: {
+      color: string,
+      page: number,
+    }
+  },
+  history: {
+    push: Function,
+  },
+  color: [],
 }
 
 type homeState = {
@@ -59,6 +69,10 @@ class Home extends React.Component <homeProps, homeState> {
 
   componentDidMount() {
     document.addEventListener('keydown', this.keyDownFunction, false)
+
+    if (this.props.location.state && this.props.location.state.page) {
+      this.setState({...this.state, page: this.props.location.state.page})
+    }
   }
 
   componentWillUnmount() {
@@ -97,14 +111,13 @@ class Home extends React.Component <homeProps, homeState> {
 
   render() {
     const {page} = this.state
-    const {strings, actions, other} = this.props
+    const {strings, actions, other, history, color} = this.props
     const {preview, homePage, redirect} = other
-    const {submit, outFocus, onFocus, onHomePage, outHomePage, onRedirect, outRedirect} = actions
+    const {submit, outFocus, onFocus, onHomePage, outHomePage, setColor} = actions
     const {global} = styles
-
     const arrayNumber = [...Array(this.numberOfPages).keys()]
-
     const left = preview === true ? page * -30 + '%' : page * -100 + '%';
+
     return (
         <div className='home-wrapper'>
           {/*language=SCSS*/}
@@ -137,10 +150,12 @@ class Home extends React.Component <homeProps, homeState> {
           </button>
           <div className='pages-container'>
             {arrayNumber.map(number =>
-                <Page redirect={redirect} activePage={page} homePage={homePage} page={number} preview={preview} tableName={'نام جدول' + number} strings={strings.page} submit={submit}
+                <Page color={color[number]} history={history}
+                      redirect={redirect} activePage={page} page={number} preview={preview}
+                      tableName={'نام جدول' + number} strings={strings.page} submit={submit}
                       onHomePage={onHomePage} outHomePage={outHomePage}
                       onFocus={onFocus} outFocus={outFocus}
-                       onRedirect={onRedirect} outRedirect={outRedirect}
+                      setColor={setColor}
                       key={'page' + number}/>
             )}
           </div>
@@ -153,6 +168,7 @@ const mapStateToProps = state => {
   return {
     strings: state.translate.strings,
     other: state.other,
+    color: state.color,
   }
 }
 
@@ -165,8 +181,7 @@ const mapDispatchToProps = dispatch => ({
     outPreview: OtherActions.outPreview,
     onHomePage: OtherActions.onHomePage,
     outHomePage: OtherActions.outHomePage,
-    onRedirect: OtherActions.onRedirect,
-    outRedirect: OtherActions.outRedirect,
+    setColor: ColorActions.setColor,
   }, dispatch)
 })
 

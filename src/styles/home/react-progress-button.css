@@ -63,7 +63,7 @@
   border: 6px #dddddd;
   cursor: wait;
   background-color: transparent;
-  box-shadow: 0 0 0 3000px rgba(100,100,100,0.8);
+  box-shadow: 0 0 0 10000px rgba(100,100,100,0.8);
 }
 .pb-container.loading .pb-button span {
   transition: all 0.15s;

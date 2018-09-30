@@ -22,12 +22,6 @@ const other = (state = initialState.other, action) => {
       /** -------------------------- out home page -------------------------> **/
     case types.BASE.OTHER.OUT_HOME_PAGE:
       return slices.outHomePage.base(state, action)
-      /** -------------------------- on redirect page -------------------------> **/
-    case types.BASE.OTHER.ON_REDIRECT:
-      return slices.onRedirect.base(state, action)
-      /** -------------------------- out redirect page -------------------------> **/
-    case types.BASE.OTHER.OUT_REDIRECT:
-      return slices.outRedirect.base(state, action)
       /** -------------------------- reset  -------------------------> **/
     case types.RESET:
       return initialState.other

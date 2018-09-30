@@ -6,6 +6,8 @@ import Pagination from "react-js-pagination"
 
 import Table from './Table'
 import {resultTableData} from 'src/consts/flowTypes/index'
+import {bindActionCreators} from "redux";
+import OtherActions from "../../redux/actions/otherActions";
 
 //require("bootstrap/less/bootstrap.less")
 
@@ -23,18 +25,33 @@ type resultProps = {
   },
   backClick: Function,
   dataSet: resultTableData[],
+  actions: {
+    onHomePage: Function,
+    outHomePage: Function,
+  },
+  location: {
+    state: {
+      color: string,
+      page: number,
+    }
+  },
+  history: {
+    push: Function,
+  }
 }
 
 type resultState = {
   activePage: number,
+  redirectLocal: boolean,
 }
 
 class Result extends React.Component  <resultProps, resultState> {
 
-  constructor(props: homeProps) {
+  constructor(props: resultProps) {
     super(props)
     this.state = {
       activePage: 15,
+      redirectLocal: false,
     }
   }
 
@@ -43,13 +60,34 @@ class Result extends React.Component  <resultProps, resultState> {
     this.setState({activePage: pageNumber});
   }
 
+  backClick = () => {
+    const {actions} = this.props
+    const {onHomePage} = actions
+    onHomePage()
+    this.setState({...this.state, redirectLocal: true})
+
+    this.props.history.push({
+      pathname: '/',
+      state:{
+        color: this.props.location.state.color,
+        page: this.props.location.state.page,
+      }
+    });
+
+  }
+
   render() {
-    const {strings, dataSet, backClick} = this.props
+    const {strings, dataSet, backClick, location} = this.props
+      const backgColor = `radial-gradient(ellipse at center, ${location.state.color} 0%, #000001 98%)`
     return (
         <div className='result-wrapper'>
           {/*language=SCSS*/}
           <style jsx>{`
             .result-wrapper {
+              position: absolute;
+              top: 0;
+              background: ${backgColor};
+
               display: flex;
               flex-direction: column;
               padding: 20px 10%;
@@ -84,7 +122,7 @@ class Result extends React.Component  <resultProps, resultState> {
           `}</style>
           <Table strings={strings.tableHeader} dataSet={dataSet}/>
           <div className='footer-holder'>
-            <button onClick={backClick} className='back-button pulse'>ذخیره نتایج</button>
+            <button onClick={this.backClick} className='back-button pulse'>ذخیره نتایج</button>
             <Pagination
                 activePage={this.state.activePage}
                 itemsCountPerPage={10}
@@ -92,9 +130,8 @@ class Result extends React.Component  <resultProps, resultState> {
                 pageRangeDisplayed={5}
                 onChange={this.handlePageChange}
             />
-            <button onClick={backClick} className='back-button pulse'>{strings.back}</button>
+            <button onClick={this.backClick} className='back-button pulse'>{strings.back}</button>
           </div>
-
         </div>
 
     )
@@ -107,6 +144,7 @@ Result.propTypes = {
   }).isRequired,
   dataSet: PropTypes.array.isRequired,
   backClick: PropTypes.func.isRequired,
+  location: PropTypes.object.isRequired,
 }
 
 const mapStateToProps = state => {
@@ -194,4 +232,11 @@ const mapStateToProps = state => {
   }
 }
 
-export default connect(mapStateToProps)(Result)
+const mapDispatchToProps = dispatch => ({
+  actions: bindActionCreators({
+    onHomePage: OtherActions.onHomePage,
+    outHomePage: OtherActions.outHomePage,
+  }, dispatch)
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(Result)
