@@ -12,6 +12,7 @@ import {CSSTransition} from "react-transition-group";
 
 import 'react-datepicker/dist/react-datepicker.css';
 import 'src/styles/home/react-progress-button.css'
+import BackgroundColor from "../../images/home/BackgroundColor";
 
 type homeProps = {
   strings: {
@@ -45,44 +46,29 @@ type homeState = {
   redirectLocal: boolean,
   name: string,
   email: string,
+  colorsPreview: boolean,
+  backColor: string,
 }
 
 class Page extends React.Component <homeProps, homeState> {
-  constructor(props: homeProps) {
-    super(props)
-    this.state = {
-      startDate: null,
-      endDate: null,
-      buttonState: '',
-      redirectLocal: false,
-      name: '',
-      email: '',
-    }
-  }
-
   handleChangeStart = (date: {}) => {
     this.setState({...this.state, startDate: date});
   }
-
   handleChangeEnd = (date: {}) => {
     this.setState({...this.state, endDate: date});
   }
-
   nameChange = (event: SyntheticInputEvent<EventTarget>) => {
     this.setState({...this.state, name: event.target.value})
   }
-
   emailChange = (event: SyntheticInputEvent<EventTarget>) => {
     this.setState({...this.state, email: event.target.value})
   }
-
   backClick = () => {
     const {onHomePage, outRedirect} = this.props
     onHomePage()
     outRedirect()
     this.setState({...this.state, redirectLocal: false, buttonState: ''})
   }
-
   handleSubmitClick = () => {
     const {submit, outHomePage, onRedirect} = this.props
     const {name, email, startDate, endDate} = this.state
@@ -100,16 +86,67 @@ class Page extends React.Component <homeProps, homeState> {
       })
     }, 3000)
   }
+  previewClick = () => {
+    const {colorsPreview} = this.state
+    if (colorsPreview) {
+      this.setState({...this.state, colorsPreview: false});
+    } else {
+      this.setState({...this.state, colorsPreview: true});
+    }
+  }
+  onRedClick = () => {
+    const {backColor} = this.state
+    if (backColor !== 'red') {
+      this.setState({...this.state, backColor: '#f50057'});
+    }
+  }
+  onBlueClick = () => {
+    const {backColor} = this.state
+    if (backColor !== 'red') {
+      this.setState({...this.state, backColor: '#03a9f4'});
+    }
+  }
+  onGreenClick = () => {
+    const {backColor} = this.state
+    if (backColor !== 'red') {
+      this.setState({...this.state, backColor: '#7cb342'});
+    }
+  }
+  onYellowClick = () => {
+    const {backColor} = this.state
+    if (backColor !== 'red') {
+      this.setState({...this.state, backColor: '#ffd54f'});
+    }
+  }
+  onWhiteClick = () => {
+    const {backColor} = this.state
+    if (backColor !== 'red') {
+      this.setState({...this.state, backColor: '#ba68c8'});
+    }
+  }
 
+  constructor(props: homeProps) {
+    super(props)
+    this.state = {
+      startDate: null,
+      endDate: null,
+      buttonState: '',
+      redirectLocal: false,
+      name: '',
+      email: '',
+      redirect: false,
+      colorsPreview: true,
+      backColor: '#f50057',
+    }
+  }
 
   render() {
     const {strings, onFocus, outFocus, page, tableName, preview, homePage, activePage, redirect} = this.props
     const {redirectLocal} = this.state
     const {home, global} = styles
     const pageLeft = `${page * 100}%`
-    console.log(homePage, 'home pageeee')
-    console.log(activePage, 'active pageeeee')
-    console.log(page, 'page numberrr')
+    const backgColor = `radial-gradient(ellipse at center, ${this.state.backColor} 0%, #000001 98%)`
+
     return (
         <div className='page-wrapper'>
           {/*language=SCSS*/}
@@ -119,9 +156,9 @@ class Page extends React.Component <homeProps, homeState> {
               width: 100%;
               top: 0;
               left: ${pageLeft};
-              display: ${redirect ? (activePage === page ? 'block' : 'none'): 'block'};
+              background: ${backgColor};
+              display: ${redirect ? (activePage === page ? 'block' : 'none') : 'block'};
 
-              background: radial-gradient(ellipse at center, #163039 0%, #000001 98%);
               filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='$lightgrey', endColorstr='$darkgrey', GradientType=1);
               z-index: 0;
 
@@ -260,6 +297,90 @@ class Page extends React.Component <homeProps, homeState> {
                   align-content: center;
                 }
               }
+              .color-button {
+                position: absolute;
+                display: block;
+                z-index: 100;
+                right: 0;
+                color: white;
+                background: transparent;
+                margin: 20px;
+              }
+              .colors {
+                position: fixed;
+                visibility: ${this.state.colorsPreview === true ? 'hidden' : 'visible'};
+                transition: visibility 1.5s;
+              }
+              .color1 {
+              z-index: 200;
+                position: absolute;
+                display: block;
+                background-color: red;
+                width: 15px;
+                height: 15px;
+                right: 70px;
+                top: 30px;
+                border-radius: 3px;
+                border: solid 0.5px white;
+                opacity: ${this.state.colorsPreview === true ? '0' : '1'};
+                transition: opacity 0.2s;
+              }
+              .color2 {
+              z-index: 200;
+                position: absolute;
+                display: block;
+                background-color: blue;
+                width: 15px;
+                height: 15px;
+                right: 90px;
+                top: 30px;
+                border-radius: 3px;
+                border: solid 0.5px white;
+                opacity: ${this.state.colorsPreview === true ? '0' : '1'};
+                transition: opacity 0.5s;
+              }
+              .color3 {
+              z-index: 200;
+                position: absolute;
+                display: block;
+                background-color: green;
+                width: 15px;
+                height: 15px;
+                right: 110px;
+                top: 30px;
+                border-radius: 3px;
+                border: solid 0.5px white;
+                opacity: ${this.state.colorsPreview === true ? '0' : '1'};
+                transition: opacity 0.8s;
+              }
+              .color4 {
+              z-index: 200;
+                position: absolute;
+                display: block;
+                background-color: darkorange;
+                width: 15px;
+                height: 15px;
+                right: 130px;
+                top: 30px;
+                border-radius: 3px;
+                border: solid 0.5px white;
+                opacity: ${this.state.colorsPreview === true ? '0' : '1'};
+                transition: opacity 1.1s;
+              }
+              .color5 {
+              z-index: 200;
+                position: absolute;
+                display: block;
+                background-color: violet;
+                width: 15px;
+                height: 15px;
+                right: 150px;
+                top: 30px;
+                border-radius: 3px;
+                border: solid 0.5px white;
+                opacity: ${this.state.colorsPreview === true ? '0' : '1'};
+                transition: opacity 1.4s;
+              }
             }
           `}</style>
           <CSSTransition
@@ -280,6 +401,16 @@ class Page extends React.Component <homeProps, homeState> {
               {!preview &&
               <div className='show-page'>
                 <div className='upper-home'>
+                  <button onClick={this.previewClick} className='color-button pulse'><BackgroundColor width={30}
+                                                                                                      height={30}/>
+                  </button>
+                  <div className="colors">
+                    <button onClick={this.onRedClick} className="color1 pulse"></button>
+                    <button onClick={this.onBlueClick} className="color2 pulse"></button>
+                    <button onClick={this.onGreenClick} className="color3 pulse"></button>
+                    <button onClick={this.onYellowClick} className="color4 pulse"></button>
+                    <button onClick={this.onWhiteClick} className="color5 pulse"></button>
+                  </div>
                   <div className='table-name-wrapper'>{tableName}</div>
                   <div className='search-index'>
                     <SearchTextInput placeholder={strings.name} textFieldChange={this.nameChange} onFocus={onFocus}

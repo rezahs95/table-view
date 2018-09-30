@@ -1,7 +1,7 @@
 const home = {
   color: {
+    searchInputLabel: '#cbcbcb',
     tableNameFontColor: '#ffffff',
-    searchInputLabel: '#df6589',
     searchInputLabelBorder: '#747981',
     searchInputBorder: '#9196A1',
 
