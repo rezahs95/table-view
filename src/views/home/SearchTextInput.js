@@ -58,7 +58,7 @@ class SearchTextInput extends React.Component <searchTextInputProps, searchTextI
               position: relative;
               z-index: 1;
               display: inline-block;
-              margin: 25px 0;
+              margin: 10px 0 50px 0;
               right: 10%;
               width: 80%;
               text-align: center;

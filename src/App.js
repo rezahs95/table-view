@@ -24,7 +24,7 @@ const App = () => {
             margin: 0 !important;
             padding: 0 !important;
             font-weight: normal;
-            background: radial-gradient(ellipse at center, #440440 0%, #000001 98%);
+            background: #221221;
             overflow: auto;
           }
           a, a:hover, a:focus {

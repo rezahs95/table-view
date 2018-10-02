@@ -2,14 +2,12 @@
 import {connect} from 'react-redux'
 import * as React from 'react'
 import PropTypes from "prop-types"
-import Pagination from "react-js-pagination"
 
 import Table from './Table'
 import {resultTableData} from 'src/consts/flowTypes/index'
 import {bindActionCreators} from "redux";
 import OtherActions from "../../redux/actions/otherActions";
-
-//require("bootstrap/less/bootstrap.less")
+import SearchTextInput from "../home/SearchTextInput";
 
 type resultProps = {
   strings: {
@@ -23,11 +21,12 @@ type resultProps = {
     },
     back: string,
   },
-  backClick: Function,
   dataSet: resultTableData[],
   actions: {
     onHomePage: Function,
     outHomePage: Function,
+    outFocus: Function,
+    onFocus: Function,
   },
   location: {
     state: {
@@ -43,6 +42,14 @@ type resultProps = {
 type resultState = {
   activePage: number,
   redirectLocal: boolean,
+  familyName: string,
+  name: string,
+  email: string,
+  filter: {
+    name: string,
+    familyName: string,
+    email: string,
+  }
 }
 
 class Result extends React.Component  <resultProps, resultState> {
@@ -52,14 +59,37 @@ class Result extends React.Component  <resultProps, resultState> {
     this.state = {
       activePage: 15,
       redirectLocal: false,
+      familyName: '',
+      name: '',
+      email: '',
+      filter: {
+        familyName: '',
+        name: '',
+        email: '',
+      }
     }
   }
 
-  handlePageChange(pageNumber) {
-    console.log(`active page is ${pageNumber}`);
-    this.setState({activePage: pageNumber});
+  nameChange = (event: SyntheticInputEvent<EventTarget>) => {
+    this.setState({...this.state, name: event.target.value})
   }
-
+  emailChange = (event: SyntheticInputEvent<EventTarget>) => {
+    this.setState({...this.state, email: event.target.value})
+  }
+  familyNameChange = (event: SyntheticInputEvent<EventTarget>) => {
+    this.setState({...this.state, familyName: event.target.value})
+  }
+  filterSubmit = () => {
+    this.setState({
+          ...this.state,
+          filter: {
+            name: this.state.name,
+            familyName: this.state.familyName,
+            email: this.state.email,
+          }
+        }
+    )
+  }
   backClick = () => {
     const {actions} = this.props
     const {onHomePage} = actions
@@ -68,17 +98,29 @@ class Result extends React.Component  <resultProps, resultState> {
 
     this.props.history.push({
       pathname: '/',
-      state:{
+      state: {
         color: this.props.location.state.color,
         page: this.props.location.state.page,
       }
     });
+  }
+  filterData = () => {
+    console.log(this.state.filter, 'filter')
+    const {dataSet} = this.props
+    const {filter} = this.state
+    const {name, familyName, email} = filter
 
+    const nameFilter = name !== '' ? dataSet.filter(data => data.name.toUpperCase() === name.toUpperCase()) : dataSet
+    const familyNameFilter = familyName !== '' ? nameFilter.filter(data => data.familyName.toUpperCase() === familyName.toUpperCase()) : nameFilter
+    return email !== '' ? familyNameFilter.filter(data => data.email.toUpperCase() === email.toUpperCase()) : familyNameFilter
   }
 
   render() {
-    const {strings, dataSet, backClick, location} = this.props
-      const backgColor = `radial-gradient(ellipse at center, ${location.state.color} 0%, #000001 98%)`
+    const {strings, location, actions} = this.props
+    const {onFocus, outFocus} = actions
+
+    const backgColor = `radial-gradient(ellipse at center, ${location.state.color} 0%, #000001 98%)`
+    const filteredData = this.filterData()
     return (
         <div className='result-wrapper'>
           {/*language=SCSS*/}
@@ -87,6 +129,7 @@ class Result extends React.Component  <resultProps, resultState> {
               position: absolute;
               top: 0;
               background: ${backgColor};
+              min-height: 100%;
 
               display: flex;
               flex-direction: column;
@@ -112,6 +155,21 @@ class Result extends React.Component  <resultProps, resultState> {
               justify-content: space-between;
             }
 
+            .text-fields-container {
+              display: flex;
+              justify-content: space-around;
+
+              .filter-button {
+                width: 300px;
+                font-size: 18px;
+                font-weight: bold;
+                background: #777777;
+                color: #ffffff;
+                height: 85px;
+                margin-top: 10px;
+              }
+            }
+
             @media screen and (max-width: 750px) {
               .result-wrapper {
                 padding-left: 2%;
@@ -120,16 +178,18 @@ class Result extends React.Component  <resultProps, resultState> {
               }
             }
           `}</style>
-          <Table strings={strings.tableHeader} dataSet={dataSet}/>
+          <div className='text-fields-container'>
+            <SearchTextInput placeholder={strings.tableHeader.name} outFocus={outFocus} onFocus={onFocus}
+                             textFieldChange={this.nameChange}/>
+            <SearchTextInput placeholder={strings.tableHeader.familyName} outFocus={outFocus} onFocus={onFocus}
+                             textFieldChange={this.familyNameChange}/>
+            <SearchTextInput placeholder={strings.tableHeader.email} outFocus={outFocus} onFocus={onFocus}
+                             textFieldChange={this.emailChange}/>
+            <button className='filter-button pulse' onClick={this.filterSubmit}>فیلتر کن</button>
+          </div>
+          <Table strings={strings.tableHeader} dataSet={filteredData}/>
           <div className='footer-holder'>
             <button onClick={this.backClick} className='back-button pulse'>ذخیره نتایج</button>
-            <Pagination
-                activePage={this.state.activePage}
-                itemsCountPerPage={10}
-                totalItemsCount={450}
-                pageRangeDisplayed={5}
-                onChange={this.handlePageChange}
-            />
             <button onClick={this.backClick} className='back-button pulse'>{strings.back}</button>
           </div>
         </div>
@@ -138,16 +198,8 @@ class Result extends React.Component  <resultProps, resultState> {
   }
 }
 
-Result.propTypes = {
-  strings: PropTypes.shape({
-    tableHeader: PropTypes.object.isRequired,
-  }).isRequired,
-  dataSet: PropTypes.array.isRequired,
-  backClick: PropTypes.func.isRequired,
-  location: PropTypes.object.isRequired,
-}
-
 const mapStateToProps = state => {
+
   return {
     strings: state.translate.strings.resultPage,
     dataSet: [
@@ -231,12 +283,21 @@ const mapStateToProps = state => {
     ]
   }
 }
-
 const mapDispatchToProps = dispatch => ({
   actions: bindActionCreators({
     onHomePage: OtherActions.onHomePage,
     outHomePage: OtherActions.outHomePage,
+    onFocus: OtherActions.onFocus,
+    outFocus: OtherActions.outFocus,
   }, dispatch)
 })
+
+Result.propTypes = {
+  strings: PropTypes.shape({
+    tableHeader: PropTypes.object.isRequired,
+  }).isRequired,
+  dataSet: PropTypes.array.isRequired,
+  location: PropTypes.object.isRequired,
+}
 
 export default connect(mapStateToProps, mapDispatchToProps)(Result)

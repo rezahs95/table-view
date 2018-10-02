@@ -79,11 +79,6 @@ class Page extends React.Component <homeProps, homeState> {
   emailChange = (event: SyntheticInputEvent<EventTarget>) => {
     this.setState({...this.state, email: event.target.value})
   }
-  backClick = () => {
-    const {onHomePage} = this.props
-    onHomePage()
-    this.setState({...this.state, redirectLocal: false, buttonState: ''})
-  }
   handleSubmitClick = () => {
     const {submit, outHomePage} = this.props
     const {name, email, startDate, endDate} = this.state
