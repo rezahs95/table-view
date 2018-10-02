@@ -9,8 +9,8 @@ function* submit(action) {
   const {formValues} = payload
   try {
     //TODO: need to change to fetch js
-    const data = yield fork(api.get, urls.HOME.SUBMIT, {formValues})
-    yield put({type: types.SUCCESS.HOME.SUBMIT, payload: {data}})
+    const data = yield api.post(urls.HOME.SUBMIT, {...formValues})
+    yield put({type: types.SUCCESS.HOME.SUBMIT, payload: {data: data.items}})
   } catch (error) {
     const {message} = error
     yield put({type: types.ERRORS.HOME.SUBMIT, message})

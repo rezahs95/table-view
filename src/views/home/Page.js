@@ -34,13 +34,10 @@ type homeProps = {
   onHomePage: Function,
   outHomePage: Function,
   tableName: string,
-  activePage: number,
-  redirect: boolean,
   history: {
     push: Function,
   },
   setColor: Function,
-  redirect: boolean,
 }
 
 type homeState = {
@@ -84,7 +81,7 @@ class Page extends React.Component <homeProps, homeState> {
     const {name, email, startDate, endDate} = this.state
     this.setState({...this.state, buttonState: 'loading'})
 
-    submit({formValues: {name, email, startDate, endDate}})
+    submit({formValues: {pageNumber: 0, tableName: 'TABLEA', resultNumber: 6, firstName: '', email: '', from: '2000-01-01', to: '2019-01-01'}})
     outHomePage()
 
     setTimeout(() => {
@@ -133,7 +130,7 @@ class Page extends React.Component <homeProps, homeState> {
   }
 
   render() {
-    const {strings, onFocus, outFocus, page, tableName, preview, activePage, redirect, color} = this.props
+    const {strings, onFocus, outFocus, page, tableName, preview, color} = this.props
     const {redirectLocal} = this.state
     const {home, global} = styles
     const pageLeft = `${page * 100}%`
@@ -149,7 +146,6 @@ class Page extends React.Component <homeProps, homeState> {
               top: 0;
               left: ${pageLeft};
               background: ${backgColor};
-              display: ${redirect ? (activePage === page ? 'block' : 'none') : 'block'};
 
               filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='$lightgrey', endColorstr='$darkgrey', GradientType=1);
               z-index: 0;
@@ -451,8 +447,6 @@ Page.propTypes = {
   color: PropTypes.string.isRequired,
   tableName: PropTypes.string.isRequired,
   preview: PropTypes.bool.isRequired,
-  activePage: PropTypes.bool.isRequired,
-  redirect: PropTypes.bool.isRequired,
   submit: PropTypes.func.isRequired,
   onFocus: PropTypes.func.isRequired,
   outFocus: PropTypes.func.isRequired,

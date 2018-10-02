@@ -8,6 +8,7 @@ import {resultTableData} from 'src/consts/flowTypes/index'
 import {bindActionCreators} from "redux";
 import OtherActions from "../../redux/actions/otherActions";
 import SearchTextInput from "../home/SearchTextInput";
+import {makeGetDataset} from "../../redux/selector/resultPageSelector";
 
 type resultProps = {
   strings: {
@@ -105,7 +106,6 @@ class Result extends React.Component  <resultProps, resultState> {
     });
   }
   filterData = () => {
-    console.log(this.state.filter, 'filter')
     const {dataSet} = this.props
     const {filter} = this.state
     const {name, familyName, email} = filter
@@ -198,89 +198,13 @@ class Result extends React.Component  <resultProps, resultState> {
   }
 }
 
-const mapStateToProps = state => {
-
-  return {
-    strings: state.translate.strings.resultPage,
-    dataSet: [
-      {
-        id: '1',
-        name: 'رضا',
-        familyName: 'رضایی',
-        email: 'rezahs@aut.ac.ir',
-        date: '1999/12/12',
-      },
-      {
-        id: '2',
-        name: 'رضا',
-        familyName: 'رضایی',
-        email: 'rezahs@aut.ac.ir',
-        date: '1999/12/12',
-      },
-      {
-        id: '3',
-        name: 'رضا',
-        familyName: 'رضایی',
-        email: 'rezahs@aut.ac.ir',
-        date: '1999/12/12',
-      },
-      {
-        id: '4',
-        name: 'رضا',
-        familyName: 'رضایی',
-        email: 'rezahs@aut.ac.ir',
-        date: '1999/12/12',
-      },
-      {
-        id: '5',
-        name: 'رضا',
-        familyName: 'رضایی',
-        email: 'rezahs@aut.ac.ir',
-        date: '1999/12/12',
-      },
-      {
-        id: '6',
-        name: 'رضا',
-        familyName: 'رضایی',
-        email: 'rezahs@aut.ac.ir',
-        date: '1999/12/12',
-      },
-      {
-        id: '7',
-        name: 'رضا',
-        familyName: 'رضایی',
-        email: 'rezahs@aut.ac.ir',
-        date: '1999/12/12',
-      },
-      {
-        id: '8',
-        name: 'رضا',
-        familyName: 'رضایی',
-        email: 'rezahs@aut.ac.ir',
-        date: '1999/12/12',
-      },
-      {
-        id: '9',
-        name: 'رضا',
-        familyName: 'رضایی',
-        email: 'rezahs@aut.ac.ir',
-        date: '1999/12/12',
-      },
-      {
-        id: '10',
-        name: 'رضا',
-        familyName: 'رضایی',
-        email: 'rezahs@aut.ac.ir',
-        date: '1999/12/12',
-      }, {
-        id: '11',
-        name: 'رضا',
-        familyName: 'رضایی',
-        email: 'rezahs@aut.ac.ir',
-        date: '1999/12/12',
-      },
-
-    ]
+const mapStateToProps = (state, ownProps) => {
+  const getDatas = makeGetDataset(state, ownProps)
+  return (state, props) => {
+    return {
+      strings: state.translate.strings.resultPage,
+      dataSet: getDatas(state, props),
+    }
   }
 }
 const mapDispatchToProps = dispatch => ({

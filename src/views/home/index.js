@@ -151,7 +151,7 @@ class Home extends React.Component <homeProps, homeState> {
           <div className='pages-container'>
             {arrayNumber.map(number =>
                 <Page color={color[number]} history={history}
-                      redirect={redirect} activePage={page} page={number} preview={preview}
+                      page={number} preview={preview}
                       tableName={'نام جدول' + number} strings={strings.page} submit={submit}
                       onHomePage={onHomePage} outHomePage={outHomePage}
                       onFocus={onFocus} outFocus={outFocus}

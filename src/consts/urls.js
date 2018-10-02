@@ -1,8 +1,8 @@
-export const REST_URL = 'http://restful.daneshboom.ir'
+export const REST_URL = 'http://localhost:8181'
 
 const urls = {
   HOME: {
-    SUBMIT: 'base/certificates',
+    SUBMIT: 'search',
   }
 }
 export default urls
