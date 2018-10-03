@@ -2,6 +2,7 @@
 import {connect} from 'react-redux'
 import * as React from 'react'
 import PropTypes from "prop-types"
+import {CSVLink, CSVDownload} from 'react-csv'
 
 import Table from './Table'
 import {resultTableData} from 'src/consts/flowTypes/index'
@@ -118,6 +119,9 @@ class Result extends React.Component  <resultProps, resultState> {
       }
     });
   }
+  onDownload = () => {
+
+  }
   filterData = () => {
     const {dataSet} = this.props
     const {filter} = this.state
@@ -146,6 +150,13 @@ class Result extends React.Component  <resultProps, resultState> {
     const {strings, location, actions, pagination} = this.props
     const {onFocus, outFocus} = actions
 
+    const csvData =[
+      ['firstname', 'lastname', 'email'] ,
+      ['Ahmed', 'Tomi' , 'ah@smthing.co.com'] ,
+      ['Raed', 'Labes' , 'rl@smthing.co.com'] ,
+      ['Yezzi','Min l3b', 'ymin@cocococo.com']
+    ];
+
     const backgColor = `radial-gradient(ellipse at center, ${location.state.color} 0%, #000001 98%)`
     const filteredData = this.filterData()
     return (
@@ -171,8 +182,13 @@ class Result extends React.Component  <resultProps, resultState> {
                 margin: 20px auto;
                 color: #dddddd;
                 font-size: 20px;
+
                 border: 3px solid #dddddd;
                 left: 0;
+              }
+
+              .back-button-link {
+
               }
 
               .not-found {
@@ -230,7 +246,8 @@ class Result extends React.Component  <resultProps, resultState> {
           }
 
           <div className='footer-holder'>
-            <button onClick={this.backClick} className='back-button pulse'>ذخیره نتایج</button>
+            <button onClick={this.onDownload} className='back-button pulse'><CSVLink data={csvData} className='back-button-link' separator={"\",\""} filename={"Result.csv"} >ذخیره نتایج</CSVLink></button>
+
             <button onClick={this.backClick} className='back-button pulse'>{strings.back}</button>
           </div>
         </div>
