@@ -10,5 +10,6 @@ export default {
     endDate: '',
     resultNumber: 0,
     pageNumber: 0,
-  }
+  },
+  csvData: [],
 }

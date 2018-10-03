@@ -5,6 +5,7 @@ import outPreview from './preview/outPreview'
 import onHomePage from './homePage/onHomePage'
 import outHomePage from './homePage/outHomePage'
 import setFilter from './filter/setFilter'
+import setCsvData from './setCsvData'
 
 export default {
   onFocus,
@@ -14,4 +15,5 @@ export default {
   onHomePage,
   outHomePage,
   setFilter,
+  setCsvData,
 }

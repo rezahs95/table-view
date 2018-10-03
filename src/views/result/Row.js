@@ -5,7 +5,7 @@ import PropTypes from 'prop-types'
 import styles from 'src/consts/styles/index'
 
 type rowProps = {
-  id: string,
+  id: number,
   index: number,
   date: string,
   name: string,
@@ -65,7 +65,7 @@ const Row = (props: rowProps) => {
 
 Row.propTypes = {
   index: PropTypes.number.isRequired,
-  id: PropTypes.string.isRequired,
+  id: PropTypes.number.isRequired,
   date: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
   familyName: PropTypes.string.isRequired,

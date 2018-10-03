@@ -3,6 +3,7 @@ import * as React from 'react'
 import DatePicker from 'react-datepicker'
 import ProgressButton from 'react-progress-button'
 import PropTypes from 'prop-types'
+import moment from 'moment'
 
 import PopUpButton from '../home/PopUpButton'
 import SearchTextInput from './SearchTextInput'
@@ -39,11 +40,12 @@ type homeProps = {
     push: Function,
   },
   setColor: Function,
+  tableNameServer: string,
 }
 
 type homeState = {
-  startDate: {} | null,
-  endDate: {} | null,
+  startDate: string | null,
+  endDate: string | null,
   buttonState: string,
   redirectLocal: boolean,
   name: string,
@@ -78,10 +80,12 @@ class Page extends React.Component <homeProps, homeState> {
     this.setState({...this.state, email: event.target.value})
   }
   handleSubmitClick = () => {
-    const {submit, outHomePage, tableName} = this.props
+    const {submit, outHomePage, tableNameServer} = this.props
     const {name, email, startDate, endDate} = this.state
     this.setState({...this.state, buttonState: 'loading'})
-    const filter = {pageNumber: 1, tableName, resultNumber: constants.resultPage, name, email, startDate, endDate}
+    const filter = {pageNumber: 1, tableName: tableNameServer, resultNumber: constants.resultPage, name, email,
+      startDate: startDate !== null ? startDate.format('YYYY-MM-DD') : moment('0001-01-01').format('YYYY-MM-DD'),
+      endDate: endDate !== null ? endDate.format('YYYY-MM-DD'): moment('9999-12-27').format('YYYY-MM-DD')}
     submit({formValues: filter})
     outHomePage()
     setTimeout(() => {
@@ -406,7 +410,10 @@ class Page extends React.Component <homeProps, homeState> {
                             startDate={this.state.startDate}
                             endDate={this.state.endDate}
                             onChange={this.handleChangeStart}
+                            onFocus={onFocus}
+                            onBlur={outFocus}
                             placeholderText={strings.datePicker.startDate}
+                            dateFormat="YYYY-MM-DD"
                             className='date-picker'
                         />
                       </div>
@@ -418,7 +425,10 @@ class Page extends React.Component <homeProps, homeState> {
                             startDate={this.state.startDate}
                             endDate={this.state.endDate}
                             onChange={this.handleChangeEnd}
+                            onFocus={onFocus}
+                            onBlur={outFocus}
                             placeholderText={strings.datePicker.endDate}
+                            dateFormat="YYYY-MM-DD"
                             className='date-picker date-picker-end'
                         />
                       </div>
@@ -454,6 +464,7 @@ Page.propTypes = {
   outHomePage: PropTypes.func.isRequired,
   setColor: PropTypes.func.isRequired,
   history: PropTypes.object.isRequired,
+  tableNameServer: PropTypes.string.isRequired,
 }
 
 export default Page

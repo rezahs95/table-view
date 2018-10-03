@@ -1,3 +1,3 @@
 export default {
-  resultPage: 6,
+  resultPage: 1,
 }

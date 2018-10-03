@@ -56,6 +56,34 @@ type homeState = {
 
 class Home extends React.Component <homeProps, homeState> {
   numberOfPages: number
+  keyDownFunction = (event: SyntheticKeyboardEvent<>) => {
+    // 37 - left
+    // 39 - right
+    const {page} = this.state
+    const {other} = this.props
+    const {focus, homePage} = other
+    if (homePage && !focus) {
+      if (event.keyCode === 37 && page > 0) {
+        this.setState({...this.state, page: page - 1, changed: false})
+      }
+      else if (event.keyCode === 39 && page < this.numberOfPages - 1) {
+        this.setState({...this.state, page: page + 1, changed: false})
+      }
+    }
+  }
+  previewClick = () => {
+    const {actions, other} = this.props
+    const {onPreview, outPreview} = actions
+    const {preview} = other
+
+    if (preview) {
+      outPreview()
+    }
+    else {
+      onPreview()
+    }
+    this.setState({...this.state, changed: true})
+  }
 
   constructor(props: homeProps) {
     super(props)
@@ -76,36 +104,6 @@ class Home extends React.Component <homeProps, homeState> {
 
   componentWillUnmount() {
     document.removeEventListener('keydown', this.keyDownFunction, false)
-  }
-
-  keyDownFunction = (event: SyntheticKeyboardEvent<>) => {
-    // 37 - left
-    // 39 - right
-    const {page} = this.state
-    const {other} = this.props
-    const {focus, homePage} = other
-    if (homePage && !focus) {
-      if (event.keyCode === 37 && page > 0) {
-        this.setState({...this.state, page: page - 1, changed: false})
-      }
-      else if (event.keyCode === 39 && page < this.numberOfPages - 1) {
-        this.setState({...this.state, page: page + 1, changed: false})
-      }
-    }
-  }
-
-  previewClick = () => {
-    const {actions, other} = this.props
-    const {onPreview, outPreview} = actions
-    const {preview} = other
-
-    if (preview) {
-      outPreview()
-    }
-    else {
-      onPreview()
-    }
-    this.setState({...this.state, changed: true})
   }
 
   render() {
@@ -148,15 +146,51 @@ class Home extends React.Component <homeProps, homeState> {
           <button onClick={this.previewClick} className='preview-button pulse'><PreviewImg width={60} height={60}/>
           </button>
           <div className='pages-container'>
-            {arrayNumber.map(number =>
-                <Page color={color[number]} history={history}
-                      page={number} preview={preview}
-                      tableName={'نام جدول' + number} strings={strings.page} submit={submit}
-                      onHomePage={onHomePage} outHomePage={outHomePage}
-                      onFocus={onFocus} outFocus={outFocus}
-                      setColor={setColor}
-                      key={'page' + number}/>
-            )}
+            <Page color={color[0]} history={history}
+                  page={0} preview={preview}
+                  tableName={'نام جدول' + 0} strings={strings.page} submit={submit}
+                  tableNameServer={'TABLEA'}
+                  onHomePage={onHomePage} outHomePage={outHomePage}
+                  onFocus={onFocus} outFocus={outFocus}
+                  setColor={setColor}
+                  key={'page' + 0}/>
+
+            <Page color={color[1]} history={history}
+                  page={1} preview={preview}
+                  tableName={'نام جدول' + 1} strings={strings.page} submit={submit}
+                  tableNameServer={'TABLEB'}
+                  onHomePage={onHomePage} outHomePage={outHomePage}
+                  onFocus={onFocus} outFocus={outFocus}
+                  setColor={setColor}
+                  key={'page' + 1}/>
+
+            <Page color={color[2]} history={history}
+                  page={2} preview={preview}
+                  tableName={'نام جدول' + 2} strings={strings.page} submit={submit}
+                  tableNameServer={'TABLEC'}
+                  onHomePage={onHomePage} outHomePage={outHomePage}
+                  onFocus={onFocus} outFocus={outFocus}
+                  setColor={setColor}
+                  key={'page' + 2}/>
+
+            <Page color={color[3]} history={history}
+                  page={3} preview={preview}
+                  tableName={'نام جدول' + 3} strings={strings.page} submit={submit}
+                  tableNameServer={'TABLED'}
+                  onHomePage={onHomePage} outHomePage={outHomePage}
+                  onFocus={onFocus} outFocus={outFocus}
+                  setColor={setColor}
+                  key={'page' + 3}/>
+
+            <Page color={color[4]} history={history}
+                  page={4} preview={preview}
+                  tableName={'نام جدول' + 4} strings={strings.page} submit={submit}
+                  tableNameServer={'TABLEE'}
+                  onHomePage={onHomePage} outHomePage={outHomePage}
+                  onFocus={onFocus} outFocus={outFocus}
+                  setColor={setColor}
+                  key={'page' + 4}/>
+
           </div>
         </div>
     )

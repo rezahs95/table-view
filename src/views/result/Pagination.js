@@ -9,6 +9,8 @@ type paginationProps = {|
   endPage: number,
   nextPageClick: Function,
   prevPageClick: Function,
+  startPageClick: Function,
+  endPageClick: Function,
 |}
 
 type paginationState = {}
@@ -22,7 +24,7 @@ class Pagination extends React.Component  <paginationProps, paginationState> {
 
   render() {
     const {result} = styles
-    const {page, endPage, nextPageClick, prevPageClick} = this.props
+    const {page, endPage, nextPageClick, prevPageClick, endPageClick, startPageClick} = this.props
     return (
         <div className='pagination-wrapper'>
           {/*language=SCSS*/}
@@ -41,16 +43,17 @@ class Pagination extends React.Component  <paginationProps, paginationState> {
                 background: ${result.color.paginationColor};
                 margin: 5px;
               }
-
-              .previous {
-                background: ${result.color.paginationPrevColor};
+              .active {
+                background: ${result.color.paginationActiveColor};
               }
+
             }
           `}</style>
-
-          {page < endPage && <div className='page next pulse' onClick={nextPageClick}>صفحه بعد</div>}
-          <div className='page active pulse'>1</div>
-          {page > 1 && <div className='page previous pulse' onClick={prevPageClick}>صفحه قبل</div>}
+          {page < endPage && <div className='page pulse' onClick={endPageClick}>صفحه انتها</div>}
+          {page < endPage && <div className='page pulse' onClick={nextPageClick}>{page + 1}</div>}
+          <div className='page active pulse'>{page}</div>
+          {page > 1 && <div className='page pulse' onClick={prevPageClick}>{page - 1}</div>}
+          {page > 1 && <div className='page pulse' onClick={startPageClick}>صفحه ابتدا</div>}
 
         </div>
 
@@ -63,6 +66,8 @@ Pagination.propTypes = {
   endPage: PropTypes.number.isRequired,
   nextPageClick: PropTypes.func.isRequired,
   prevPageClick: PropTypes.func.isRequired,
+  startPageClick: PropTypes.func.isRequired,
+  endPageClick: PropTypes.func.isRequired,
 }
 
 export default Pagination

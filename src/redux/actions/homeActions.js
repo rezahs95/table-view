@@ -1,8 +1,8 @@
 import types from './types'
 
-const submit = ({formValues}) => ({
+const submit = ({formValues, saveInRedux = true}) => ({
   type: types.BASE.HOME.SUBMIT,
-  payload: {formValues}
+  payload: {formValues, saveInRedux}
 })
 
 const HomeActions = {

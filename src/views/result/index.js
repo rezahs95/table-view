@@ -2,7 +2,7 @@
 import {connect} from 'react-redux'
 import * as React from 'react'
 import PropTypes from "prop-types"
-import {CSVLink, CSVDownload} from 'react-csv'
+import {CSVLink} from 'react-csv'
 
 import Table from './Table'
 import {resultTableData} from 'src/consts/flowTypes/index'
@@ -72,20 +72,6 @@ type resultState = {
 
 class Result extends React.Component  <resultProps, resultState> {
 
-  constructor(props: resultProps) {
-    super(props)
-    this.state = {
-      familyName: '',
-      name: '',
-      email: '',
-      filter: {
-        familyName: '',
-        name: '',
-        email: '',
-      }
-    }
-  }
-
   nameChange = (event: SyntheticInputEvent<EventTarget>) => {
     this.setState({...this.state, name: event.target.value})
   }
@@ -119,9 +105,6 @@ class Result extends React.Component  <resultProps, resultState> {
       }
     });
   }
-  onDownload = () => {
-
-  }
   filterData = () => {
     const {dataSet} = this.props
     const {filter} = this.state
@@ -134,29 +117,53 @@ class Result extends React.Component  <resultProps, resultState> {
   nextPageClick = () => {
     const {filter, actions} = this.props
     const {submit} = actions
-
-    submit({formValues: {...filter, page: filter.pageNumber + 1}})
-    console.log(filter, 'filter next')
+    submit({formValues: {...filter, pageNumber: filter.pageNumber + 1}})
   }
   prevPageClick = () => {
     const {filter, actions} = this.props
     const {submit} = actions
+    submit({formValues: {...filter, pageNumber: filter.pageNumber - 1}})
+  }
+  startPageClick = () => {
+    const {filter, actions} = this.props
+    const {submit} = actions
+    submit({formValues: {...filter, pageNumber: 1}})
+  }
+  endPageClick = () => {
+    const {filter, pagination, actions} = this.props
+    const {submit} = actions
+    submit({formValues: {...filter, pageNumber: pagination.endPage}})
+  }
 
-    submit({formValues: {...filter, page: filter.pageNumber - 1}})
-    console.log(filter, 'filter prev')
+  constructor(props: resultProps) {
+    super(props)
+    this.state = {
+      familyName: '',
+      name: '',
+      email: '',
+      filter: {
+        familyName: '',
+        name: '',
+        email: '',
+      },
+    }
+  }
+
+  componentDidMount() {
+    const {filter, actions} = this.props
+    const {submit} = actions
+    submit({formValues: {...filter, pageNumber: 0}, saveInRedux: false})
   }
 
   render() {
-    const {strings, location, actions, pagination} = this.props
+    const {strings, location, actions, pagination, csvData} = this.props
     const {onFocus, outFocus} = actions
-
-    const csvData =[
-      ['firstname', 'lastname', 'email'] ,
-      ['Ahmed', 'Tomi' , 'ah@smthing.co.com'] ,
-      ['Raed', 'Labes' , 'rl@smthing.co.com'] ,
-      ['Yezzi','Min l3b', 'ymin@cocococo.com']
+    const headers = [
+      {label: 'First Name', key: 'name'},
+      {label: 'Last Name', key: 'familyName'},
+      {label: 'Date', key: 'date'},
+      {label: 'Email', key: 'email'},
     ];
-
     const backgColor = `radial-gradient(ellipse at center, ${location.state.color} 0%, #000001 98%)`
     const filteredData = this.filterData()
     return (
@@ -186,11 +193,17 @@ class Result extends React.Component  <resultProps, resultState> {
                 border: 3px solid #dddddd;
                 left: 0;
               }
-
-              .back-button-link {
-
+              :global(.back-button-link) {
+                position: relative;
+                background: transparent;
+                width: 150px;
+                height: 50px;
+                margin: 0 auto;
+                color: #dddddd;
+                font-size: 20px;
+                left: 0;
+                top: 0;
               }
-
               .not-found {
                 font-size: 40px;
                 text-align: center;
@@ -236,17 +249,24 @@ class Result extends React.Component  <resultProps, resultState> {
                              textFieldChange={this.emailChange}/>
             <button className='filter-button pulse' onClick={this.filterSubmit}>فیلتر کن</button>
           </div>
-          {filteredData.length === 0
+          {filteredData.length !== 0
               ?
               <div>
                 <Table strings={strings.tableHeader} dataSet={filteredData}/>
-                <Pagination nextPageClick={this.nextPageClick} prevPageClick={this.prevPageClick} page={pagination.pageNumber} endPage={pagination.endPage}/>
+                <Pagination nextPageClick={this.nextPageClick} prevPageClick={this.prevPageClick}
+                            startPageClick={this.startPageClick} endPageClick={this.endPageClick}
+                            page={pagination.pageNumber} endPage={pagination.endPage}/>
               </div>
               : <div className='not-found'>موردی یافت نشد</div>
           }
 
           <div className='footer-holder'>
-            <button onClick={this.onDownload} className='back-button pulse'><CSVLink data={csvData} className='back-button-link' separator={"\",\""} filename={"Result.csv"} >ذخیره نتایج</CSVLink></button>
+
+            <CSVLink headers={headers} data={csvData}
+                     className='back-button-link' filename={"Result.csv"}>
+              <button className='back-button pulse'>ذخیره نتایج
+              </button>
+            </CSVLink>
 
             <button onClick={this.backClick} className='back-button pulse'>{strings.back}</button>
           </div>
@@ -263,6 +283,7 @@ const mapStateToProps = () => {
       strings: state.translate.strings.resultPage,
       dataSet: getDatas(state, props),
       pagination: state.pagination,
+      csvData: state.other.csvData,
       filter: state.other.filter,
     }
   }
@@ -282,6 +303,7 @@ Result.propTypes = {
     tableHeader: PropTypes.object.isRequired,
   }).isRequired,
   dataSet: PropTypes.array.isRequired,
+  csvData: PropTypes.array.isRequired,
   pagination: PropTypes.object.isRequired,
   location: PropTypes.object.isRequired,
   filter: PropTypes.object.isRequired,

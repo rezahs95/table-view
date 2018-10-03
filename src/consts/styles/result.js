@@ -12,6 +12,7 @@ const result = {
     tableHeaderBorderRightColor: '#a5a5a5',
 
     paginationColor: '#69a5c2',
+    paginationActiveColor: '#43c29e',
     paginationPrevColor: '69a5c2',
     paginationNextColor: '69a5c2',
   },

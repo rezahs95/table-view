@@ -25,6 +25,8 @@ const other = (state = initialState.other, action) => {
       /** -------------------------- set filter -------------------------> **/
     case types.BASE.OTHER.SET_FILTER:
       return slices.setFilter.base(state, action)
+    case types.BASE.OTHER.SET_CSV_DATA:
+      return slices.setCsvData.base(state, action)
       /** -------------------------- reset  -------------------------> **/
     case types.RESET:
       return initialState.other
