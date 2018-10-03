@@ -10,6 +10,10 @@ const result = {
     tableHeaderBackgroundColor: '#696969',
     tableHeaderFontColor: '#ffffff',
     tableHeaderBorderRightColor: '#a5a5a5',
+
+    paginationColor: '#69a5c2',
+    paginationPrevColor: '69a5c2',
+    paginationNextColor: '69a5c2',
   },
   fontSize: {
   },

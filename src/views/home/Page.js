@@ -8,6 +8,7 @@ import PopUpButton from '../home/PopUpButton'
 import SearchTextInput from './SearchTextInput'
 import styles from 'src/consts/styles'
 import {CSSTransition} from "react-transition-group";
+import constants from 'src/consts/constants'
 
 import 'react-datepicker/dist/react-datepicker.css';
 import 'src/styles/home/react-progress-button.css'
@@ -77,13 +78,12 @@ class Page extends React.Component <homeProps, homeState> {
     this.setState({...this.state, email: event.target.value})
   }
   handleSubmitClick = () => {
-    const {submit, outHomePage} = this.props
+    const {submit, outHomePage, tableName} = this.props
     const {name, email, startDate, endDate} = this.state
     this.setState({...this.state, buttonState: 'loading'})
-
-    submit({formValues: {pageNumber: 0, tableName: 'TABLEA', resultNumber: 6, firstName: '', email: '', from: '2000-01-01', to: '2019-01-01'}})
+    const filter = {pageNumber: 1, tableName, resultNumber: constants.resultPage, name, email, startDate, endDate}
+    submit({formValues: filter})
     outHomePage()
-
     setTimeout(() => {
       this.setState({...this.state, buttonState: 'success'}, () => {
         setTimeout(() => {

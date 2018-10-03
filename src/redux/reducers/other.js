@@ -22,6 +22,9 @@ const other = (state = initialState.other, action) => {
       /** -------------------------- out home page -------------------------> **/
     case types.BASE.OTHER.OUT_HOME_PAGE:
       return slices.outHomePage.base(state, action)
+      /** -------------------------- set filter -------------------------> **/
+    case types.BASE.OTHER.SET_FILTER:
+      return slices.setFilter.base(state, action)
       /** -------------------------- reset  -------------------------> **/
     case types.RESET:
       return initialState.other

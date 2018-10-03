@@ -36,7 +36,6 @@ type homeProps = {
     focus: boolean,
     preview: boolean,
     homePage: boolean,
-    redirect: boolean,
   },
   location: {
     state: {
@@ -112,7 +111,7 @@ class Home extends React.Component <homeProps, homeState> {
   render() {
     const {page} = this.state
     const {strings, actions, other, history, color} = this.props
-    const {preview, homePage, redirect} = other
+    const {preview, homePage} = other
     const {submit, outFocus, onFocus, onHomePage, outHomePage, setColor} = actions
     const {global} = styles
     const arrayNumber = [...Array(this.numberOfPages).keys()]

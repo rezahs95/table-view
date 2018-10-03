@@ -8,7 +8,9 @@ import {resultTableData} from 'src/consts/flowTypes/index'
 import {bindActionCreators} from "redux";
 import OtherActions from "../../redux/actions/otherActions";
 import SearchTextInput from "../home/SearchTextInput";
-import {makeGetDataset} from "../../redux/selector/resultPageSelector";
+import {makeGetDataset} from "../../redux/selectors/resultPageSelector";
+import Pagination from './Pagination'
+import HomeActions from "../../redux/actions/homeActions";
 
 type resultProps = {
   strings: {
@@ -28,6 +30,7 @@ type resultProps = {
     outHomePage: Function,
     outFocus: Function,
     onFocus: Function,
+    submit: Function,
   },
   location: {
     state: {
@@ -37,12 +40,25 @@ type resultProps = {
   },
   history: {
     push: Function,
+  },
+  pagination: {
+    items: [],
+    pageNumber: number,
+    resultNumber: number,
+    endPage: number,
+  },
+  filter: {
+    tableName: string,
+    name: string,
+    email: string,
+    startDate: string,
+    endDate: string,
+    resultNumber: number,
+    pageNumber: number,
   }
 }
 
 type resultState = {
-  activePage: number,
-  redirectLocal: boolean,
   familyName: string,
   name: string,
   email: string,
@@ -58,8 +74,6 @@ class Result extends React.Component  <resultProps, resultState> {
   constructor(props: resultProps) {
     super(props)
     this.state = {
-      activePage: 15,
-      redirectLocal: false,
       familyName: '',
       name: '',
       email: '',
@@ -95,7 +109,6 @@ class Result extends React.Component  <resultProps, resultState> {
     const {actions} = this.props
     const {onHomePage} = actions
     onHomePage()
-    this.setState({...this.state, redirectLocal: true})
 
     this.props.history.push({
       pathname: '/',
@@ -114,9 +127,23 @@ class Result extends React.Component  <resultProps, resultState> {
     const familyNameFilter = familyName !== '' ? nameFilter.filter(data => data.familyName.toUpperCase() === familyName.toUpperCase()) : nameFilter
     return email !== '' ? familyNameFilter.filter(data => data.email.toUpperCase() === email.toUpperCase()) : familyNameFilter
   }
+  nextPageClick = () => {
+    const {filter, actions} = this.props
+    const {submit} = actions
+
+    submit({formValues: {...filter, page: filter.pageNumber + 1}})
+    console.log(filter, 'filter next')
+  }
+  prevPageClick = () => {
+    const {filter, actions} = this.props
+    const {submit} = actions
+
+    submit({formValues: {...filter, page: filter.pageNumber - 1}})
+    console.log(filter, 'filter prev')
+  }
 
   render() {
-    const {strings, location, actions} = this.props
+    const {strings, location, actions, pagination} = this.props
     const {onFocus, outFocus} = actions
 
     const backgColor = `radial-gradient(ellipse at center, ${location.state.color} 0%, #000001 98%)`
@@ -146,6 +173,12 @@ class Result extends React.Component  <resultProps, resultState> {
                 font-size: 20px;
                 border: 3px solid #dddddd;
                 left: 0;
+              }
+
+              .not-found {
+                font-size: 40px;
+                text-align: center;
+                color: #ffffff;
               }
             }
 
@@ -187,7 +220,15 @@ class Result extends React.Component  <resultProps, resultState> {
                              textFieldChange={this.emailChange}/>
             <button className='filter-button pulse' onClick={this.filterSubmit}>فیلتر کن</button>
           </div>
-          <Table strings={strings.tableHeader} dataSet={filteredData}/>
+          {filteredData.length === 0
+              ?
+              <div>
+                <Table strings={strings.tableHeader} dataSet={filteredData}/>
+                <Pagination nextPageClick={this.nextPageClick} prevPageClick={this.prevPageClick} page={pagination.pageNumber} endPage={pagination.endPage}/>
+              </div>
+              : <div className='not-found'>موردی یافت نشد</div>
+          }
+
           <div className='footer-holder'>
             <button onClick={this.backClick} className='back-button pulse'>ذخیره نتایج</button>
             <button onClick={this.backClick} className='back-button pulse'>{strings.back}</button>
@@ -198,12 +239,14 @@ class Result extends React.Component  <resultProps, resultState> {
   }
 }
 
-const mapStateToProps = (state, ownProps) => {
-  const getDatas = makeGetDataset(state, ownProps)
+const mapStateToProps = () => {
+  const getDatas = makeGetDataset()
   return (state, props) => {
     return {
       strings: state.translate.strings.resultPage,
       dataSet: getDatas(state, props),
+      pagination: state.pagination,
+      filter: state.other.filter,
     }
   }
 }
@@ -213,6 +256,7 @@ const mapDispatchToProps = dispatch => ({
     outHomePage: OtherActions.outHomePage,
     onFocus: OtherActions.onFocus,
     outFocus: OtherActions.outFocus,
+    submit: HomeActions.submit,
   }, dispatch)
 })
 
@@ -221,7 +265,9 @@ Result.propTypes = {
     tableHeader: PropTypes.object.isRequired,
   }).isRequired,
   dataSet: PropTypes.array.isRequired,
+  pagination: PropTypes.object.isRequired,
   location: PropTypes.object.isRequired,
+  filter: PropTypes.object.isRequired,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Result)
